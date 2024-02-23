@@ -1,4 +1,4 @@
-package com.sevban.composescaffoldproject.navigation
+package com.sevban.weatherapp.navigation
 
 enum class Destination(
     val route: String

@@ -1,4 +1,4 @@
-package com.sevban.composescaffoldproject
+package com.sevban.weatherapp
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -8,9 +8,9 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.sevban.composescaffoldproject.navigation.Destination
-import com.sevban.composescaffoldproject.navigation.Destination.DETAIL
-import com.sevban.composescaffoldproject.navigation.Destination.HOME
+import com.sevban.weatherapp.navigation.Destination
+import com.sevban.weatherapp.navigation.Destination.DETAIL
+import com.sevban.weatherapp.navigation.Destination.HOME
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

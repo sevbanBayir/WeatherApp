@@ -1,4 +1,4 @@
-package com.sevban.composescaffoldproject
+package com.sevban.weatherapp
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
