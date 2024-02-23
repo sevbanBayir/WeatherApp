@@ -1,0 +1,79 @@
+[versions]
+#SDK
+minSdk = "26"
+compileSdk = "34"
+targetSdk = "34"
+
+#Library
+activityCompose = "1.8.2"
+espressoCore = "3.5.1"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+ktx = "1.12.0"
+lifecycleRuntimeKtx = "2.7.0"
+material = "1.11.0"
+composeBom = "2024.02.00"
+okHttp = "4.12.0"
+retrofitGson = "2.9.0"
+
+#Plugin
+androidGradlePlugin = "8.2.2"
+kotlin = "1.9.22"
+daggerHilt = "2.50"
+hiltNavigation = "1.1.0"
+apollo = "3.8.2"
+ktlint = "12.1.0"
+org-jetbrains-kotlin-jvm = "1.9.22"
+appcompat = "1.6.1"
+navigation = "2.7.7"
+
+[libraries]
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-ui-testing-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+compose-ui-testing-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHilt" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigation" }
+
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
+androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended-android"}
+
+okhttp3-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okHttp" }
+okhttp3 = { module = "com.squareup.okhttp3:okhttp" }
+okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
+
+apollo-client = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
+
+junit = { module = "junit:junit", version.ref = "junit" }
+
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitGson"}
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitGson"}
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+kotlin-parcelize = { id = "kotlin-parcelize"}
+java-library = { id = "java-library"}
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+
+
