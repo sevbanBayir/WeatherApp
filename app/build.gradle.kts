@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.sevban.composescaffoldproject"
+    namespace = "com.sevban.weatherapp"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.sevban.composescaffoldproject"
+        applicationId = "com.sevban.weatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1

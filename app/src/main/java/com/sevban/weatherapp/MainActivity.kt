@@ -1,4 +1,4 @@
-package com.sevban.composescaffoldproject
+package com.sevban.weatherapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

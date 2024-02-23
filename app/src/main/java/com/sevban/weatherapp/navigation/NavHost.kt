@@ -1,14 +1,13 @@
-package com.sevban.composescaffoldproject.navigation
+package com.sevban.weatherapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.sevban.composescaffoldproject.AppState
+import com.sevban.weatherapp.AppState
 import com.sevban.detail.detailScreen
 import com.sevban.detail.navigateToDetail
 import com.sevban.home.homeScreen
 import com.sevban.network.Failure
-import kotlinx.coroutines.launch
 
 @Composable
 fun NavHost(
