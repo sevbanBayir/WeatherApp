@@ -19,13 +19,6 @@ import com.sevban.weatherapp.navigation.NavHost
 fun App(
     appState: AppState = rememberAppState()
 ) {
-    var showSnackbar by remember {
-        mutableStateOf(false)
-    }
-
-    var showSnackbarData by remember {
-        mutableStateOf("")
-    }
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold (
@@ -38,10 +31,5 @@ fun App(
             },
             modifier = Modifier.padding(scaffoldPadding)
         )
-
-        if (showSnackbar)
-            Snackbar(Modifier.padding(16.dp)) {
-                Text(text = showSnackbarData)
-            }
     }
 }
