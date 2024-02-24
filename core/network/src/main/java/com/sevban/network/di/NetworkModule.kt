@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val REST_API_BASE_URL = "https://rickandmortyapi.com/api/"
+    private const val REST_API_BASE_URL = "https://api.openweathermap.org/"
 
     @Provides
     @Singleton
