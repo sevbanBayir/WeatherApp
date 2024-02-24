@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-rootProject.name = "ComposeScaffoldProject"
+rootProject.name = "WAMine"
 include(":app")
 include(":core")
 include(":core:network")
