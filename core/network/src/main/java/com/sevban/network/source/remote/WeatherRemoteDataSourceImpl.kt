@@ -5,8 +5,9 @@ import com.sevban.network.model.weather.WeatherDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
+import javax.inject.Inject
 
-class WeatherRemoteDataSourceImpl(
+class WeatherRemoteDataSourceImpl @Inject constructor(
     private val weatherApiService: RetrofitService
 ) : WeatherRemoteDataSource {
     override fun getLocationWeather(lat: String, long: String): Flow<Response<WeatherDTO>> = flow {

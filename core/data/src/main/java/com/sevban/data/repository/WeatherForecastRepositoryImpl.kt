@@ -9,9 +9,9 @@ import com.sevban.network.model.weather.WeatherDTO
 import com.sevban.network.source.remote.WeatherRemoteDataSource
 import com.sevban.network.util.asRestApiCall
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class WeatherForecastRepositoryImpl(
+class WeatherForecastRepositoryImpl @Inject constructor(
     private val weatherRemoteDataSource: WeatherRemoteDataSource
 ) : WeatherForecastRepository {
     override fun getLocationWeather(lat: String, long: String): Flow<Weather> =
@@ -19,6 +19,7 @@ class WeatherForecastRepositoryImpl(
 
 
     override fun getLocationForecast(lat: String, long: String): Flow<Forecast> =
-        weatherRemoteDataSource.getLocationForecast(lat, long).asRestApiCall(ForecastDTO::toForecast)
+        weatherRemoteDataSource.getLocationForecast(lat, long)
+            .asRestApiCall(ForecastDTO::toForecast)
 
 }
