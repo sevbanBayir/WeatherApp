@@ -30,6 +30,9 @@ android {
             )
         }
     }
+    buildFeatures {
+        buildConfig = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -48,6 +51,10 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit.gson)
     implementation(libs.retrofit)
+
+    // OKHttp
+    implementation(libs.okhttp3.bom)
+    implementation(libs.okhttp3)
 
     implementation(libs.androidx.ktx)
     implementation(libs.appcompat)
