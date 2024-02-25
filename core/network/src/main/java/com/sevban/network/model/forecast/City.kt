@@ -2,6 +2,7 @@ package com.sevban.network.model.forecast
 
 
 import com.google.gson.annotations.SerializedName
+import com.sevban.network.model.weather.Coord
 
 data class City(
     @SerializedName("coord")
