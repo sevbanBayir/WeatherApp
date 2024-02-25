@@ -1,8 +1,7 @@
 package com.sevban.domain.di
 
-import com.sevban.data.repository.Repository
-import com.sevban.domain.usecase.GetCharacterListUseCase
-import com.sevban.domain.usecase.GetCharacterUseCase
+import com.sevban.data.repository.WeatherForecastRepository
+import com.sevban.domain.usecase.GetWeatherUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,9 +14,7 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetCharacterUseCase(repository: Repository) = GetCharacterUseCase(repository)
+    fun provideGetCharacterUseCase(repository: WeatherForecastRepository) =
+        GetWeatherUseCase(repository)
 
-    @Provides
-    @Singleton
-    fun provideGetCharacterListUseCase(repository: Repository) = GetCharacterListUseCase(repository)
 }
