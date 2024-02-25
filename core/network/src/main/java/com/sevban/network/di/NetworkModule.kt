@@ -1,10 +1,13 @@
 package com.sevban.network.di
 
 import com.sevban.network.source.remote.RetrofitService
+import com.sevban.network.util.Constants.BASE_URL
+import com.sevban.network.util.interceptor.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -13,20 +16,29 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val REST_API_BASE_URL = "https://api.openweathermap.org/"
-
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient
+    ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(REST_API_BASE_URL)
+            .client(okHttpClient)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideRickyRestApi(retrofit: Retrofit): RetrofitService {
+    fun provideOkhttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(ApiKeyInterceptor())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherRestApi(retrofit: Retrofit): RetrofitService {
         return retrofit.create(RetrofitService::class.java)
     }
 }
