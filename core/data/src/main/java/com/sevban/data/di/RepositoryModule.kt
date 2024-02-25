@@ -1,7 +1,7 @@
 package com.sevban.data.di
 
-import com.sevban.data.repository.Repository
-import com.sevban.data.repository.RepositoryImpl
+import com.sevban.data.repository.WeatherForecastRepository
+import com.sevban.data.repository.WeatherForecastRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun provideRepository(repositoryImpl: RepositoryImpl): Repository
+    abstract fun provideRepository(repositoryImpl: WeatherForecastRepositoryImpl): WeatherForecastRepository
 }
