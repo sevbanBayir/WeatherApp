@@ -53,7 +53,6 @@ dependencies {
     implementation(libs.retrofit)
 
     // OKHttp
-    implementation(libs.okhttp3.bom)
     implementation(libs.okhttp3)
 
     implementation(libs.androidx.ktx)
