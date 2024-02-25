@@ -16,7 +16,7 @@ interface RetrofitService {
     suspend fun getLocationWeather(
         @Query("units") units: String = METRIC,
         @Query("lat") lat: String,
-        @Query("long") long: String,
+        @Query("lon") long: String,
         @Query("lang") lang: String = LANGUAGE
     ): Response<WeatherDTO>
 
@@ -24,7 +24,7 @@ interface RetrofitService {
     suspend fun getLocationForecast(
         @Query("units") units: String = METRIC,
         @Query("lat") lat: String,
-        @Query("long") long: String,
+        @Query("lon") long: String,
         @Query("lang") lang: String = LANGUAGE
     ): Response<ForecastDTO>
 }
