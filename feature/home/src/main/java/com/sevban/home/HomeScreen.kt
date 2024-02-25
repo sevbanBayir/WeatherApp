@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sevban.model.Character
+import com.sevban.model.Weather
 import com.sevban.network.Failure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -24,12 +24,12 @@ fun HomeScreenRoute(
     whenErrorOccured: suspend (Failure, String?) -> Unit,
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val character by viewModel.characterState.collectAsStateWithLifecycle()
+    val weather by viewModel.characterState.collectAsStateWithLifecycle()
     val error = viewModel.error
     HomeScreen(
         homeUiState = homeUiState,
         onListItemClicked = onListItemClicked,
-        character = character,
+        weather = weather,
         error = error,
         whenErrorOccured = whenErrorOccured
     )
@@ -38,7 +38,7 @@ fun HomeScreenRoute(
 @Composable
 fun HomeScreen(
     homeUiState: UiState,
-    character: Character? = null,
+    weather: Weather? = null,
     onListItemClicked: (String) -> Unit,
     error: Flow<Failure>,
     whenErrorOccured: suspend (Failure, String?) -> Unit
@@ -57,6 +57,6 @@ fun HomeScreen(
         Button(onClick = { onListItemClicked("5") }) {
             Text(text = "Navigate to Detail")
         }
-        Text(text = character?.name ?: "Empty")
+        Text(text = weather?.id?.toString() ?: "Empty")
     }
 }
