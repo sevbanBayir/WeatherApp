@@ -4,5 +4,15 @@ import com.sevban.model.Weather
 import com.sevban.network.model.weather.WeatherDTO
 
 fun WeatherDTO.toWeather() = Weather(
-    id = id ?: 0
+    id = id ?: -1,
+    feelsLike = main?.feelsLike,
+    grndLevel = main?.grndLevel,
+    humidity = main?.humidity,
+    pressure = main?.pressure,
+    seaLevel = main?.seaLevel,
+    temp = main?.temp,
+    tempMax = main?.tempMax,
+    tempMin = main?.tempMin,
+    visibility = visibility,
+    windSpeed = wind?.speed
 )
