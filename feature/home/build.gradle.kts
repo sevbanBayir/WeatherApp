@@ -67,6 +67,8 @@ dependencies {
     //Compose-Navigation
     implementation(libs.androidx.navigation.compose)
 
+    implementation ("com.google.android.gms:play-services-location:21.2.0")
+
     //------------------------------------
 
     // Dagger-Hilt

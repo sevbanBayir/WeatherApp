@@ -1,5 +1,7 @@
 package com.sevban.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,12 +26,13 @@ fun HomeScreenRoute(
     whenErrorOccured: suspend (Failure, String?) -> Unit,
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val weather by viewModel.characterState.collectAsStateWithLifecycle()
     val error = viewModel.error
+    PermissionRequester {
+        viewModel.getLocation()
+    }
     HomeScreen(
         homeUiState = homeUiState,
         onListItemClicked = onListItemClicked,
-        weather = weather,
         error = error,
         whenErrorOccured = whenErrorOccured
     )
@@ -38,7 +41,6 @@ fun HomeScreenRoute(
 @Composable
 fun HomeScreen(
     homeUiState: UiState,
-    weather: Weather? = null,
     onListItemClicked: (String) -> Unit,
     error: Flow<Failure>,
     whenErrorOccured: suspend (Failure, String?) -> Unit
@@ -53,10 +55,36 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Text("Home Feature Screen")
         Button(onClick = { onListItemClicked("5") }) {
             Text(text = "Navigate to Detail")
         }
-        Text(text = weather?.id?.toString() ?: "Empty")
+        Text(text = homeUiState.weather.toString())
+    }
+}
+
+@Composable
+fun PermissionRequester(
+    onPermissionResult: (Map<String, Boolean>) -> Unit
+) {
+
+    val activityResultLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions(),
+            onResult = {
+                onPermissionResult(it)
+            }
+        )
+
+    Button(onClick = {
+        activityResultLauncher.launch(
+            arrayOf(
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+            )
+        )
+    }) {
+        Text(text = "Grant location permissions")
     }
 }
