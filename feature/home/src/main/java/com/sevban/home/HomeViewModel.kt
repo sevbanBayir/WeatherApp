@@ -3,6 +3,7 @@ package com.sevban.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sevban.domain.usecase.GetWeatherUseCase
+import com.sevban.home.location.LocationClient
 import com.sevban.model.Weather
 import com.sevban.network.Failure
 import com.sevban.ui.util.handleFailures
@@ -14,11 +15,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
+    private val locationClient: LocationClient
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -27,13 +31,20 @@ class HomeViewModel @Inject constructor(
     private val _error = Channel<Failure>()
     val error = _error.receiveAsFlow()
 
-    val characterState: StateFlow<Weather?> = getWeatherUseCase.execute("1", "2")
-        .handleFailures {
-            _error.send(it)
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            null
-        )
+    fun getLocation() {
+        locationClient.getLastKnownLocation(onLocationUpdated = {
+            viewModelScope.launch {
+                getWeatherUseCase.execute(
+                    it.latitude.toString(),
+                    it.longitude.toString(),
+                ).collect { weather ->
+                    _uiState.update { uiState ->
+                        uiState.copy(
+                            weather = weather
+                        )
+                    }
+                }
+            }
+        })
+    }
 }
