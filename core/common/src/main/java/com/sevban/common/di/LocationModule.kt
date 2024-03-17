@@ -1,8 +1,8 @@
-package com.sevban.home.di
+package com.sevban.common.di
 
 import android.content.Context
-import com.sevban.home.location.LocationClient
-import com.sevban.home.location.LocationClientImpl
+import com.sevban.common.location.LocationClient
+import com.sevban.common.location.LocationClientImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +16,6 @@ object LocationModule {
 
     @Provides
     @Singleton
-    fun provideLocationClient(@ApplicationContext context: Context): LocationClient =
-        LocationClientImpl(context)
+    fun provideLocationClient(@ApplicationContext context: Context): com.sevban.common.location.LocationClient =
+        com.sevban.common.location.LocationClientImpl(context)
 }
