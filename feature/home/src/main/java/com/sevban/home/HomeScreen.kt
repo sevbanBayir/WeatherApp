@@ -6,10 +6,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +20,7 @@ import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.extensions.shouldShowPermissionRationale
 import com.sevban.model.Weather
 import com.sevban.network.Failure
+import com.sevban.ui.PermissionAlertDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
@@ -129,30 +128,4 @@ fun PermissionRequester(
         Text(text = "Grant location permissions")
     }
 
-}
-
-@Composable
-fun PermissionAlertDialog(
-    onConfirmed: () -> Unit,
-    onDismissed: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = onDismissed,
-        confirmButton = {
-            Button(onClick = onConfirmed) {
-                Text(text = "Go To Settings")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismissed) {
-                Text(text = "I won't let you know")
-            }
-        },
-        title = {
-            Text(text = "We need your permission")
-        },
-        text = {
-            Text(text = "To provide related information about weather we have to know your location")
-        }
-    )
 }
