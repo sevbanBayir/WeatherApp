@@ -1,5 +1,7 @@
 package com.sevban.home
 
+import android.Manifest
+import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -12,25 +14,42 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sevban.common.extensions.openAppSettings
 import com.sevban.model.Weather
 import com.sevban.network.Failure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun HomeScreenRoute(
     viewModel: HomeViewModel = hiltViewModel(),
-    onListItemClicked: (String) -> Unit,     //-> hoist navigation actions to appState's navController.
+    onListItemClicked: (String) -> Unit,
     whenErrorOccured: suspend (Failure, String?) -> Unit,
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
+
     val error = viewModel.error
-    PermissionRequester {
-        viewModel.getLocation()
-    }
+    val shouldRedirectToSettings by
+        viewModel.redirectToSettings.receiveAsFlow().collectAsStateWithLifecycle(
+            initialValue = false
+        )
+
+    PermissionRequester(
+        onPermissionPermanentlyDeclined = {
+            viewModel.onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
+        },
+        onPermissionResult = {
+            viewModel.onEvent(HomeScreenEvent.OnLocationPermissionGranted)
+        },
+        shouldRedirectToSettings = shouldRedirectToSettings
+    )
     HomeScreen(
+        weatherState,
         homeUiState = homeUiState,
         onListItemClicked = onListItemClicked,
         error = error,
@@ -40,6 +59,7 @@ fun HomeScreenRoute(
 
 @Composable
 fun HomeScreen(
+    weather: Weather?,
     homeUiState: UiState,
     onListItemClicked: (String) -> Unit,
     error: Flow<Failure>,
@@ -60,31 +80,40 @@ fun HomeScreen(
         Button(onClick = { onListItemClicked("5") }) {
             Text(text = "Navigate to Detail")
         }
-        Text(text = homeUiState.weather.toString())
+        Text(text = weather.toString())
     }
 }
 
 @Composable
 fun PermissionRequester(
-    onPermissionResult: (Map<String, Boolean>) -> Unit
+    onPermissionResult: (Map<String, Boolean>) -> Unit,
+    onPermissionPermanentlyDeclined: (String) -> Unit,
+    shouldRedirectToSettings: Boolean
 ) {
-
+    val context = LocalContext.current
+    val permissions = arrayOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    )
     val activityResultLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
             onResult = {
                 onPermissionResult(it)
+                permissions.forEach {
+                    if (!(context as Activity).shouldShowRequestPermissionRationale(it))
+                        onPermissionPermanentlyDeclined(it)
+                }
             }
         )
 
+    if (shouldRedirectToSettings)
+        context.openAppSettings()
+
     Button(onClick = {
-        activityResultLauncher.launch(
-            arrayOf(
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-            )
-        )
+        activityResultLauncher.launch(permissions)
     }) {
         Text(text = "Grant location permissions")
     }
+
 }

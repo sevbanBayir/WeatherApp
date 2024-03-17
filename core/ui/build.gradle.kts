@@ -24,6 +24,12 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.9"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -35,7 +41,28 @@ android {
 
 dependencies {
     implementation(projects.core.network)
+    // --------------Compose--------------
 
+    // Compose-Ui
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material)
+
+    // Compose-Testing
+    androidTestImplementation(libs.compose.ui.testing.junit4)
+    androidTestImplementation(platform(libs.compose.bom))
+
+    //Compose-Lifecycle
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    //Compose-Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    //------------------------------------
     implementation(libs.androidx.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
