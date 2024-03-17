@@ -15,6 +15,7 @@ material = "1.11.0"
 composeBom = "2024.02.00"
 okHttp = "4.12.0"
 retrofitGson = "2.9.0"
+gms-location = "21.2.0"
 
 #Plugin
 androidGradlePlugin = "8.2.2"
@@ -59,6 +60,8 @@ apollo-client = { module = "com.apollographql.apollo3:apollo-runtime", version.r
 junit = { module = "junit:junit", version.ref = "junit" }
 
 material = { module = "com.google.android.material:material", version.ref = "material" }
+
+gms-location = { module = "com.google.android.gms:play-services-location", version.ref = "gms-location"}
 
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitGson"}
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitGson"}
