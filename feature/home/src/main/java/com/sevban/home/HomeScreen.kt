@@ -1,14 +1,15 @@
 package com.sevban.home
 
 import android.Manifest
-import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,7 +24,6 @@ import com.sevban.model.Weather
 import com.sevban.network.Failure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun HomeScreenRoute(
@@ -33,28 +33,27 @@ fun HomeScreenRoute(
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
-
     val error = viewModel.error
-    val shouldRedirectToSettings by
-        viewModel.redirectToSettings.receiveAsFlow().collectAsStateWithLifecycle(
-            initialValue = false
-        )
 
     PermissionRequester(
-        onPermissionPermanentlyDeclined = {
-            viewModel.onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
-        },
-        onPermissionResult = {
+        onPermissionGranted = {
             viewModel.onEvent(HomeScreenEvent.OnLocationPermissionGranted)
         },
-        shouldRedirectToSettings = shouldRedirectToSettings
+        onPermissionFirstDeclined = {
+
+        },
+        onPermissionPermanentlyDeclined = {
+            viewModel.onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
+        }
     )
+
     HomeScreen(
         weatherState,
         homeUiState = homeUiState,
         onListItemClicked = onListItemClicked,
         error = error,
-        whenErrorOccured = whenErrorOccured
+        whenErrorOccured = whenErrorOccured,
+        onEvent = viewModel::onEvent
     )
 }
 
@@ -63,9 +62,11 @@ fun HomeScreen(
     weather: Weather?,
     homeUiState: UiState,
     onListItemClicked: (String) -> Unit,
+    onEvent: (HomeScreenEvent) -> Unit,
     error: Flow<Failure>,
     whenErrorOccured: suspend (Failure, String?) -> Unit
 ) {
+    val context = LocalContext.current
     LaunchedEffect(key1 = true) {
         error.collectLatest {
             whenErrorOccured(it, null)
@@ -83,13 +84,24 @@ fun HomeScreen(
         }
         Text(text = weather.toString())
     }
+
+    if (homeUiState.shouldShowPermanentlyDeclinedDialog)
+        PermissionAlertDialog(
+            onConfirmed = {
+                context.openAppSettings()
+                onEvent(HomeScreenEvent.OnPermissionDialogDismissed)
+            },
+            onDismissed = {
+                onEvent(HomeScreenEvent.OnPermissionDialogDismissed)
+            }
+        )
 }
 
 @Composable
 fun PermissionRequester(
-    onPermissionResult: (Map<String, Boolean>) -> Unit,
-    onPermissionPermanentlyDeclined: (String) -> Unit,
-    shouldRedirectToSettings: Boolean
+    onPermissionGranted: () -> Unit,
+    onPermissionFirstDeclined: () -> Unit,
+    onPermissionPermanentlyDeclined: () -> Unit,
 ) {
     val context = LocalContext.current
     val permissions = arrayOf(
@@ -99,17 +111,18 @@ fun PermissionRequester(
     val activityResultLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
-            onResult = {
-                onPermissionResult(it)
+            onResult = { permissionResults ->
                 permissions.forEach { permission ->
-                    if (context.shouldShowPermissionRationale(permission).not())
-                        onPermissionPermanentlyDeclined(permission)
+                    if (permissionResults[permission] == true) {
+                        onPermissionGranted()
+                    } else if (context.shouldShowPermissionRationale(permission).not()) {
+                        onPermissionPermanentlyDeclined()
+                    } else {
+                        onPermissionFirstDeclined()
+                    }
                 }
             }
         )
-
-    if (shouldRedirectToSettings)
-        context.openAppSettings()
 
     Button(onClick = {
         activityResultLauncher.launch(permissions)
@@ -117,4 +130,30 @@ fun PermissionRequester(
         Text(text = "Grant location permissions")
     }
 
+}
+
+@Composable
+fun PermissionAlertDialog(
+    onConfirmed: () -> Unit,
+    onDismissed: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismissed,
+        confirmButton = {
+            Button(onClick = onConfirmed) {
+                Text(text = "Go To Settings")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissed) {
+                Text(text = "I won't let you know")
+            }
+        },
+        title = {
+            Text(text = "We need your permission")
+        },
+        text = {
+            Text(text = "To provide related information about weather we have to know your location")
+        }
+    )
 }

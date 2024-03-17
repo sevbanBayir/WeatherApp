@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,8 +36,6 @@ class HomeViewModel @Inject constructor(
 
     private val retryChannel = Channel<Boolean>()
 
-    val redirectToSettings = Channel<Boolean>()
-
     val weatherState = locationClient.getLastKnownLocation()
         .retryWhen { cause, attempt ->
             cause is MissingLocationPermissionException && retryChannel.receive() && attempt < 2
@@ -44,6 +43,7 @@ class HomeViewModel @Inject constructor(
         .catch {
             if (it is MissingLocationPermissionException)
                 emit(null)
+            else throw it
         }
         .map { location ->
             getWeatherUseCase.execute(
@@ -64,12 +64,24 @@ class HomeViewModel @Inject constructor(
                 }
             }
 
+            is HomeScreenEvent.OnLocationPermissionDeclined -> {
+
+            }
             is HomeScreenEvent.OnLocationPermissionPermanentlyDeclined -> {
-                viewModelScope.launch {
-                    redirectToSettings.send(true)
+                _uiState.update {
+                    it.copy(
+                        shouldShowPermanentlyDeclinedDialog = true
+                    )
+                }
+            }
+
+            is HomeScreenEvent.OnPermissionDialogDismissed -> {
+                _uiState.update {
+                    it.copy(
+                        shouldShowPermanentlyDeclinedDialog = false
+                    )
                 }
             }
         }
     }
-
 }
