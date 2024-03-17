@@ -1,6 +1,7 @@
 package com.sevban.common.extensions
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -21,4 +22,8 @@ fun Context.openAppSettings() {
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
         Uri.fromParts("package", packageName, null)
     ).also(::startActivity)
+}
+
+fun Context.shouldShowPermissionRationale(permission: String) : Boolean {
+    return (this as Activity).shouldShowRequestPermissionRationale(permission)
 }

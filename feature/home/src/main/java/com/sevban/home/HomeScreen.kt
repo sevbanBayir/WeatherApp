@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sevban.common.extensions.openAppSettings
+import com.sevban.common.extensions.shouldShowPermissionRationale
 import com.sevban.model.Weather
 import com.sevban.network.Failure
 import kotlinx.coroutines.flow.Flow
@@ -100,9 +101,9 @@ fun PermissionRequester(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
             onResult = {
                 onPermissionResult(it)
-                permissions.forEach {
-                    if (!(context as Activity).shouldShowRequestPermissionRationale(it))
-                        onPermissionPermanentlyDeclined(it)
+                permissions.forEach { permission ->
+                    if (context.shouldShowPermissionRationale(permission).not())
+                        onPermissionPermanentlyDeclined(permission)
                 }
             }
         )
