@@ -35,18 +35,6 @@ fun HomeScreenRoute(
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
     val error = viewModel.error
 
-    PermissionRequester(
-        onPermissionGranted = {
-            viewModel.onEvent(HomeScreenEvent.OnLocationPermissionGranted)
-        },
-        onPermissionFirstDeclined = {
-
-        },
-        onPermissionPermanentlyDeclined = {
-            viewModel.onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
-        }
-    )
-
     HomeScreen(
         weatherState,
         homeUiState = homeUiState,
@@ -82,6 +70,17 @@ fun HomeScreen(
         Button(onClick = { onListItemClicked("5") }) {
             Text(text = "Navigate to Detail")
         }
+        PermissionRequester(
+            onPermissionGranted = {
+                onEvent(HomeScreenEvent.OnLocationPermissionGranted)
+            },
+            onPermissionFirstDeclined = {
+
+            },
+            onPermissionPermanentlyDeclined = {
+                onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
+            }
+        )
         Text(text = weather.toString())
     }
 

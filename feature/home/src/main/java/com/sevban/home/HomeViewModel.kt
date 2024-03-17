@@ -67,6 +67,7 @@ class HomeViewModel @Inject constructor(
             is HomeScreenEvent.OnLocationPermissionDeclined -> {
 
             }
+
             is HomeScreenEvent.OnLocationPermissionPermanentlyDeclined -> {
                 _uiState.update {
                     it.copy(
