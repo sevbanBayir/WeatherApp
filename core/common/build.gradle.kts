@@ -41,7 +41,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
 
-    implementation ("com.google.android.gms:play-services-location:21.2.0")
+    implementation (libs.gms.location)
 
     implementation(libs.androidx.ktx)
     implementation(libs.appcompat)

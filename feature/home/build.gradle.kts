@@ -46,6 +46,7 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.model)
     implementation(projects.core.network)
+    implementation(projects.core.common)
 
     // --------------Compose--------------
 
@@ -66,8 +67,6 @@ dependencies {
 
     //Compose-Navigation
     implementation(libs.androidx.navigation.compose)
-
-    implementation ("com.google.android.gms:play-services-location:21.2.0")
 
     //------------------------------------
 
