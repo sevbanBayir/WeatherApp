@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation(projects.core.model)
     implementation(projects.core.data)
+    implementation(projects.core.common)
 
     // Dagger-Hilt
     implementation(libs.hilt.android)
