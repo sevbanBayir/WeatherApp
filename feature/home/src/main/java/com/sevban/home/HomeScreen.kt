@@ -53,7 +53,9 @@ fun HomeScreen(
     error: Flow<Failure>,
     whenErrorOccured: suspend (Failure, String?) -> Unit
 ) {
+
     val context = LocalContext.current
+
     LaunchedEffect(key1 = true) {
         error.collectLatest {
             whenErrorOccured(it, null)
@@ -78,7 +80,8 @@ fun HomeScreen(
             },
             onPermissionPermanentlyDeclined = {
                 onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
-            }
+            },
+
         )
         Text(text = weather.toString())
     }
@@ -93,6 +96,7 @@ fun HomeScreen(
                 onEvent(HomeScreenEvent.OnPermissionDialogDismissed)
             }
         )
+
 }
 
 @Composable
@@ -100,6 +104,7 @@ fun PermissionRequester(
     onPermissionGranted: () -> Unit,
     onPermissionFirstDeclined: () -> Unit,
     onPermissionPermanentlyDeclined: () -> Unit,
+
 ) {
     val context = LocalContext.current
     val permissions = arrayOf(
