@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sevban.common.extensions.hasLocationPermission
 import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.extensions.shouldShowPermissionRationale
 import com.sevban.model.Weather
@@ -122,7 +123,7 @@ fun PermissionRequester(
                 permissions.forEach { permission ->
                     if (permissionResults[permission] == true) {
                         onPermissionGranted()
-                    } else if (context.shouldShowPermissionRationale(permission).not()) {
+                    } else if (context.shouldShowPermissionRationale(permission).not() && context.hasLocationPermission().not()) {
                         onPermissionPermanentlyDeclined()
                     } else {
                         onPermissionFirstDeclined()
