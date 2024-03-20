@@ -34,6 +34,10 @@ fun HomeScreenRoute(
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
     val error = viewModel.error
 
+    LaunchedEffect(key1 = true) {
+        viewModel.getWeatherWithLocation()
+    }
+
     HomeScreen(
         weatherState,
         homeUiState = homeUiState,
