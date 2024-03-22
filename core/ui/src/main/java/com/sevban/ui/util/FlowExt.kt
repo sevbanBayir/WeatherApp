@@ -1,8 +1,8 @@
 package com.sevban.ui.util
 
-import com.sevban.network.ErrorType
-import com.sevban.network.Failure
-import com.sevban.network.util.ErrorResponse
+import com.sevban.common.model.ErrorResponse
+import com.sevban.common.model.ErrorType
+import com.sevban.common.model.Failure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 
@@ -19,7 +19,10 @@ fun <T> Flow<T>.handleFailures(
                     message = error.message ?: String.EMPTY,
                     code = -2
                 )
-                val failure = Failure(errorType = ErrorType.UNEXPECTED_ERROR, errorResponse = errorResponse)
+                val failure = Failure(
+                    errorType = ErrorType.UNEXPECTED_ERROR,
+                    errorResponse = errorResponse
+                )
                 action(failure)
             }
         }

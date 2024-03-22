@@ -45,7 +45,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.ui)
     implementation(projects.core.model)
-    implementation(projects.core.network)
     implementation(projects.core.common)
 
     // --------------Compose--------------
