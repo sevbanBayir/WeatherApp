@@ -58,6 +58,7 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
+    implementation(projects.core.common)
     implementation(projects.feature.home)
     implementation(projects.feature.detail)
 
