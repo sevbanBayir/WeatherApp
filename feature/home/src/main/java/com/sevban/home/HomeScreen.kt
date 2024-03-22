@@ -21,6 +21,7 @@ import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.extensions.shouldShowPermissionRationale
 import com.sevban.model.Weather
 import com.sevban.common.model.Failure
+import com.sevban.model.Forecast
 import com.sevban.ui.PermissionAlertDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -33,10 +34,12 @@ fun HomeScreenRoute(
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
+    val forecastState by viewModel.forecastState.collectAsStateWithLifecycle()
     val error = viewModel.error
 
     LaunchedEffect(key1 = true) {
         viewModel.getWeatherWithLocation()
+        viewModel.getForecastWithLocation()
     }
 
     HomeScreen(
@@ -45,13 +48,15 @@ fun HomeScreenRoute(
         onListItemClicked = onListItemClicked,
         error = error,
         whenErrorOccured = whenErrorOccured,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
+        forecast = forecastState
     )
 }
 
 @Composable
 fun HomeScreen(
     weather: Weather?,
+    forecast: Forecast?,
     homeUiState: UiState,
     onListItemClicked: (String) -> Unit,
     onEvent: (HomeScreenEvent) -> Unit,
@@ -89,6 +94,7 @@ fun HomeScreen(
 
         )
         Text(text = weather.toString())
+        Text(text = forecast.toString())
     }
 
     if (homeUiState.shouldShowPermanentlyDeclinedDialog)
