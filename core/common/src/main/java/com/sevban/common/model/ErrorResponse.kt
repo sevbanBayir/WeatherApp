@@ -1,4 +1,4 @@
-package com.sevban.network.util
+package com.sevban.common.model
 
 data class ErrorResponse(
     val message: String,

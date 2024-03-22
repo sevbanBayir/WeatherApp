@@ -1,6 +1,4 @@
-package com.sevban.network
-
-import com.sevban.network.util.ErrorResponse
+package com.sevban.common.model
 
 data class Failure(
     val errorType: ErrorType,

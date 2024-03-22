@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.common)
 
     // Dagger-Hilt
     implementation(libs.hilt.android)

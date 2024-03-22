@@ -20,7 +20,7 @@ import com.sevban.common.extensions.hasLocationPermission
 import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.extensions.shouldShowPermissionRationale
 import com.sevban.model.Weather
-import com.sevban.network.Failure
+import com.sevban.common.model.Failure
 import com.sevban.ui.PermissionAlertDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest

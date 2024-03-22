@@ -7,12 +7,12 @@ import com.sevban.weatherapp.AppState
 import com.sevban.detail.detailScreen
 import com.sevban.detail.navigateToDetail
 import com.sevban.home.homeScreen
-import com.sevban.network.Failure
+import com.sevban.common.model.Failure
 
 @Composable
 fun NavHost(
     appState: AppState,
-    onShowSnackbar: suspend (Failure, String?) -> Unit,
+    onShowSnackbar: suspend (com.sevban.common.model.Failure, String?) -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = Destination.HOME.route,
 ) {
