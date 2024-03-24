@@ -5,7 +5,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,14 +17,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sevban.common.extensions.hasLocationPermission
 import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.extensions.shouldShowPermissionRationale
-import com.sevban.model.Weather
 import com.sevban.common.model.Failure
+import com.sevban.home.components.FeelsLikeCard
+import com.sevban.home.components.HumidityCard
 import com.sevban.model.Forecast
+import com.sevban.model.Weather
 import com.sevban.ui.PermissionAlertDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -43,7 +49,7 @@ fun HomeScreenRoute(
     }
 
     HomeScreen(
-        weatherState,
+        weather = weatherState,
         homeUiState = homeUiState,
         onListItemClicked = onListItemClicked,
         error = error,
@@ -55,7 +61,7 @@ fun HomeScreenRoute(
 
 @Composable
 fun HomeScreen(
-    weather: Weather?,
+    weather: WeatherUiModel?,
     forecast: Forecast?,
     homeUiState: UiState,
     onListItemClicked: (String) -> Unit,
@@ -72,15 +78,29 @@ fun HomeScreen(
         }
     }
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text("Home Feature Screen")
-        Button(onClick = { onListItemClicked("5") }) {
-            Text(text = "Navigate to Detail")
+        weather?.let {
+            FeelsLikeCard(
+                feelsLikeTemp = weather.feelsLike,
+                currentTemp = weather.temp,
+                weatherDescription = weather.description,
+                weatherIcon = R.drawable.broken_clouds
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            HumidityCard(
+                wind = weather.windSpeed,
+                humidity = weather.humidity,
+                visibility = weather.visibility
+            )
         }
+
         PermissionRequester(
             onPermissionGranted = {
                 onEvent(HomeScreenEvent.OnLocationPermissionGranted)
@@ -92,9 +112,9 @@ fun HomeScreen(
                 onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
             },
 
-        )
-        Text(text = weather.toString())
-        Text(text = forecast.toString())
+            )
+//        Text(text = weather.toString())
+//        Text(text = forecast.toString())
     }
 
     if (homeUiState.shouldShowPermanentlyDeclinedDialog)
@@ -128,7 +148,9 @@ fun PermissionRequester(
                 permissions.forEach { permission ->
                     if (permissionResults[permission] == true) {
                         onPermissionGranted()
-                    } else if (context.shouldShowPermissionRationale(permission).not() && context.hasLocationPermission().not()) {
+                    } else if (context.shouldShowPermissionRationale(permission)
+                            .not() && context.hasLocationPermission().not()
+                    ) {
                         onPermissionPermanentlyDeclined()
                     } else {
                         onPermissionFirstDeclined()
@@ -137,10 +159,13 @@ fun PermissionRequester(
             }
         )
 
-    Button(onClick = {
+    LaunchedEffect(key1 = true) {
+        activityResultLauncher.launch(permissions)
+    }
+/*    Button(onClick = {
         activityResultLauncher.launch(permissions)
     }) {
         Text(text = "Grant location permissions")
-    }
+    }*/
 
 }
