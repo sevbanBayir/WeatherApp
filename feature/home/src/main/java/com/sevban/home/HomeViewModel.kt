@@ -3,7 +3,6 @@ package com.sevban.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sevban.common.constants.Constants.istanbulLatitude
-import com.sevban.common.extensions.toTitleCase
 import com.sevban.common.location.LocationClient
 import com.sevban.common.location.MissingLocationPermissionException
 import com.sevban.common.model.Failure
@@ -37,8 +36,8 @@ class HomeViewModel @Inject constructor(
     private val _error = Channel<Failure>()
     val error = _error.receiveAsFlow()
 
-    private val _weatherState = MutableStateFlow<Weather?>(null)
-    val weatherState: StateFlow<Weather?> = _weatherState.asStateFlow()
+    private val _weatherState = MutableStateFlow<WeatherUiModel?>(null)
+    val weatherState: StateFlow<WeatherUiModel?> = _weatherState.asStateFlow()
 
     private val _forecastState = MutableStateFlow<Forecast?>(null)
     val forecastState: StateFlow<Forecast?> = _forecastState.asStateFlow()
@@ -89,11 +88,7 @@ class HomeViewModel @Inject constructor(
                     getWeatherUseCase.execute(
                         location?.latitude?.toString() ?: istanbulLatitude,
                         location?.longitude?.toString() ?: istanbulLatitude
-                    ).map {
-                        it.copy(
-                            description = it.description?.toTitleCase(),
-                        )
-                    }.first()
+                    ).map(Weather::toWeatherUiModel).first()
                 }
             }
     }
