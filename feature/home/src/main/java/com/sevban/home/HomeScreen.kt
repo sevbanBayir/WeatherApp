@@ -115,7 +115,6 @@ fun PermissionRequester(
     onPermissionGranted: () -> Unit,
     onPermissionFirstDeclined: () -> Unit,
     onPermissionPermanentlyDeclined: () -> Unit,
-
 ) {
     val context = LocalContext.current
     val permissions = arrayOf(
