@@ -21,8 +21,8 @@ import com.sevban.home.R
 
 @Composable
 fun FeelsLikeCard(
-    feelsLikeTemp: Double,
-    currentTemp: Double,
+    feelsLikeTemp: String,
+    currentTemp: String,
     weatherDescription: String,
     @DrawableRes
     weatherIcon: Int,
@@ -47,7 +47,7 @@ fun FeelsLikeCard(
                 modifier = Modifier,
             ) {
                 Text(
-                    text = "${currentTemp.toString().take(1)} ֯",
+                    text = "$currentTemp֯",
                     style = MaterialTheme.typography.displayLarge.copy(fontWeight = FontWeight.Bold)
                 )
                 Text(
@@ -63,10 +63,10 @@ fun FeelsLikeCard(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun FeelsLikeCardPrev() {
-    FeelsLikeCard(
+/*    FeelsLikeCard(
         feelsLikeTemp = 4.5,
         currentTemp = 6.7,
         weatherIcon = R.drawable.ic_downloading,
         weatherDescription = "Heavy Rain"
-    )
+    )*/
 }
