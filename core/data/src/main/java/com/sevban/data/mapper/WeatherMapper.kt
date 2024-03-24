@@ -5,6 +5,8 @@ import com.sevban.network.model.weather.WeatherDTO
 
 fun WeatherDTO.toWeather() = Weather(
     id = id ?: -1,
+    description = weather?.first()?.description,
+    cityName = name,
     feelsLike = main?.feelsLike,
     grndLevel = main?.grndLevel,
     humidity = main?.humidity,

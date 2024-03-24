@@ -2,6 +2,8 @@ package com.sevban.model
 
 data class Weather(
     val id: Int,
+    val description: String?,
+    val cityName: String?,
     val feelsLike: Double?,
     val grndLevel: Int?,
     val humidity: Int?,
@@ -11,5 +13,5 @@ data class Weather(
     val tempMax: Double?,
     val tempMin: Double?,
     val visibility: Int?,
-    val windSpeed: Double?
+    val windSpeed: Double?,
 )

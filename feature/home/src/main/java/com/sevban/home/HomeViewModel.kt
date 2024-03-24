@@ -3,6 +3,7 @@ package com.sevban.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sevban.common.constants.Constants.istanbulLatitude
+import com.sevban.common.extensions.toTitleCase
 import com.sevban.common.location.LocationClient
 import com.sevban.common.location.MissingLocationPermissionException
 import com.sevban.common.model.Failure
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -87,7 +89,11 @@ class HomeViewModel @Inject constructor(
                     getWeatherUseCase.execute(
                         location?.latitude?.toString() ?: istanbulLatitude,
                         location?.longitude?.toString() ?: istanbulLatitude
-                    ).first()
+                    ).map {
+                        it.copy(
+                            description = it.description?.toTitleCase(),
+                        )
+                    }.first()
                 }
             }
     }
