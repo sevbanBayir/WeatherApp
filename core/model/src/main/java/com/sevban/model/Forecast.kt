@@ -5,5 +5,5 @@ data class Forecast(
     val city: String?,
     val cnt: Int?,
     val message: Int?,
-    val temp: List<Double?>
+    val temp: List<ForecastWeather>
 )
