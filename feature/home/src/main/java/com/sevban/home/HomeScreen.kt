@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sevban.common.extensions.hasLocationPermission
@@ -21,6 +23,7 @@ import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.extensions.shouldShowPermissionRationale
 import com.sevban.model.Weather
 import com.sevban.common.model.Failure
+import com.sevban.home.components.FeelsLikeCard
 import com.sevban.model.Forecast
 import com.sevban.ui.PermissionAlertDialog
 import kotlinx.coroutines.flow.Flow
@@ -77,7 +80,14 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text("Home Feature Screen")
+        FeelsLikeCard(
+            modifier = Modifier.padding(16.dp),
+            feelsLikeTemp = weather?.feelsLike  ?: 1.0,
+            currentTemp = weather?.temp ?: 1.0,
+            weatherDescription = weather?.description ?: "",
+            weatherIcon = R.drawable.broken_clouds
+        )
+
         Button(onClick = { onListItemClicked("5") }) {
             Text(text = "Navigate to Detail")
         }

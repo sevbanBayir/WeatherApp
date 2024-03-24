@@ -1,11 +1,9 @@
 package com.sevban.network.source.remote
 
-import com.sevban.network.model.CharacterDTO
 import com.sevban.network.model.forecast.ForecastDTO
 import com.sevban.network.model.weather.WeatherDTO
 import com.sevban.network.util.Constants.LANGUAGE
 import com.sevban.network.util.Constants.METRIC
-import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
