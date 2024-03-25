@@ -15,7 +15,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
 
-        val apiKey = gradleLocalProperties(rootDir).getProperty("API_KEY")
+        val apiKey = gradleLocalProperties(rootDir, providers).getProperty("API_KEY")
         buildConfigField("String", "API_KEY", apiKey)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
