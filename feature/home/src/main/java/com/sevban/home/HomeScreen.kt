@@ -3,14 +3,11 @@ package com.sevban.home
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,7 +24,6 @@ import com.sevban.common.model.Failure
 import com.sevban.home.components.FeelsLikeCard
 import com.sevban.home.components.HumidityCard
 import com.sevban.model.Forecast
-import com.sevban.model.Weather
 import com.sevban.ui.PermissionAlertDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +31,6 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun HomeScreenRoute(
     viewModel: HomeViewModel = hiltViewModel(),
-    onListItemClicked: (String) -> Unit,
     whenErrorOccured: suspend (Failure, String?) -> Unit,
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -51,7 +46,6 @@ fun HomeScreenRoute(
     HomeScreen(
         weather = weatherState,
         homeUiState = homeUiState,
-        onListItemClicked = onListItemClicked,
         error = error,
         whenErrorOccured = whenErrorOccured,
         onEvent = viewModel::onEvent,
@@ -64,7 +58,6 @@ fun HomeScreen(
     weather: WeatherUiModel?,
     forecast: Forecast?,
     homeUiState: UiState,
-    onListItemClicked: (String) -> Unit,
     onEvent: (HomeScreenEvent) -> Unit,
     error: Flow<Failure>,
     whenErrorOccured: suspend (Failure, String?) -> Unit
@@ -162,10 +155,10 @@ fun PermissionRequester(
     LaunchedEffect(key1 = true) {
         activityResultLauncher.launch(permissions)
     }
-/*    Button(onClick = {
-        activityResultLauncher.launch(permissions)
-    }) {
-        Text(text = "Grant location permissions")
-    }*/
+    /*    Button(onClick = {
+            activityResultLauncher.launch(permissions)
+        }) {
+            Text(text = "Grant location permissions")
+        }*/
 
 }
