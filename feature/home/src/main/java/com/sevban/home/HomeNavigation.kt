@@ -13,8 +13,6 @@ fun NavController.navigateToHome() {
 }
 
 fun NavGraphBuilder.homeScreen(
-    onBackClick: () -> Unit,
-    onItemClick: (String) -> Unit,   // -> keep hoisting...
     whenErrorOccured: suspend (Failure, String?) -> Unit
 ) {
     composable(
@@ -22,7 +20,6 @@ fun NavGraphBuilder.homeScreen(
     ) {
         HomeScreenRoute(
             whenErrorOccured = whenErrorOccured,
-            onListItemClicked = onItemClick
         )
     }
 }
