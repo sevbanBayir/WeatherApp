@@ -1,4 +1,4 @@
-package com.sevban.network.util.interceptor
+package com.sevban.network.interceptor
 
 import com.sevban.network.BuildConfig
 import okhttp3.Interceptor
