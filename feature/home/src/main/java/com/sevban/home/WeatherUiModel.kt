@@ -1,5 +1,6 @@
 package com.sevban.home
 
+import com.sevban.common.constants.Constants
 import com.sevban.common.extensions.toTitleCase
 import com.sevban.model.Weather
 import com.sevban.ui.util.EMPTY
@@ -7,6 +8,7 @@ import com.sevban.ui.util.EMPTY
 data class WeatherUiModel(
     val id: Int,
     val description: String,
+    val iconUrl: String,
     val cityName: String,
     val feelsLike: String,
     val grndLevel: String,
@@ -23,6 +25,7 @@ data class WeatherUiModel(
 fun Weather.toWeatherUiModel() = WeatherUiModel(
     id = id,
     description = description?.toTitleCase() ?: String.EMPTY,
+    iconUrl = createWeatherIconURL(icon = icon ?: String.EMPTY),
     cityName = cityName ?: String.EMPTY,
     feelsLike = feelsLike?.toInt().toString(),
     grndLevel = grndLevel?.toString() ?: String.EMPTY,
@@ -35,3 +38,7 @@ fun Weather.toWeatherUiModel() = WeatherUiModel(
     visibility = visibility?.toString() ?: String.EMPTY,
     windSpeed = windSpeed?.toString() ?: String.EMPTY,
 )
+
+private fun createWeatherIconURL(icon: String): String {
+    return Constants.WEATHER_IMAGE_BASE_URL + icon + Constants.IMAGE_RESOLUTION
+}

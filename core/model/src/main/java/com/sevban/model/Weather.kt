@@ -3,6 +3,7 @@ package com.sevban.model
 data class Weather(
     val id: Int,
     val description: String?,
+    val icon: String?,
     val cityName: String?,
     val feelsLike: Double?,
     val grndLevel: Int?,
