@@ -56,13 +56,17 @@ dependencies {
     androidTestImplementation(libs.compose.ui.testing.junit4)
     androidTestImplementation(platform(libs.compose.bom))
 
-    //Compose-Lifecycle
+    // Compose-Lifecycle
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    //Compose-Navigation
+    // Compose-Navigation
     implementation(libs.androidx.navigation.compose)
 
     //------------------------------------
+
+    // Coil
+    implementation(libs.coil.compose)
+
     implementation(libs.androidx.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

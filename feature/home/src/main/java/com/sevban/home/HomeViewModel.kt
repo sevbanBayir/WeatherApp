@@ -2,6 +2,7 @@ package com.sevban.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sevban.common.constants.Constants
 import com.sevban.common.constants.Constants.istanbulLatitude
 import com.sevban.common.location.LocationClient
 import com.sevban.common.location.MissingLocationPermissionException

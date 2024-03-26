@@ -1,7 +1,6 @@
 package com.sevban.home.components
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,13 +9,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.sevban.home.R
 
 @Composable
@@ -24,17 +24,17 @@ fun FeelsLikeCard(
     feelsLikeTemp: String,
     currentTemp: String,
     weatherDescription: String,
-    @DrawableRes
-    weatherIcon: Int,
+    weatherIconUrl: String,
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.padding(12.dp)) {
+        Row(modifier = Modifier.padding(12.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(
-                modifier = Modifier.weight(1f)
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(id = weatherIcon),
+                AsyncImage(
+                    model = weatherIconUrl,
                     contentDescription = stringResource(id = R.string.cd_weather_summary_card)
                 )
                 Text(
@@ -44,7 +44,8 @@ fun FeelsLikeCard(
             }
 
             Column(
-                modifier = Modifier,
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "$currentTemp֯",
@@ -63,10 +64,10 @@ fun FeelsLikeCard(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun FeelsLikeCardPrev() {
-/*    FeelsLikeCard(
-        feelsLikeTemp = 4.5,
-        currentTemp = 6.7,
-        weatherIcon = R.drawable.ic_downloading,
-        weatherDescription = "Heavy Rain"
-    )*/
+    /*    FeelsLikeCard(
+            feelsLikeTemp = 4.5,
+            currentTemp = 6.7,
+            weatherIcon = R.drawable.ic_downloading,
+            weatherDescription = "Heavy Rain"
+        )*/
 }

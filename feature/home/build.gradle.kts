@@ -70,6 +70,9 @@ dependencies {
 
     //------------------------------------
 
+    // Coil
+    implementation(libs.coil.compose)
+
     // Dagger-Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)

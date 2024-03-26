@@ -82,7 +82,7 @@ fun HomeScreen(
                 feelsLikeTemp = weather.feelsLike,
                 currentTemp = weather.temp,
                 weatherDescription = weather.description,
-                weatherIcon = R.drawable.broken_clouds
+                weatherIconUrl = weather.iconUrl
             )
 
             Spacer(modifier = Modifier.height(16.dp))
