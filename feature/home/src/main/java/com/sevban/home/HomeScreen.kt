@@ -23,6 +23,8 @@ import com.sevban.common.extensions.shouldShowPermissionRationale
 import com.sevban.common.model.Failure
 import com.sevban.home.components.FeelsLikeCard
 import com.sevban.home.components.HumidityCard
+import com.sevban.home.components.forecastquadrant.ForecastQuadrant
+import com.sevban.home.components.forecastquadrant.createRandomDailyTemps
 import com.sevban.model.Forecast
 import com.sevban.ui.PermissionAlertDialog
 import kotlinx.coroutines.flow.Flow
@@ -93,6 +95,8 @@ fun HomeScreen(
                 visibility = weather.visibility
             )
         }
+
+        ForecastQuadrant(createRandomDailyTemps())
 
         PermissionRequester(
             onPermissionGranted = {
