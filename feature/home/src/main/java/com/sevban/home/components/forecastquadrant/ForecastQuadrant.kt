@@ -2,6 +2,8 @@ package com.sevban.home.components.forecastquadrant
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,6 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -24,7 +27,7 @@ fun ForecastQuadrant(
     val textMeasurer = rememberTextMeasurer()
 
     Canvas(
-        modifier = modifier.size(400.dp)
+        modifier = modifier.fillMaxWidth().height(350.dp)
     ) {
         val path = Path()
         val graphDepth = size.height
@@ -38,7 +41,7 @@ fun ForecastQuadrant(
         val jointRadius = 10f
 
         path.apply {
-            temperatures.toSet().forEach { value ->
+            temperatures.forEach { value ->
 
                 val textResult = textMeasurer.measure(value.toString())
                 val textOffsetX = -20f - textResult.firstBaseline
@@ -47,6 +50,13 @@ fun ForecastQuadrant(
                 val textOffsetY = yCursor - textResult.lastBaseline / 2
 
                 drawText(textResult, topLeft = Offset(textOffsetX, textOffsetY))
+                drawLine(
+                    Color.Gray,
+                    start = Offset(0f, yCursor),
+                    end = Offset(xCursor, yCursor),
+                    strokeWidth = 3f,
+                    pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(10f, 5.dp.toPx()))
+                )
                 moveTo(xCursor, yCursor)
                 xCursor += oneInterval
             }
