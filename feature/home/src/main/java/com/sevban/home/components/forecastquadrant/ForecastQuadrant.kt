@@ -2,6 +2,7 @@ package com.sevban.home.components.forecastquadrant
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -32,7 +33,7 @@ fun ForecastQuadrant(
         val path = Path()
         val graphDepth = size.height
         val oneDegree = graphDepth / (temperatures.max() - temperatures.min())
-        val oneInterval = size.width / temperatures.size
+        val oneInterval = size.width / (temperatures.size - 1)
 
         var xCursor = 0f
         var yCursor = graphDepth - ((temperatures.first() - temperatures.min()) * oneDegree)
