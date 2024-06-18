@@ -26,15 +26,9 @@ fun ForecastQuadrant(
     Canvas(
         modifier = modifier.size(400.dp)
     ) {
+        val path = Path()
         val graphDepth = size.height
-        Log.d("Graph Depth", graphDepth.toString())
         val oneDegree = graphDepth / (temperatures.max() - temperatures.min())
-        Log.d("One Degree", oneDegree.toString())
-        Log.d(
-            "Temperatures",
-            temperatures.toString() + "Max: ${temperatures.max()} Min: ${temperatures.min()}"
-        )
-
         val oneInterval = size.width / temperatures.size
 
         var xCursor = 0f
@@ -43,12 +37,28 @@ fun ForecastQuadrant(
         val lineStroke = 6f
         val jointRadius = 10f
 
-        val temperaturePath = Path().apply {
+        path.apply {
+            temperatures.toSet().forEach { value ->
+
+                val textResult = textMeasurer.measure(value.toString())
+                val textOffsetX = -20f - textResult.firstBaseline
+
+                yCursor = graphDepth - ((value - temperatures.min()) * oneDegree)
+                val textOffsetY = yCursor - textResult.lastBaseline / 2
+
+                drawText(textResult, topLeft = Offset(textOffsetX, textOffsetY))
+                moveTo(xCursor, yCursor)
+                xCursor += oneInterval
+            }
+            xCursor = 0f
+            yCursor = graphDepth - ((temperatures.first() - temperatures.min()) * oneDegree)
+        }
+
+        val temperaturePath = path.apply {
             moveTo(0f, yCursor)
             temperatures.forEach { value ->
-                val textResult = textMeasurer.measure(value.toString())
+
                 yCursor = graphDepth - ((value - temperatures.min()) * oneDegree)
-                drawText(textResult, topLeft = Offset( -20f-textResult.firstBaseline, yCursor))
                 lineTo(xCursor, yCursor)
                 drawLine(Color.Gray, start = Offset(xCursor, 0f), end = Offset(xCursor, graphDepth))
                 drawCircle(
