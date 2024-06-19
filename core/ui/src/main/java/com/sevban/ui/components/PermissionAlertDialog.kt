@@ -1,4 +1,4 @@
-package com.sevban.ui
+package com.sevban.ui.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
