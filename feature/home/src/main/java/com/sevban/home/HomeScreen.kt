@@ -168,7 +168,7 @@ fun WeatherScreenContent(
             visibility = weather.visibility
         )
 
-        LineChart(modifier = Modifier.padding(16.dp), data = temperatureList)
+        LineChart(modifier = Modifier.padding(16.dp), yAxisData = temperatureList)
 
         Button(onClick = onClickButton) {
             Text(text = "Generate Temperature")
