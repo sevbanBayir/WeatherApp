@@ -1,9 +1,9 @@
 package com.sevban.home
 
 import com.sevban.common.constants.Constants
+import com.sevban.common.extensions.EMPTY
 import com.sevban.common.extensions.toTitleCase
 import com.sevban.model.Weather
-import com.sevban.ui.util.EMPTY
 
 data class WeatherUiModel(
     val id: Int,
