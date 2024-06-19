@@ -1,12 +1,11 @@
 package com.sevban.ui.util
 
+import com.sevban.common.extensions.EMPTY
 import com.sevban.common.model.ErrorResponse
 import com.sevban.common.model.ErrorType
 import com.sevban.common.model.Failure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-
-val String.Companion.EMPTY: String by lazy { "" }
 
 fun <T> Flow<T>.handleFailures(
     action: suspend (Failure) -> Unit

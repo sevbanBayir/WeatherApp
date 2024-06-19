@@ -11,5 +11,5 @@ data class NetworkWeather(
     @SerializedName("id")
     val id: Int?,
     @SerializedName("main")
-    val main: String?
+    val name: String?
 )

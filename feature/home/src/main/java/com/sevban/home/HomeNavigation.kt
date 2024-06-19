@@ -19,7 +19,7 @@ fun NavGraphBuilder.homeScreen(
         route = "home"
     ) {
         HomeScreenRoute(
-            whenErrorOccured = whenErrorOccured,
+            whenErrorOccurred = whenErrorOccured,
         )
     }
 }
