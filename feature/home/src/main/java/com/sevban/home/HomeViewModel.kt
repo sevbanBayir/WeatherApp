@@ -1,8 +1,8 @@
 package com.sevban.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sevban.common.constants.Constants
 import com.sevban.common.constants.Constants.istanbulLatitude
 import com.sevban.common.location.LocationClient
 import com.sevban.common.location.MissingLocationPermissionException
@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,7 +33,7 @@ class HomeViewModel @Inject constructor(
     private val getForecastUseCase: GetForecastUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState())
+    private val _uiState = MutableStateFlow(WeatherScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     private val _error = Channel<Failure>()
@@ -78,6 +80,7 @@ class HomeViewModel @Inject constructor(
 
     suspend fun getWeatherWithLocation() {
         locationClient.getLastKnownLocation()
+            .onStart { _uiState.update { it.copy(isLoading = true) } }
             .catch {
                 if (it is MissingLocationPermissionException)
                     emit(null)
@@ -85,11 +88,16 @@ class HomeViewModel @Inject constructor(
                     throw it
             }
             .collect { location ->
-                _weatherState.update {
-                    getWeatherUseCase.execute(
-                        location?.latitude?.toString() ?: istanbulLatitude,
-                        location?.longitude?.toString() ?: istanbulLatitude
-                    ).map(Weather::toWeatherUiModel).first()
+                Log.d("Location", "Lat: ${location?.latitude} Long: ${location?.longitude}")
+                _uiState.update {
+                    it.copy(
+                        weather = getWeatherUseCase.execute(
+                            location?.latitude?.toString() ?: istanbulLatitude,
+                            location?.longitude?.toString() ?: istanbulLatitude
+                        )
+                            .onCompletion { _uiState.update { state -> state.copy(isLoading = false) } }
+                            .map(Weather::toWeatherUiModel).first()
+                    )
                 }
             }
     }
