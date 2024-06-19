@@ -8,7 +8,6 @@ data class GraphStyle(
     val backgroundColor: Color = Color.Transparent,
     val jointColor: Color = Color.Black,
     val jointRadius: Float = 10f,
+    val jointStroke: Float = 2f,
     val textColor: Color = Color.Black,
-) {
-
-}
+)
