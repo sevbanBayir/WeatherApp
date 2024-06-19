@@ -1,10 +1,8 @@
 package com.sevban.home.components.forecastquadrant
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -27,12 +25,14 @@ fun ForecastQuadrant(
     val textMeasurer = rememberTextMeasurer()
 
     Canvas(
-        modifier = modifier.fillMaxWidth().height(350.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .height(350.dp)
     ) {
         val path = Path()
         val graphDepth = size.height
         val oneDegree = graphDepth / (temperatures.max() - temperatures.min())
-        val oneInterval = size.width / temperatures.size
+        val oneInterval = size.width / (temperatures.size - 1)
 
         var xCursor = 0f
         var yCursor = graphDepth - ((temperatures.first() - temperatures.min()) * oneDegree)
@@ -55,7 +55,12 @@ fun ForecastQuadrant(
                     start = Offset(0f, yCursor),
                     end = Offset(xCursor, yCursor),
                     strokeWidth = 3f,
-                    pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(10f, 5.dp.toPx()))
+                    pathEffect = PathEffect.dashPathEffect(
+                        intervals = floatArrayOf(
+                            10f,
+                            5.dp.toPx()
+                        )
+                    )
                 )
                 moveTo(xCursor, yCursor)
                 xCursor += oneInterval
