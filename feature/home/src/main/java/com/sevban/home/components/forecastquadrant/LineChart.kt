@@ -6,15 +6,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -36,38 +43,86 @@ fun LineChart(
         lineStroke = 6f,
         jointStroke = 4f,
         jointRadius = 10f
-    )
+    ),
+    onDayChanged: () -> Unit = {},
 ) {
     val textMeasurer = rememberTextMeasurer()
+    var center by remember {
+        mutableStateOf(Offset.Zero)
+    }
+    var circleCenter by remember {
+        mutableStateOf(Offset.Zero)
+    }
+    var angle by remember {
+        mutableFloatStateOf(0f)
+    }
+
+    var dragStartedAngle by remember {
+        mutableFloatStateOf(0f)
+    }
+
+    var oldAngle by remember {
+        mutableFloatStateOf(angle)
+    }
     Canvas(
         modifier = modifier
             .fillMaxWidth()
             .background(graphStyle.backgroundColor)
-            .height(350.dp)
+            .height(200.dp)
+        //.border(1.dp, Color.Red)
     ) {
         val path = Path()
         val textHeight = textMeasurer.measure("03:00").size.height
-        val graphDepth = size.height - textHeight
+        val graphDepth = size.height - 2 * textHeight
         val oneDegree = graphDepth / (yAxisData.max() - yAxisData.min())
         val oneInterval = size.width / (yAxisData.size - 1)
 
         var xCursor = 0f
         var yCursor: Float
 
+
+        drawWithLayer {
+            drawCircle(
+                color = graphStyle.lineColor,
+                radius = 1250f,
+                style = Stroke(
+                    width = 5f,
+                ),
+                center = Offset(x = size.width / 2, y = 1100f),
+            )
+
+            drawRoundRect(
+                color = graphStyle.lineColor,
+                topLeft = Offset(x = size.width / 2 - 45f, y = -170f),
+                size = Size(100f, 50f),
+                cornerRadius = CornerRadius(50f, 50f),
+                blendMode = BlendMode.Clear
+            )
+        }
+
+        drawRoundRect(
+            color = graphStyle.lineColor,
+            topLeft = Offset(x = size.width / 2 - 45f, y = -170f),
+            size = Size(100f, 50f),
+            cornerRadius = CornerRadius(50f, 50f),
+            style = Stroke(
+                width = 5f,
+            ),
+        )
+
         xAxisData.forEach { value ->
 
             val textResult = textMeasurer.measure(
-                value.toString(),
+                "$value:00",
                 style = TextStyle(
                     color = graphStyle.textColor,
                     fontSize = 11.sp
                 )
             )
-            yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
 
             drawText(
                 textLayoutResult = textResult,
-                topLeft = Offset(x = xCursor - textResult.firstBaseline / 2, y =  graphDepth + 10f)
+                topLeft = Offset(x = xCursor - textResult.firstBaseline / 2, y = graphDepth + 50f)
             )
 
             xCursor += oneInterval
@@ -76,40 +131,30 @@ fun LineChart(
         xCursor = 0f
         yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
 
+
+        yAxisData.forEach { value ->
+
+            val textResult = textMeasurer.measure(
+                "$value ֯",
+                style = TextStyle(
+                    color = graphStyle.textColor,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+            drawText(
+                textLayoutResult = textResult,
+                topLeft = Offset(x = xCursor - textResult.firstBaseline / 2, y = graphDepth + 10f)
+            )
+
+            xCursor += oneInterval
+        }
+
+        xCursor = 0f
+        yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
+
+
         drawWithLayer {
-            path.apply {
-                yAxisData.forEach { value ->
-
-                    val textResult = textMeasurer.measure(value.toString())
-                    val textOffsetX = -20f - textResult.firstBaseline
-
-                    yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
-                    val textOffsetY = yCursor - textResult.lastBaseline / 2
-
-                    drawText(
-                        textResult,
-                        color = graphStyle.textColor,
-                        topLeft = Offset(textOffsetX, textOffsetY)
-                    )
-
-                    drawLine(
-                        Color.Gray,
-                        start = Offset(0f, yCursor),
-                        end = Offset(xCursor, yCursor),
-                        strokeWidth = 3f,
-                        pathEffect = PathEffect.dashPathEffect(
-                            intervals = floatArrayOf(
-                                10f,
-                                5.dp.toPx()
-                            )
-                        )
-                    )
-                    moveTo(xCursor, yCursor)
-                    xCursor += oneInterval
-                }
-                xCursor = 0f
-                yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
-            }
 
             path.apply {
                 moveTo(0f, yCursor)
@@ -156,8 +201,6 @@ fun LineChart(
                 radius = graphStyle.jointRadius,
                 center = Offset(xCursor, yCursor),
                 style = Stroke(graphStyle.jointStroke),
-                blendMode = BlendMode.Clear
-
             )
             xCursor += oneInterval
         }
