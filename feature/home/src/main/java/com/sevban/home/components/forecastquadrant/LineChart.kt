@@ -2,6 +2,8 @@ package com.sevban.home.components.forecastquadrant
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
@@ -16,9 +18,13 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +34,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sevban.designsystem.theme.ComposeScaffoldProjectTheme
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 @Composable
@@ -64,148 +73,266 @@ fun LineChart(
     var oldAngle by remember {
         mutableFloatStateOf(angle)
     }
+
+    val gradient = Brush.linearGradient(
+        listOf(
+            Color.Red,
+            Color.Yellow,
+            Color.Green
+        )
+    )
     Canvas(
         modifier = modifier
             .fillMaxWidth()
             .background(graphStyle.backgroundColor)
-            .height(200.dp)
-        //.border(1.dp, Color.Red)
+            .height(400.dp)
+            .border(1.dp, Color.Red)
+            .pointerInput(true) {
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        dragStartedAngle = -atan2(
+                            y = circleCenter.x - offset.x,
+                            x = circleCenter.y - offset.y
+                        ) * (180 / PI.toFloat())
+                    },
+                    onDragEnd = {
+                        oldAngle = angle
+                    }
+                ) { change, _ ->
+                    val touchAngle = -atan2(
+                        y = circleCenter.x - change.position.x,
+                        x = circleCenter.y - change.position.y
+                    ) * (180 / PI.toFloat())
+
+                    val newAngle = oldAngle + (touchAngle - dragStartedAngle)
+                    angle = newAngle
+                    //onWeightChange((initialWeight - angle).roundToInt())
+                }
+            }
     ) {
         val path = Path()
-        val textHeight = textMeasurer.measure("03:00").size.height
-        val graphDepth = size.height - 2 * textHeight
+        val circleHeight = 200f
+        val textHeight = textMeasurer.measure("A").size.height
+        val graphDepth = circleHeight + 200.dp.toPx() - 2 * textHeight
         val oneDegree = graphDepth / (yAxisData.max() - yAxisData.min())
         val oneInterval = size.width / (yAxisData.size - 1)
 
-        var xCursor = 0f
-        var yCursor: Float
+        drawQuadrant()
 
+        drawGraphXAxisSubtext(
+            textData = xAxisData,
+            textMeasurer = textMeasurer,
+            textColor = graphStyle.textColor,
+            graphDepth = graphDepth + circleHeight,
+            oneInterval = oneInterval
+        )
 
-        drawWithLayer {
-            drawCircle(
-                color = graphStyle.lineColor,
-                radius = 1250f,
-                style = Stroke(
-                    width = 5f,
-                ),
-                center = Offset(x = size.width / 2, y = 1100f),
-            )
+        drawGraphXAxisText(
+            textData = yAxisData,
+            textMeasurer = textMeasurer,
+            textColor = graphStyle.textColor,
+            graphDepth = graphDepth + circleHeight,
+            oneInterval = oneInterval
+        )
 
-            drawRoundRect(
-                color = graphStyle.lineColor,
-                topLeft = Offset(x = size.width / 2 - 45f, y = -170f),
-                size = Size(100f, 50f),
-                cornerRadius = CornerRadius(50f, 50f),
-                blendMode = BlendMode.Clear
-            )
+        drawTemperatureLines(
+            initialY = 200f,
+            path = path,
+            yAxisData = yAxisData,
+            graphDepth = graphDepth,
+            oneDegree = oneDegree,
+            oneInterval = oneInterval,
+            lineColor = graphStyle.lineColor,
+            lineStrokeWidth = graphStyle.lineStroke,
+            jointColor = graphStyle.jointColor,
+            jointStrokeWidth = graphStyle.jointStroke,
+            jointRadius = graphStyle.jointRadius,
+            drawOutOfTheLayer = {
+                drawJoints(
+                    yAxisData = yAxisData,
+                    graphDepth = graphDepth,
+                    oneDegree = oneDegree,
+                    graphStyle = graphStyle,
+                    oneInterval = oneInterval
+                )
+            }
+        )
+    }
+}
+
+private fun DrawScope.drawTemperatureLines(
+    initialY: Float = 200f,
+    path: Path,
+    yAxisData: List<Int>,
+    graphDepth: Float,
+    oneDegree: Float,
+    oneInterval: Float,
+    lineColor: Color,
+    lineStrokeWidth: Float,
+    jointColor: Color,
+    jointStrokeWidth: Float,
+    jointRadius: Float,
+    drawOutOfTheLayer: DrawScope.() -> Unit
+) {
+    var yCursor1: Float = initialY
+    var xCursor1 = 0f
+    drawWithLayer {
+
+        path.apply {
+            moveTo(0f, yCursor1)
+            yAxisData.forEach { value ->
+
+                yCursor1 = initialY + graphDepth - ((value - yAxisData.min()) * oneDegree)
+                lineTo(xCursor1, yCursor1)
+                drawLine(
+                    Color.Gray,
+                    start = Offset(xCursor1, initialY),
+                    end = Offset(xCursor1, graphDepth + initialY)
+                )
+                moveTo(xCursor1, yCursor1)
+                xCursor1 += oneInterval
+            }
         }
 
+        drawPath(
+            path,
+            color = lineColor.copy(alpha = 0.5f),
+            style = Stroke(width = lineStrokeWidth),
+        )
+
+        yAxisData.forEach { value ->
+            yCursor1 = initialY + graphDepth - ((value - yAxisData.min()) * oneDegree)
+            drawCircle(
+                color = jointColor,
+                radius = jointRadius,
+                center = Offset(xCursor1, yCursor1),
+                blendMode = BlendMode.Clear
+            )
+            xCursor1 += oneInterval
+        }
+    }
+
+    drawOutOfTheLayer()
+}
+
+private fun DrawScope.drawJoints(
+    initialY: Float = 200f,
+    yAxisData: List<Int>,
+    graphDepth: Float,
+    oneDegree: Float,
+    graphStyle: GraphStyle,
+    oneInterval: Float
+) {
+    var yCursor1: Float
+    var xCursor1 = 0f
+    yAxisData.forEach { value ->
+        yCursor1 = initialY + graphDepth - ((value - yAxisData.min()) * oneDegree)
+        drawCircle(
+            color = graphStyle.jointColor,
+            radius = graphStyle.jointRadius,
+            center = Offset(xCursor1, yCursor1),
+            style = Stroke(graphStyle.jointStroke),
+        )
+        xCursor1 += oneInterval
+    }
+
+}
+
+private fun DrawScope.drawGraphXAxisText(
+    textData: List<Int>,
+    textMeasurer: TextMeasurer,
+    textColor: Color,
+    graphDepth: Float,
+    oneInterval: Float
+) {
+    var xCursor1 = 0f
+    textData.forEach { value ->
+
+        val textResult = textMeasurer.measure(
+            "$value ֯",
+            style = TextStyle(
+                color = textColor,
+                fontWeight = FontWeight.Bold
+            )
+        )
+
+        drawText(
+            textLayoutResult = textResult,
+            topLeft = Offset(x = xCursor1 - textResult.firstBaseline / 2, y = graphDepth + 10f)
+        )
+
+        xCursor1 += oneInterval
+    }
+}
+
+private fun DrawScope.drawGraphXAxisSubtext(
+    textData: List<Int>,
+    textMeasurer: TextMeasurer,
+    textColor: Color,
+    graphDepth: Float,
+    oneInterval: Float
+) {
+    var xCursor1 = 0f
+    textData.forEach { value ->
+
+        val textResult = textMeasurer.measure(
+            "$value:00",
+            style = TextStyle(
+                color = textColor,
+                fontSize = 11.sp
+            )
+        )
+
+        drawText(
+            textLayoutResult = textResult,
+            topLeft = Offset(x = xCursor1 - textResult.firstBaseline / 2, y = graphDepth + 50f)
+        )
+
+        xCursor1 += oneInterval
+    }
+}
+
+fun DrawScope.drawQuadrant(
+    color: Color = Color.Red,
+    gradient: Brush = Brush.linearGradient(
+        listOf(
+            Color.Red,
+            Color.Yellow,
+            Color.Green
+        )
+    ),
+    handleColor: Color = Color.Magenta
+) {
+    drawWithLayer {
+        drawCircle(
+            brush = gradient,
+            radius = 1000f,
+            style = Stroke(
+                width = 55f,
+            ),
+            center = Offset(x = size.width / 2, y = 1100f),
+        )
+
         drawRoundRect(
-            color = graphStyle.lineColor,
+            color = handleColor,
             topLeft = Offset(x = size.width / 2 - 45f, y = -170f),
             size = Size(100f, 50f),
             cornerRadius = CornerRadius(50f, 50f),
-            style = Stroke(
-                width = 5f,
-            ),
+            blendMode = BlendMode.Clear
         )
-
-        xAxisData.forEach { value ->
-
-            val textResult = textMeasurer.measure(
-                "$value:00",
-                style = TextStyle(
-                    color = graphStyle.textColor,
-                    fontSize = 11.sp
-                )
-            )
-
-            drawText(
-                textLayoutResult = textResult,
-                topLeft = Offset(x = xCursor - textResult.firstBaseline / 2, y = graphDepth + 50f)
-            )
-
-            xCursor += oneInterval
-        }
-
-        xCursor = 0f
-        yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
-
-
-        yAxisData.forEach { value ->
-
-            val textResult = textMeasurer.measure(
-                "$value ֯",
-                style = TextStyle(
-                    color = graphStyle.textColor,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-
-            drawText(
-                textLayoutResult = textResult,
-                topLeft = Offset(x = xCursor - textResult.firstBaseline / 2, y = graphDepth + 10f)
-            )
-
-            xCursor += oneInterval
-        }
-
-        xCursor = 0f
-        yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
-
-
-        drawWithLayer {
-
-            path.apply {
-                moveTo(0f, yCursor)
-                yAxisData.forEach { value ->
-
-                    yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
-                    lineTo(xCursor, yCursor)
-                    drawLine(
-                        Color.Gray,
-                        start = Offset(xCursor, 0f),
-                        end = Offset(xCursor, graphDepth)
-                    )
-                    moveTo(xCursor, yCursor)
-                    xCursor += oneInterval
-                }
-                xCursor = 0f
-                yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
-            }
-
-            drawPath(
-                path,
-                color = graphStyle.lineColor.copy(alpha = 0.5f),
-                style = Stroke(width = graphStyle.lineStroke),
-            )
-
-            yAxisData.forEach { value ->
-                yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
-                drawCircle(
-                    color = graphStyle.jointColor,
-                    radius = graphStyle.jointRadius,
-                    center = Offset(xCursor, yCursor),
-                    blendMode = BlendMode.Clear
-                )
-                xCursor += oneInterval
-            }
-            xCursor = 0f
-            yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
-        }
-
-        yAxisData.forEach { value ->
-            yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
-            drawCircle(
-                color = graphStyle.jointColor,
-                radius = graphStyle.jointRadius,
-                center = Offset(xCursor, yCursor),
-                style = Stroke(graphStyle.jointStroke),
-            )
-            xCursor += oneInterval
-        }
     }
+
+    drawRoundRect(
+        color = handleColor,
+        topLeft = Offset(x = size.width / 2 - 45f, y = -170f),
+        size = Size(100f, 50f),
+        cornerRadius = CornerRadius(50f, 50f),
+        style = Stroke(
+            width = 5f,
+        ),
+    )
 }
+
 
 @PreviewLightDark
 @Preview(showBackground = true)
