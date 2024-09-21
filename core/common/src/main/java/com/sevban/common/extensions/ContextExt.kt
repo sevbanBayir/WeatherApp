@@ -17,6 +17,14 @@ fun Context.hasLocationPermission(): Boolean {
     ) == PackageManager.PERMISSION_GRANTED
 }
 
+fun Context.hasFineLocationPermission(): Boolean = checkSelfPermission(
+    Manifest.permission.ACCESS_FINE_LOCATION
+) == PackageManager.PERMISSION_GRANTED
+
+fun Context.hasCoarseLocationPermission(): Boolean = checkSelfPermission(
+    Manifest.permission.ACCESS_COARSE_LOCATION
+) == PackageManager.PERMISSION_GRANTED
+
 fun Context.openAppSettings() {
     Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -24,6 +32,6 @@ fun Context.openAppSettings() {
     ).also(::startActivity)
 }
 
-fun Context.shouldShowPermissionRationale(permission: String) : Boolean {
+fun Context.shouldShowPermissionRationale(permission: String): Boolean {
     return (this as Activity).shouldShowRequestPermissionRationale(permission)
 }
