@@ -33,6 +33,7 @@ class LocationClientImpl @Inject constructor(
         if (context.hasLocationPermission().not()) throw MissingLocationPermissionException()
 
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+            println("Location : $it")
             trySend(it)
         }.addOnFailureListener {
             trySend(null)

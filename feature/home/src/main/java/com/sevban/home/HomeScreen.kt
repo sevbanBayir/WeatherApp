@@ -28,6 +28,7 @@ import com.sevban.home.components.HumidityCard
 import com.sevban.home.components.forecastquadrant.LineChart
 import com.sevban.home.components.forecastquadrant.generateTemperatureList
 import com.sevban.model.Forecast
+import com.sevban.model.Weather
 import com.sevban.ui.components.LoadingScreen
 import com.sevban.ui.components.PermissionAlertDialog
 import com.sevban.ui.components.PermissionRequester
@@ -55,6 +56,7 @@ fun HomeScreenRoute(
         error = error,
         whenErrorOccurred = whenErrorOccurred,
         onEvent = viewModel::onEvent,
+        weather = weatherState,
         forecast = forecastState
     )
 }
@@ -63,6 +65,7 @@ fun HomeScreenRoute(
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     forecast: Forecast?,
+    weather: WeatherUiModel?,
     uiState: WeatherScreenUiState,
     onEvent: (HomeScreenEvent) -> Unit,
     error: Flow<Failure>,
@@ -91,12 +94,12 @@ fun HomeScreen(
             when (targetState) {
                 true -> LoadingScreen()
                 false -> {
-                    if (uiState.weather != null && forecast != null)
+                    if (weather != null && forecast != null)
                         WeatherScreenContent(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(16.dp),
-                            weather = uiState.weather,
+                            weather = weather,
                             temperatureList = tempList/*forecast.temp.map { it.temperature!!.toInt() }*/,
                             onClickButton = {
                                 tempList = generateTemperatureList(0, 20, 8)

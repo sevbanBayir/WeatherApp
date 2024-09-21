@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sevban.common.constants.Constants.istanbulLatitude
 import com.sevban.common.location.LocationClient
+import com.sevban.common.location.LocationObserver
 import com.sevban.common.location.MissingLocationPermissionException
 import com.sevban.common.model.Failure
 import com.sevban.domain.usecase.GetForecastUseCase
@@ -14,14 +15,17 @@ import com.sevban.model.Weather
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,6 +34,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val locationClient: LocationClient,
+    private val locationObserver: LocationObserver,
     private val getForecastUseCase: GetForecastUseCase,
 ) : ViewModel() {
 
@@ -39,8 +44,20 @@ class HomeViewModel @Inject constructor(
     private val _error = Channel<Failure>()
     val error = _error.receiveAsFlow()
 
-    private val _weatherState = MutableStateFlow<WeatherUiModel?>(null)
-    val weatherState: StateFlow<WeatherUiModel?> = _weatherState.asStateFlow()
+    val weatherState = locationObserver.observeLocation(1000L)
+        .flatMapLatest { location ->
+            getWeatherUseCase.execute(
+                lat = location.latitude.toString(),
+                long = location.longitude.toString()
+            )
+        }.map { it.toWeatherUiModel() }
+        .onStart { _uiState.update { it.copy(isLoading = true) } }
+        .onCompletion { _uiState.update { it.copy(isLoading = false) } }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     private val _forecastState = MutableStateFlow<Forecast?>(null)
     val forecastState: StateFlow<Forecast?> = _forecastState.asStateFlow()
