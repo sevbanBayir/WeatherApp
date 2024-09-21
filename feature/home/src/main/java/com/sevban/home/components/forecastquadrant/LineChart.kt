@@ -1,5 +1,6 @@
 package com.sevban.home.components.forecastquadrant
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import com.sevban.designsystem.theme.ComposeScaffoldProjectTheme
 import kotlin.math.PI
 import kotlin.math.atan2
-import kotlin.math.roundToInt
 import kotlin.random.Random
 
 @Composable
@@ -66,6 +66,10 @@ fun LineChart(
         mutableFloatStateOf(0f)
     }
 
+    var angle2 by remember {
+        mutableStateOf(Offset.Zero)
+    }
+
     var dragStartedAngle by remember {
         mutableFloatStateOf(0f)
     }
@@ -74,13 +78,7 @@ fun LineChart(
         mutableFloatStateOf(angle)
     }
 
-    val gradient = Brush.linearGradient(
-        listOf(
-            Color.Red,
-            Color.Yellow,
-            Color.Green
-        )
-    )
+
     Canvas(
         modifier = modifier
             .fillMaxWidth()
@@ -106,6 +104,8 @@ fun LineChart(
 
                     val newAngle = oldAngle + (touchAngle - dragStartedAngle)
                     angle = newAngle
+                    angle2 = change.previousPosition + change.position
+                    Log.d("Angle", "Angle: $angle")
                     //onWeightChange((initialWeight - angle).roundToInt())
                 }
             }
@@ -117,7 +117,11 @@ fun LineChart(
         val oneDegree = graphDepth / (yAxisData.max() - yAxisData.min())
         val oneInterval = size.width / (yAxisData.size - 1)
 
-        drawQuadrant()
+
+        drawQuadrant(
+            angle = angle,
+            angle2 = angle2,
+        )
 
         drawGraphXAxisSubtext(
             textData = xAxisData,
@@ -294,23 +298,31 @@ private fun DrawScope.drawGraphXAxisSubtext(
 
 fun DrawScope.drawQuadrant(
     color: Color = Color.Red,
-    gradient: Brush = Brush.linearGradient(
+    angle: Float = 0f,
+    angle2: Offset,
+    handleColor: Color = Color.Magenta
+) {
+//    val gradientOffsetX = (size.width * (angle2) / 10).coerceIn(0f, size.width)
+    val gradientOffsetX = angle2.x
+    val gradientOffsetY = angle2.y
+//    val gradientOffsetY = (size.height * (angle2) / 10).coerceIn(0f, size.height)
+    Log.d("Angle", "GradientOffsetX: $gradientOffsetX")
+    Log.d("Angle", "GradientOffsetY: $gradientOffsetY")
+    val gradient = Brush.linearGradient(
         listOf(
             Color.Red,
             Color.Yellow,
             Color.Green
+        ),
+        start = Offset(0f, 0f),
+        end = Offset(
+            x = gradientOffsetX,
+            y = gradientOffsetY
         )
-    ),
-    handleColor: Color = Color.Magenta
-) {
+    )
     drawWithLayer {
-        drawCircle(
+        drawRect(
             brush = gradient,
-            radius = 1000f,
-            style = Stroke(
-                width = 55f,
-            ),
-            center = Offset(x = size.width / 2, y = 1100f),
         )
 
         drawRoundRect(
