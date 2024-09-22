@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sevban.home.R
@@ -25,10 +24,24 @@ fun HumidityCard(
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.padding(12.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            FeatureColumn(topText = stringResource(id = R.string.wind_top_text), altText = "$wind m/h")
-            FeatureColumn(topText = stringResource(id = R.string.humidity_top_text), altText = "$humidity %")
-            FeatureColumn(topText = stringResource(id = R.string.visibility_top_text), altText = "$visibility m")
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            FeatureColumn(
+                topText = stringResource(id = R.string.wind_top_text),
+                altText = "$wind m/h"
+            )
+            FeatureColumn(
+                topText = stringResource(id = R.string.humidity_top_text),
+                altText = "$humidity %"
+            )
+            FeatureColumn(
+                topText = stringResource(id = R.string.visibility_top_text),
+                altText = "$visibility m"
+            )
         }
     }
 }

@@ -67,7 +67,7 @@ fun LineChart(
 
             drawText(
                 textLayoutResult = textResult,
-                topLeft = Offset(x = xCursor - textResult.firstBaseline / 2, y =  graphDepth + 10f)
+                topLeft = Offset(x = xCursor - textResult.firstBaseline / 2, y = graphDepth + 10f)
             )
 
             xCursor += oneInterval
