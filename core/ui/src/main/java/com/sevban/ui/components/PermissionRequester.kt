@@ -11,9 +11,9 @@ import com.sevban.common.extensions.shouldShowPermissionRationale
 
 @Composable
 fun PermissionRequester(
-    onPermissionGranted: () -> Unit,
-    onPermissionFirstDeclined: () -> Unit,
-    onPermissionPermanentlyDeclined: () -> Unit,
+    onPermissionGranted: () -> Unit = {},
+    onPermissionFirstDeclined: () -> Unit = {},
+    onPermissionPermanentlyDeclined: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val permissions = arrayOf(
@@ -41,10 +41,4 @@ fun PermissionRequester(
     LaunchedEffect(key1 = true) {
         activityResultLauncher.launch(permissions)
     }
-    /*    Button(onClick = {
-            activityResultLauncher.launch(permissions)
-        }) {
-            Text(text = "Grant location permissions")
-        }*/
-
 }
