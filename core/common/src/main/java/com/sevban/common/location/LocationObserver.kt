@@ -18,12 +18,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
+@SuppressLint("MissingPermission")
 class LocationObserver @Inject constructor(
     private val context: Context,
 ) {
     private val client = LocationServices.getFusedLocationProviderClient(context)
 
-    @SuppressLint("MissingPermission")
     fun observeLocation(interval: Long): Flow<Location> {
         return callbackFlow {
             val locationManager = context.getSystemService<LocationManager>()!!
@@ -52,21 +52,19 @@ class LocationObserver @Inject constructor(
                 val callback = object : LocationCallback() {
                     override fun onLocationResult(result: LocationResult) {
                         super.onLocationResult(result)
-
                         result.locations.lastOrNull()?.let { location ->
                             trySend(location)
                         }
 
                     }
                 }
-
                 client.requestLocationUpdates(request, callback, context.mainLooper)
 
                 awaitClose {
                     client.removeLocationUpdates(callback)
                 }
             } else {
-                close()
+                close(MissingLocationPermissionException())
             }
         }
     }
