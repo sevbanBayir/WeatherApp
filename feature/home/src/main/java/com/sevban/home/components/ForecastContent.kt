@@ -1,12 +1,16 @@
 package com.sevban.home.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import com.sevban.domain.usecase.ForecastUiModel
 import com.sevban.home.components.forecastquadrant.LineChart
-import com.sevban.model.Forecast
 
 @Composable
 fun ForecastContent(
-    forecast: Forecast
+    forecast: ForecastUiModel
 ) {
-    LineChart(yAxisData = forecast.temp.take(8).map { it.temperature?.toInt()!! })
+    LineChart(
+        yAxisData = forecast.temperaturesBy5Days.first(),
+        xAxisData = forecast.hoursBy5Days.first()
+    )
 }
