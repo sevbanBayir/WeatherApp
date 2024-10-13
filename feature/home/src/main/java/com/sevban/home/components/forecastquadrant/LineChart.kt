@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,6 +45,7 @@ fun LineChart(
             .fillMaxWidth()
             .background(graphStyle.backgroundColor)
             .height(350.dp)
+            .padding(16.dp)
     ) {
         val path = Path()
         val textHeight = textMeasurer.measure("03:00").size.height
@@ -76,22 +78,35 @@ fun LineChart(
         xCursor = 0f
         yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
 
+        path.apply {
+            yAxisData.forEach { value ->
+                println(value)
+                val textResult = textMeasurer.measure(
+                    "$value֯ ", style = TextStyle(
+                        color = graphStyle.textColor,
+                        fontSize = 11.sp
+                    )
+                )
+                val textOffsetX = -20f - textResult.firstBaseline
+
+                yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
+                val textOffsetY = yCursor
+                drawText(
+                    textResult,
+                    color = graphStyle.textColor,
+                    topLeft = Offset(textOffsetX, textOffsetY - textResult.size.height / 2)
+                )
+
+            }
+            xCursor = 0f
+            yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
+        }
+
         drawWithLayer {
+
             path.apply {
                 yAxisData.forEach { value ->
-
-                    val textResult = textMeasurer.measure(value.toString())
-                    val textOffsetX = -20f - textResult.firstBaseline
-
                     yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
-                    val textOffsetY = yCursor - textResult.lastBaseline / 2
-
-                    drawText(
-                        textResult,
-                        color = graphStyle.textColor,
-                        topLeft = Offset(textOffsetX, textOffsetY)
-                    )
-
                     drawLine(
                         Color.Gray,
                         start = Offset(0f, yCursor),

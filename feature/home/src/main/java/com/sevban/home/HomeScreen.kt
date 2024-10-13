@@ -8,10 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,7 +18,6 @@ import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.model.Failure
 import com.sevban.home.components.ForecastContent
 import com.sevban.home.components.WeatherContent
-import com.sevban.home.components.forecastquadrant.generateTemperatureList
 import com.sevban.ui.components.LoadingScreen
 import com.sevban.ui.components.PermissionAlertDialog
 import com.sevban.ui.components.PermissionRequester

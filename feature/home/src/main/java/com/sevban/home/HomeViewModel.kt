@@ -2,12 +2,14 @@ package com.sevban.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sevban.common.location.LocationClient
 import com.sevban.common.location.LocationObserver
 import com.sevban.common.location.MissingLocationPermissionException
 import com.sevban.common.model.Failure
+import com.sevban.domain.usecase.ForecastUiModel
 import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.domain.usecase.GetWeatherUseCase
-import com.sevban.model.Forecast
+import com.sevban.domain.usecase.toForecastUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -16,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -41,7 +42,7 @@ class HomeViewModel @Inject constructor(
     private val _error = Channel<Failure>()
     val error = _error.receiveAsFlow()
 
-    val weatherState = locationObserver.observeLocation(1.seconds.inWholeMilliseconds)
+    val weatherState = locationObserver.observeLocation(1000L)
         .retry { cause ->
             if (cause is MissingLocationPermissionException) {
                 delay(3.seconds)
@@ -65,7 +66,7 @@ class HomeViewModel @Inject constructor(
         )
 
     val forecastState: StateFlow<ForecastState> =
-        locationObserver.observeLocation(1.seconds.inWholeMilliseconds)
+        locationObserver.observeLocation(1000L)
             .retryWhen { cause, attempt ->
                 if (cause is MissingLocationPermissionException) {
                     delay(3.seconds)
@@ -80,7 +81,9 @@ class HomeViewModel @Inject constructor(
                     long = location.longitude.toString()
                 )
             }
-            .map { ForecastState.Success(it) }
+            .map {
+                ForecastState.Success(it)
+            }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(50000),
@@ -124,7 +127,6 @@ sealed interface WeatherState {
 
 sealed interface ForecastState {
     data object Loading : ForecastState
-    data class Success(val forecast: Forecast) : ForecastState
+    data class Success(val forecast: ForecastUiModel) : ForecastState
     data class Error(val failure: Failure) : ForecastState
 }
-
