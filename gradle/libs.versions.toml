@@ -19,7 +19,7 @@ gmsLocation = "21.2.0"
 coilCompose= "2.6.0"
 
 #Plugin
-androidGradlePlugin = "8.3.1"
+androidGradlePlugin = "8.7.2"
 kotlin = "1.9.22"
 daggerHilt = "2.51"
 hiltNavigation = "1.2.0"

@@ -1,9 +1,8 @@
 package com.sevban.home.components
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import com.sevban.domain.usecase.ForecastUiModel
 import com.sevban.home.components.forecastquadrant.LineChart
+import com.sevban.home.mapper.ForecastUiModel
 
 @Composable
 fun ForecastContent(

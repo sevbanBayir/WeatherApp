@@ -2,14 +2,13 @@ package com.sevban.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sevban.common.location.LocationClient
 import com.sevban.common.location.LocationObserver
 import com.sevban.common.location.MissingLocationPermissionException
 import com.sevban.common.model.Failure
-import com.sevban.domain.usecase.ForecastUiModel
 import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.domain.usecase.GetWeatherUseCase
-import com.sevban.domain.usecase.toForecastUiModel
+import com.sevban.home.mapper.ForecastUiModel
+import com.sevban.home.mapper.toForecastUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -82,7 +81,7 @@ class HomeViewModel @Inject constructor(
                 )
             }
             .map {
-                ForecastState.Success(it)
+                ForecastState.Success(it.toForecastUiModel())
             }
             .stateIn(
                 scope = viewModelScope,
