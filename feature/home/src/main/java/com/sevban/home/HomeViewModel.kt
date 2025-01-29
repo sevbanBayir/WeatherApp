@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
     private val _error = Channel<Failure>()
     val error = _error.receiveAsFlow()
 
-    val weatherState = locationObserver.observeLocation(1000L)
+    val weatherState = locationObserver.getCurrentLocation()
         .retry { cause ->
             if (cause is MissingLocationPermissionException) {
                 delay(3.seconds)
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
         )
 
     val forecastState: StateFlow<ForecastState> =
-        locationObserver.observeLocation(1000L)
+        locationObserver.getCurrentLocation()
             .retryWhen { cause, attempt ->
                 if (cause is MissingLocationPermissionException) {
                     delay(3.seconds)
