@@ -26,6 +26,7 @@ hiltNavigation = "1.2.0"
 org-jetbrains-kotlin-jvm = "1.9.22"
 appcompat = "1.6.1"
 navigation = "2.7.7"
+activity = "1.8.2"
 
 [libraries]
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -65,6 +66,7 @@ gms-location = { module = "com.google.android.gms:play-services-location", versi
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitGson"}
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitGson"}
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

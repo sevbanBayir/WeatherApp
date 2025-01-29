@@ -80,7 +80,6 @@ fun LineChart(
 
         path.apply {
             yAxisData.forEach { value ->
-                println(value)
                 val textResult = textMeasurer.measure(
                     "$value֯ ", style = TextStyle(
                         color = graphStyle.textColor,
