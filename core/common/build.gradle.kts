@@ -39,6 +39,7 @@ dependencies {
     // Dagger-Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.activity)
     kapt(libs.hilt.android.compiler)
 
     implementation (libs.gms.location)
