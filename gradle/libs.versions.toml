@@ -17,6 +17,8 @@ okHttp = "4.12.0"
 retrofitGson = "2.9.0"
 gmsLocation = "21.2.0"
 coilCompose= "2.6.0"
+playServicesMaps = "19.0.0"
+androidMapsUtils = "3.8.2"
 
 #Plugin
 androidGradlePlugin = "8.7.2"
@@ -27,6 +29,9 @@ org-jetbrains-kotlin-jvm = "1.9.22"
 appcompat = "1.6.1"
 navigation = "2.7.7"
 activity = "1.8.2"
+mapsPlatformSecretsPlugin = "2.0.1"
+google-services = "4.4.2"
+
 
 [libraries]
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -68,6 +73,9 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+android-maps-utils = { group = "com.google.maps.android", name = "android-maps-utils", version.ref = "androidMapsUtils" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -77,5 +85,8 @@ kotlin-parcelize = { id = "kotlin-parcelize"}
 java-library = { id = "java-library"}
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+google-maps = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsPlatformSecretsPlugin" }
+
 
 
