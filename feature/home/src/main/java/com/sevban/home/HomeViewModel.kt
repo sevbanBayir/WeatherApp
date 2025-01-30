@@ -27,6 +27,8 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
+// maps api key : AIzaSyBD588mlhRjh-aKjzkygss0PON00BmxGP4 (will be used for map and place auto complete)
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
