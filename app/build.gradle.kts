@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.google.maps)
 }
 
