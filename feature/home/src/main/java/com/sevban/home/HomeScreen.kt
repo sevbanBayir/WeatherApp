@@ -86,12 +86,19 @@ fun HomeScreen(
             label = "WeatherAnimatedContent"
         ) { weatherState ->
             when (weatherState) {
-                is WeatherState.Error -> {}
+                is WeatherState.Error -> {
+                    // TODO: Handle error
+                }
                 is WeatherState.Loading -> LoadingScreen()
                 is WeatherState.Success -> WeatherContent(
                     weather = weatherState.weather,
                     forecast = weatherState.forecast,
-                    onLocationClick = {}
+                    onLocationClick = {
+                        // TODO: Implement location click
+                    },
+                    onFutureDaysForecastClick = {
+                        // TODO: Implement future days forecast click
+                    }
                 )
             }
         }
