@@ -104,6 +104,7 @@ testing = [
     "assertk",
     "junitJupiter",
     "junit-jupiter-api",
+    "junit-jupiter-engine"
 ]
 
 android-testing = [
@@ -112,16 +113,15 @@ android-testing = [
 ]
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 java-library = { id = "java-library" }
-org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-google-maps = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsPlatformSecretsPlugin" }
-kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 junit5-engine = { id = "de.mannodermaus.android-junit5", version.ref = "junitEnginePlugin" }
-
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+google-maps = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsPlatformSecretsPlugin" }
 
 
