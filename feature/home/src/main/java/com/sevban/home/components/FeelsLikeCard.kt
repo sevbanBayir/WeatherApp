@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.sevban.designsystem.theme.ComposeScaffoldProjectTheme
 import com.sevban.home.R
 
 @Composable
@@ -66,13 +68,16 @@ fun FeelsLikeCard(
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview
 @Composable
 private fun FeelsLikeCardPrev() {
-    /*    FeelsLikeCard(
-            feelsLikeTemp = 4.5,
-            currentTemp = 6.7,
-            weatherIcon = R.drawable.ic_downloading,
-            weatherDescription = "Heavy Rain"
-        )*/
+    ComposeScaffoldProjectTheme {
+        FeelsLikeCard(
+            feelsLikeTemp = "17",
+            currentTemp = "18",
+            weatherDescription = "Rain",
+            weatherIconUrl = "https://www.google.com",
+            modifier = Modifier.height(300.dp)
+        )
+    }
 }
