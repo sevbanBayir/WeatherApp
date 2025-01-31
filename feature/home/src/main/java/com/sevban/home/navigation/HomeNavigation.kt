@@ -14,7 +14,7 @@ fun NavController.navigateToHome() {
 }
 
 fun NavGraphBuilder.homeScreen(
-    whenErrorOccured: suspend (Failure, String?) -> Unit
+    whenErrorOccured: suspend (Throwable, String?) -> Unit
 ) {
     composable(
         route = "home"

@@ -11,7 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.sevban.common.extensions.openAppSettings
 import com.sevban.common.model.Failure
 import com.sevban.home.components.WeatherContent
@@ -26,7 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun HomeScreenRoute(
     viewModel: HomeViewModel = hiltViewModel(),
-    whenErrorOccurred: suspend (Failure, String?) -> Unit,
+    whenErrorOccurred: suspend (Throwable, String?) -> Unit,
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
@@ -46,14 +49,17 @@ fun HomeScreen(
     weatherState: WeatherState,
     uiState: WeatherScreenUiState,
     onEvent: (HomeScreenEvent) -> Unit,
-    error: Flow<Failure>,
-    whenErrorOccurred: suspend (Failure, String?) -> Unit
+    error: Flow<Throwable>,
+    whenErrorOccurred: suspend (Throwable, String?) -> Unit
 ) {
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(key1 = true) {
-        error.collectLatest {
-            whenErrorOccurred(it, null)
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            error.collectLatest {
+                whenErrorOccurred(it, null)
+            }
         }
     }
 
@@ -86,9 +92,6 @@ fun HomeScreen(
             label = "WeatherAnimatedContent"
         ) { weatherState ->
             when (weatherState) {
-                is WeatherState.Error -> {
-                    // TODO: Handle error
-                }
                 is WeatherState.Loading -> LoadingScreen()
                 is WeatherState.Success -> WeatherContent(
                     weather = weatherState.weather,

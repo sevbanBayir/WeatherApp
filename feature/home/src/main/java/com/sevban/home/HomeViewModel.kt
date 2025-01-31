@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(WeatherScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _error = Channel<Failure>()
+    private val _error = Channel<Throwable>()
     val error = _error.receiveAsFlow()
 
     val weatherState = locationObserver.getCurrentLocation()
@@ -47,6 +47,7 @@ class HomeViewModel @Inject constructor(
                 delay(3.seconds)
                 true
             } else {
+                _error.send(cause)
                 false
             }
         }

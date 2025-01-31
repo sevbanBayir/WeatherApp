@@ -11,7 +11,7 @@ import com.sevban.weatherapp.AppState
 @Composable
 fun NavHost(
     appState: AppState,
-    onShowSnackbar: suspend (Failure, String?) -> Unit,
+    onShowSnackbar: suspend (Throwable, String?) -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = Destination.HOME.route,
 ) {
