@@ -16,7 +16,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.sevban.common.extensions.openAppSettings
-import com.sevban.common.model.Failure
 import com.sevban.home.components.WeatherContent
 import com.sevban.home.model.WeatherScreenUiState
 import com.sevban.home.model.WeatherState

@@ -3,7 +3,6 @@ package com.sevban.home.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.sevban.common.model.Failure
 import com.sevban.home.HomeScreenRoute
 
 

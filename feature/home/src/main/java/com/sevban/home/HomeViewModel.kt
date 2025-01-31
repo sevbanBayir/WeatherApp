@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sevban.common.location.LocationObserver
 import com.sevban.common.location.MissingLocationPermissionException
-import com.sevban.common.model.Failure
 import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.domain.usecase.GetWeatherUseCase
 import com.sevban.home.mapper.toForecastUiModel
