@@ -5,4 +5,7 @@
     <string name="wind_top_text">Wind</string>
     <string name="humidity_top_text">Humidity</string>
     <string name="visibility_top_text">Visibility</string>
+    <string name="cd_location_icon">Location button icon</string>
+    <string name="last_fetched_at">Last fetched at %s</string>
+    <string name="forecast">Temperatures</string>
 </resources>

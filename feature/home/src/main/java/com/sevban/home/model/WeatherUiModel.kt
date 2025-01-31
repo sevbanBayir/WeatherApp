@@ -1,4 +1,4 @@
-package com.sevban.home
+package com.sevban.home.model
 
 import com.sevban.common.constants.Constants
 import com.sevban.common.extensions.EMPTY

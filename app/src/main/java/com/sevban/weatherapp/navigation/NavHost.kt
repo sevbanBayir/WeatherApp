@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.sevban.common.model.Failure
 import com.sevban.detail.detailScreen
-import com.sevban.home.homeScreen
+import com.sevban.home.navigation.homeScreen
 import com.sevban.weatherapp.AppState
 
 @Composable
