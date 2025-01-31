@@ -42,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     secrets {
         defaultPropertiesFileName = "local.defaults.properties"
