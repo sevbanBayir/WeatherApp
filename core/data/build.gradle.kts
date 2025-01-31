@@ -39,13 +39,14 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.common)
 
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.appcompat)
+
     // Dagger-Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
-    implementation(libs.androidx.ktx)
-    implementation(libs.androidx.appcompat)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Testing
+    testImplementation(libs.bundles.testing)
+    androidTestImplementation(libs.bundles.android.testing)
 }

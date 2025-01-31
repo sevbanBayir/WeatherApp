@@ -7,11 +7,9 @@ targetSdk = "35"
 # LIBRARY
 activityCompose = "1.10.0"
 espressoCore = "3.6.1"
-junit = "4.13.2"
 junitVersion = "1.2.1"
 ktx = "1.15.0"
 lifecycleRuntimeKtx = "2.8.7"
-material = "1.12.0"
 composeBom = "2025.01.01"
 okHttp = "4.12.0"
 retrofitGson = "2.11.0"
@@ -19,6 +17,10 @@ gmsLocation = "21.3.0"
 coilCompose = "2.7.0"
 playServicesMaps = "19.0.0"
 androidMapsUtils = "3.8.2"
+junitJupiter = "5.11.1"
+assertk = "0.28.1"
+turbine = "1.2.0"
+mockk = "1.13.12"
 
 # PLUGIN
 androidGradlePlugin = "8.8.0"
@@ -30,16 +32,15 @@ appcompat = "1.7.0"
 navigation = "2.8.6"
 activity = "1.10.0"
 mapsPlatformSecretsPlugin = "2.0.1"
+junitEnginePlugin = "1.11.2.0"
 
 [libraries]
-#TODO: Make some of these catalog bundles
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
-compose-material = { module = "androidx.compose.material:material" }
 compose-ui-testing-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-testing-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 
@@ -62,7 +63,6 @@ okhttp3-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okHtt
 okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okHttp" }
 okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
 
-junit = { module = "junit:junit", version.ref = "junit" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 
 gms-location = { module = "com.google.android.gms:play-services-location", version.ref = "gmsLocation" }
@@ -70,19 +70,23 @@ gms-location = { module = "com.google.android.gms:play-services-location", versi
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitGson" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitGson" }
 
-
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 android-maps-utils = { group = "com.google.maps.android", name = "android-maps-utils", version.ref = "androidMapsUtils" }
 
+junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiter" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitJupiter" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+
 [bundles]
 compose = [
-    "compose-bom",
     "compose-ui",
     "compose-ui-graphics",
+    "compose-material3",
     "compose-ui-tooling",
     "compose-ui-tooling-preview",
-    "compose-material3",
-    "compose-material",
     "androidx-activity-compose",
     "androidx-lifecycle-runtime-compose",
     "androidx-navigation-compose",
@@ -95,7 +99,11 @@ compose-testing = [
 ]
 
 testing = [
-    "junit",
+    "turbine",
+    "mockk",
+    "assertk",
+    "junitJupiter",
+    "junit-jupiter-api",
 ]
 
 android-testing = [
@@ -113,6 +121,7 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 google-maps = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsPlatformSecretsPlugin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+junit5-engine = { id = "de.mannodermaus.android-junit5", version.ref = "junitEnginePlugin" }
 
 
 

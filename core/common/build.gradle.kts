@@ -37,17 +37,19 @@ android {
 dependencies {
     implementation(projects.core.model)
 
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.appcompat)
+
     // Dagger-Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.androidx.activity)
     kapt(libs.hilt.android.compiler)
 
+    // Location
     implementation (libs.gms.location)
 
-    implementation(libs.androidx.ktx)
-    implementation(libs.androidx.appcompat)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Testing
+    testImplementation(libs.bundles.testing)
+    androidTestImplementation(libs.bundles.android.testing)
 }

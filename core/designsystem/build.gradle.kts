@@ -37,20 +37,10 @@ android {
 }
 
 dependencies {
-
-    // Compose
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.navigation.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3)
-    implementation(libs.androidx.compose.material.icons.extended)
-
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Compose
+    implementation(libs.bundles.compose)
+    implementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.bundles.compose.testing)
 }

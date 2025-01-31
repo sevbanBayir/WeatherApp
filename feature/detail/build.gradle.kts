@@ -45,27 +45,9 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.common)
 
-    // --------------Compose--------------
-
     // Compose-Ui
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3)
-
-    // Compose-Testing
-    androidTestImplementation(libs.compose.ui.testing.junit4)
-    androidTestImplementation(platform(libs.compose.bom))
-
-    //Compose-Lifecycle
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    //Compose-Navigation
-    implementation(libs.androidx.navigation.compose)
-
-    //------------------------------------
+    implementation(libs.bundles.compose)
+    androidTestImplementation(libs.bundles.compose.testing)
 
     // Dagger-Hilt
     implementation(libs.hilt.android)
@@ -74,7 +56,8 @@ dependencies {
 
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+
+    // Testing
+    testImplementation(libs.bundles.testing)
+    androidTestImplementation(libs.bundles.android.testing)
 }

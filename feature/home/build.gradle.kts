@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
 
+    // Compose
     implementation(libs.bundles.compose)
     androidTestImplementation(libs.bundles.compose.testing)
 
@@ -59,6 +60,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
 
+    // Testing
     testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.bundles.android.testing)
 }

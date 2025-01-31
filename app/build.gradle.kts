@@ -69,24 +69,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // Compose
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.navigation.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3)
+    implementation(libs.bundles.compose)
+    androidTestImplementation(libs.bundles.compose.testing)
 
     // Dagger-Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
     // Testing
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.testing.manifest)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.compose.ui.testing.junit4)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.bundles.testing)
+    androidTestImplementation(libs.bundles.android.testing)
 }

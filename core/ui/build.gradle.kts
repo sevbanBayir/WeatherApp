@@ -38,35 +38,16 @@ android {
 
 dependencies {
     implementation(projects.core.common)
-    // --------------Compose--------------
 
-    // Compose-Ui
-    implementation(libs.androidx.activity.compose)
+    // Compose
+    implementation(libs.bundles.compose)
     implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.material)
-
-    // Compose-Testing
-    androidTestImplementation(libs.compose.ui.testing.junit4)
-    androidTestImplementation(platform(libs.compose.bom))
-
-    // Compose-Lifecycle
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    // Compose-Navigation
-    implementation(libs.androidx.navigation.compose)
-
-    //------------------------------------
+    androidTestImplementation(libs.bundles.compose.testing)
 
     // Coil
     implementation(libs.coil.compose)
 
-    implementation(libs.androidx.ktx)
-    implementation(libs.androidx.appcompat)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Testing
+    testImplementation(libs.bundles.testing)
+    androidTestImplementation(libs.bundles.android.testing)
 }
