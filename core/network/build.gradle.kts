@@ -56,7 +56,7 @@ dependencies {
     implementation(libs.okhttp3)
 
     implementation(libs.androidx.ktx)
-    implementation(libs.appcompat)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

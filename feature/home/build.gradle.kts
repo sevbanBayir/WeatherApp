@@ -45,28 +45,11 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.designsystem)
 
-    // --------------Compose--------------
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.appcompat)
 
-    // Compose-Ui
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3)
-
-    // Compose-Testing
-    androidTestImplementation(libs.compose.ui.testing.junit4)
-    androidTestImplementation(platform(libs.compose.bom))
-
-    //Compose-Lifecycle
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    //Compose-Navigation
-    implementation(libs.androidx.navigation.compose)
-
-    //------------------------------------
+    implementation(libs.bundles.compose)
+    androidTestImplementation(libs.bundles.compose.testing)
 
     // Coil
     implementation(libs.coil.compose)
@@ -76,9 +59,6 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
 
-    implementation(libs.androidx.ktx)
-    implementation(libs.appcompat)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.bundles.testing)
+    androidTestImplementation(libs.bundles.android.testing)
 }
