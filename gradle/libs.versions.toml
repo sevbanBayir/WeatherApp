@@ -21,6 +21,7 @@ junitJupiter = "5.11.1"
 assertk = "0.28.1"
 turbine = "1.2.0"
 mockk = "1.13.12"
+kotlinSerialization = "1.7.3"
 
 # PLUGIN
 androidGradlePlugin = "8.8.0"
@@ -80,6 +81,8 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
 
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+
 [bundles]
 compose = [
     "compose-ui",
@@ -123,5 +126,6 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 google-maps = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsPlatformSecretsPlugin" }
-
+kotlin-parcelize = { id = "kotlin-parcelize" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
