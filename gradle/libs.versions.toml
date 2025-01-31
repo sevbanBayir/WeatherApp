@@ -22,6 +22,7 @@ assertk = "0.28.1"
 turbine = "1.2.0"
 mockk = "1.13.12"
 kotlinSerialization = "1.7.3"
+googleMapsCompose = "6.1.2"
 
 # PLUGIN
 androidGradlePlugin = "8.8.0"
@@ -71,8 +72,8 @@ gms-location = { module = "com.google.android.gms:play-services-location", versi
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitGson" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitGson" }
 
-play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
-android-maps-utils = { group = "com.google.maps.android", name = "android-maps-utils", version.ref = "androidMapsUtils" }
+google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "googleMapsCompose" }
+google-maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", version.ref = "googleMapsCompose" }
 
 junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiter" }
