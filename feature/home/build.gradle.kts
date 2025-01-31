@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.compose.compiler)
 }
 
 android {
@@ -32,9 +33,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
