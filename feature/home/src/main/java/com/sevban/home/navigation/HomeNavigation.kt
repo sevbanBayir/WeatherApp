@@ -1,9 +1,9 @@
-package com.sevban.home
+package com.sevban.home.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.sevban.common.model.Failure
+import com.sevban.home.HomeScreenRoute
 
 
 fun NavController.navigateToHome() {
@@ -13,7 +13,7 @@ fun NavController.navigateToHome() {
 }
 
 fun NavGraphBuilder.homeScreen(
-    whenErrorOccured: suspend (Failure, String?) -> Unit
+    whenErrorOccured: suspend (Throwable, String?) -> Unit
 ) {
     composable(
         route = "home"

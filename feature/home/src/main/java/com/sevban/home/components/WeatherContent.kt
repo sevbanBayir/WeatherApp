@@ -1,36 +1,55 @@
 package com.sevban.home.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.sevban.home.WeatherUiModel
+import com.sevban.home.R
+import com.sevban.home.mapper.ForecastUiModel
+import com.sevban.home.model.WeatherUiModel
 
 @Composable
 fun WeatherContent(
     weather: WeatherUiModel,
+    forecast: ForecastUiModel,
+    onLocationClick: () -> Unit,
+    onFutureDaysForecastClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FeelsLikeCard(
-            feelsLikeTemp = weather.feelsLike,
-            currentTemp = weather.temp,
-            weatherDescription = weather.description,
-            weatherIconUrl = weather.iconUrl
+        CurrentWeatherCard(
+            weather = weather,
+            onLocationClick = onLocationClick,
+            forecast = forecast
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = stringResource(R.string.today_all_data_title),
+                modifier = Modifier.align(Alignment.CenterStart)
+            )
 
-        HumidityCard(
-            wind = weather.windSpeed,
-            humidity = weather.humidity,
-            visibility = weather.visibility
-        )
+            TextButton(
+                onClick = onFutureDaysForecastClick,
+                modifier = Modifier.align(Alignment.CenterEnd),
+                contentPadding = PaddingValues(0.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.future_days_forecast_button),
+                    textDecoration = TextDecoration.Underline
+                )
+            }
+        }
     }
 }

@@ -1,39 +1,38 @@
 [versions]
-#SDK
+# SDK
 minSdk = "26"
-compileSdk = "34"
-targetSdk = "34"
+compileSdk = "35"
+targetSdk = "35"
 
-#Library
-activityCompose = "1.8.2"
-espressoCore = "3.5.1"
+# LIBRARY
+activityCompose = "1.10.0"
+espressoCore = "3.6.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-ktx = "1.12.0"
-lifecycleRuntimeKtx = "2.7.0"
-material = "1.11.0"
-composeBom = "2024.03.00"
+junitVersion = "1.2.1"
+ktx = "1.15.0"
+lifecycleRuntimeKtx = "2.8.7"
+material = "1.12.0"
+composeBom = "2025.01.01"
 okHttp = "4.12.0"
-retrofitGson = "2.9.0"
-gmsLocation = "21.2.0"
-coilCompose= "2.6.0"
+retrofitGson = "2.11.0"
+gmsLocation = "21.3.0"
+coilCompose= "2.7.0"
 playServicesMaps = "19.0.0"
 androidMapsUtils = "3.8.2"
 
-#Plugin
-androidGradlePlugin = "8.7.2"
-kotlin = "1.9.22"
-daggerHilt = "2.51"
+# PLUGIN
+androidGradlePlugin = "8.8.0"
+kotlin = "2.1.0"
+daggerHilt = "2.54"
 hiltNavigation = "1.2.0"
-org-jetbrains-kotlin-jvm = "1.9.22"
-appcompat = "1.6.1"
-navigation = "2.7.7"
-activity = "1.8.2"
+org-jetbrains-kotlin-jvm = "2.1.0"
+appcompat = "1.7.0"
+navigation = "2.8.6"
+activity = "1.10.0"
 mapsPlatformSecretsPlugin = "2.0.1"
-google-services = "4.4.2"
-
 
 [libraries]
+#TODO: Make some of these catalog bundles
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
@@ -81,12 +80,11 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-kotlin-parcelize = { id = "kotlin-parcelize"}
 java-library = { id = "java-library"}
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 google-maps = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsPlatformSecretsPlugin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 
 

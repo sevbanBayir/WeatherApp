@@ -2,8 +2,6 @@ package com.sevban.home
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,11 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.sevban.common.extensions.openAppSettings
-import com.sevban.common.model.Failure
-import com.sevban.home.components.ForecastContent
 import com.sevban.home.components.WeatherContent
+import com.sevban.home.model.WeatherScreenUiState
+import com.sevban.home.model.WeatherState
 import com.sevban.ui.components.LoadingScreen
 import com.sevban.ui.components.PermissionAlertDialog
 import com.sevban.ui.components.PermissionRequester
@@ -27,11 +28,10 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun HomeScreenRoute(
     viewModel: HomeViewModel = hiltViewModel(),
-    whenErrorOccurred: suspend (Failure, String?) -> Unit,
+    whenErrorOccurred: suspend (Throwable, String?) -> Unit,
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
-    val forecastState by viewModel.forecastState.collectAsStateWithLifecycle()
     val error = viewModel.error
 
     HomeScreen(
@@ -40,63 +40,26 @@ fun HomeScreenRoute(
         whenErrorOccurred = whenErrorOccurred,
         onEvent = viewModel::onEvent,
         weatherState = weatherState,
-        forecastState = forecastState
     )
 }
 
 @Composable
 fun HomeScreen(
     weatherState: WeatherState,
-    forecastState: ForecastState,
     uiState: WeatherScreenUiState,
     onEvent: (HomeScreenEvent) -> Unit,
-    error: Flow<Failure>,
-    whenErrorOccurred: suspend (Failure, String?) -> Unit
+    error: Flow<Throwable>,
+    whenErrorOccurred: suspend (Throwable, String?) -> Unit
 ) {
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(key1 = true) {
-        error.collectLatest {
-            whenErrorOccurred(it, null)
-        }
-    }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        AnimatedContent(
-            targetState = weatherState,
-            label = "WeatherAnimatedContent"
-        ) { weatherState ->
-            when (weatherState) {
-                is WeatherState.Error -> {}
-                is WeatherState.Loading -> LoadingScreen()
-                is WeatherState.Success -> WeatherContent(weather = weatherState.weather)
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            error.collectLatest {
+                whenErrorOccurred(it, null)
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        AnimatedContent(
-            targetState = forecastState,
-            label = "ForecastAnimatedContent"
-        ) { forecastState ->
-            when (forecastState) {
-                is ForecastState.Error -> {}
-                is ForecastState.Loading -> LoadingScreen()
-                is ForecastState.Success -> ForecastContent(forecast = forecastState.forecast)
-            }
-        }
-
-        PermissionRequester(
-            onPermissionFirstDeclined = {
-                onEvent(HomeScreenEvent.OnLocationPermissionDeclined)
-            },
-            onPermissionPermanentlyDeclined = {
-                onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
-            }
-        )
     }
 
     if (uiState.shouldShowPermanentlyDeclinedDialog)
@@ -110,4 +73,36 @@ fun HomeScreen(
             }
         )
 
+    PermissionRequester(
+        onPermissionFirstDeclined = {
+            onEvent(HomeScreenEvent.OnLocationPermissionDeclined)
+        },
+        onPermissionPermanentlyDeclined = {
+            onEvent(HomeScreenEvent.OnLocationPermissionPermanentlyDeclined)
+        }
+    )
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(16.dp)
+    ) {
+        AnimatedContent(
+            targetState = weatherState,
+            label = "WeatherAnimatedContent"
+        ) { weatherState ->
+            when (weatherState) {
+                is WeatherState.Loading -> LoadingScreen()
+                is WeatherState.Success -> WeatherContent(
+                    weather = weatherState.weather,
+                    forecast = weatherState.forecast,
+                    onLocationClick = {
+                        // TODO: Implement location click
+                    },
+                    onFutureDaysForecastClick = {
+                        // TODO: Implement future days forecast click
+                    }
+                )
+            }
+        }
+    }
 }

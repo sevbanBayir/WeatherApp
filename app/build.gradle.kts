@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.google.maps)
+    alias(libs.plugins.kotlin.compose.compiler)
 }
 
 android {
@@ -42,9 +42,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
     }
     secrets {
         defaultPropertiesFileName = "local.defaults.properties"
