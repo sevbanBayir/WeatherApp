@@ -21,7 +21,7 @@ playServicesMaps = "19.0.0"
 androidMapsUtils = "3.8.2"
 
 # PLUGIN
-androidGradlePlugin = "8.7.3"
+androidGradlePlugin = "8.8.0"
 kotlin = "2.1.0"
 daggerHilt = "2.54"
 hiltNavigation = "1.2.0"
