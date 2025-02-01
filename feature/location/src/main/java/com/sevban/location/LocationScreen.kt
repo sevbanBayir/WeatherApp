@@ -92,10 +92,6 @@ fun LocationScreen(
     var isLoading by remember {
         mutableStateOf(true)
     }
-    LaunchedEffect(Unit) {
-        delay(1000)
-        isLoading = false
-    }
 
     LaunchedEffect(uiState.selectedPlace) {
         if (uiState.selectedPlace != null) {
@@ -120,6 +116,11 @@ fun LocationScreen(
             properties = properties,
             isLoading = isLoading,
             mapCameraPositionState = mapCameraPositionState,
+            onMapLoaded = {
+                isLoading = false
+            },
+            markerLocation = uiState.selectedPlace,
+            weatherForSelectedLocation = uiState.weather,
         )
 
         if (!isLoading)

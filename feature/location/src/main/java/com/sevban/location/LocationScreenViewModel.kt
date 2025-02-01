@@ -8,6 +8,7 @@ import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.domain.usecase.GetWeatherUseCase
 import com.sevban.location.helper.PlaceAutocompleteService
 import com.sevban.location.model.LocationScreenUiState
+import com.sevban.ui.model.toWeatherUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -60,6 +62,16 @@ class LocationScreenViewModel @Inject constructor(
             is LocationScreenEvent.OnLocationSelected -> {
                 _uiState.update { it.copy(selectedPlace = event.prediction) }
                 _searchQuery.update { "" }
+                viewModelScope.launch {
+                    getWeatherUseCase.execute(event.prediction.latitude.toString(),
+                        event.prediction.longitude.toString()
+                    )
+                        .catch { _error.send(it) }
+                        .collect { weather ->
+                            _uiState.update { it.copy(weather = weather.toWeatherUiModel()) }
+                        }
+
+                }
             }
         }
     }

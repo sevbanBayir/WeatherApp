@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(projects.core.common)
+    implementation(projects.core.model)
 
     // Compose
     implementation(libs.bundles.compose)
