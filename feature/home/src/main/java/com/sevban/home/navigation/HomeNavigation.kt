@@ -6,8 +6,11 @@ import androidx.navigation.compose.composable
 import com.sevban.home.HomeScreenRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToHome() {
-    navigate(Home) {
+fun NavController.navigateToHome(
+    latitude: Double? = null,
+    longitude: Double? = null,
+) {
+    navigate(Home(latitude, longitude)) {
         launchSingleTop = true
     }
 }
@@ -25,4 +28,5 @@ fun NavGraphBuilder.homeScreen(
 }
 
 @Serializable
-data object Home
+data class Home(val latitude: Double? = null, val longitude: Double? = null)
+

@@ -33,7 +33,6 @@ import com.sevban.location.components.GoogleMapWithLoading
 import com.sevban.location.components.SearchbarWithList
 import com.sevban.location.model.LocationScreenUiState
 import com.sevban.model.Place
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -41,6 +40,7 @@ import kotlinx.coroutines.launch
 fun LocationScreenRoute(
     viewModel: LocationScreenViewModel = hiltViewModel(),
     whenErrorOccurred: suspend (Throwable, String?) -> Unit,
+    onClickWeather: (lat: Double, long: Double) -> Unit,
 ) {
     val locationUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
@@ -62,6 +62,7 @@ fun LocationScreenRoute(
         searchQuery = searchQuery,
         placeList = placeList,
         onEvent = viewModel::onEvent,
+        onClickWeather = onClickWeather,
     )
 }
 
@@ -71,6 +72,7 @@ fun LocationScreen(
     searchQuery: String,
     placeList: List<Place>,
     onEvent: (LocationScreenEvent) -> Unit,
+    onClickWeather: (lat: Double, long: Double) -> Unit,
 ) {
     val context = LocalContext.current
     val isSystemInDarkTheme = isSystemInDarkTheme()
@@ -120,6 +122,7 @@ fun LocationScreen(
                 isLoading = false
             },
             markerLocation = uiState.selectedPlace,
+            onMarkerClick = onClickWeather,
             weatherForSelectedLocation = uiState.weather,
         )
 

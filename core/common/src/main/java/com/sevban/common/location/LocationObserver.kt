@@ -62,7 +62,6 @@ class LocationObserver @Inject constructor(
                     override fun onLocationResult(result: LocationResult) {
                         super.onLocationResult(result)
                         result.locations.lastOrNull()?.let { location ->
-                            println("Realtime Location: $location")
                             trySend(location)
                         }
 
@@ -96,14 +95,11 @@ class LocationObserver @Inject constructor(
 
             client.getCurrentLocation(currentLocationRequest, null)
                 .addOnSuccessListener {
-                    println("Current Location: $it.")
                     it?.let {
                         trySend(it)
                     }
                 }
         } else {
-            println("Current Location Error: ")
-
             close(MissingLocationPermissionException())
         }
 

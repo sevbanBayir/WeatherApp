@@ -1,5 +1,6 @@
 package com.sevban.home
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sevban.common.location.LocationObserver
@@ -32,6 +33,7 @@ class HomeViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getForecastUseCase: GetForecastUseCase,
     locationObserver: LocationObserver,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(WeatherScreenUiState())
@@ -40,37 +42,48 @@ class HomeViewModel @Inject constructor(
     private val _error = Channel<Throwable>()
     val error = _error.receiveAsFlow()
 
-    val weatherState = locationObserver.getCurrentLocation()
-        .retry { cause ->
-            if (cause is MissingLocationPermissionException) {
-                delay(3.seconds)
-                true
+    val weatherState =
+        combine(
+            locationObserver.getCurrentLocation(),
+            savedStateHandle.getStateFlow<Double?>("latitude", null),
+            savedStateHandle.getStateFlow<Double?>("longitude", null)
+        ) { location, lat, long ->
+            if (lat != null && long != null) {
+                lat to long
             } else {
-                _error.send(cause)
-                false
+                location.latitude to location.longitude
             }
         }
-        .flatMapLatest { location ->
-            combine(
-                getWeatherUseCase.execute(
-                    lat = location.latitude.toString(),
-                    long = location.longitude.toString()
-                ),
-                getForecastUseCase.execute(
-                    lat = location.latitude.toString(),
-                    long = location.longitude.toString()
-                )
-            ) { weather, forecast ->
-                WeatherState.Success(
-                    weather = weather.toWeatherUiModel(),
-                    forecast = forecast.toForecastUiModel()
-                )
+            .retry { cause ->
+                if (cause is MissingLocationPermissionException) {
+                    delay(3.seconds)
+                    true
+                } else {
+                    _error.send(cause)
+                    false
+                }
             }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = WeatherState.Loading
-        )
+            .flatMapLatest { (latitude, longitude) ->
+                combine(
+                    getWeatherUseCase.execute(
+                        lat = latitude.toString(),
+                        long = longitude.toString()
+                    ),
+                    getForecastUseCase.execute(
+                        lat = latitude.toString(),
+                        long = longitude.toString()
+                    )
+                ) { weather, forecast ->
+                    WeatherState.Success(
+                        weather = weather.toWeatherUiModel(),
+                        forecast = forecast.toForecastUiModel()
+                    )
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = WeatherState.Loading
+            )
 
     fun onEvent(event: HomeScreenEvent) {
         when (event) {

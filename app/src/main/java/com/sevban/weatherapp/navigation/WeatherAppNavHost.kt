@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.sevban.home.navigation.Home
 import com.sevban.home.navigation.homeScreen
+import com.sevban.home.navigation.navigateToHome
 import com.sevban.location.navigation.locationScreen
 import com.sevban.location.navigation.navigateToLocationScreen
 import com.sevban.weatherapp.AppState
@@ -18,7 +19,7 @@ fun WeatherAppNavHost(
     val navController = appState.navController
     NavHost(
         navController = navController,
-        startDestination = Home,
+        startDestination = Home(),
         modifier = modifier,
     ) {
         homeScreen(
@@ -28,6 +29,7 @@ fun WeatherAppNavHost(
 
         locationScreen(
             whenErrorOccured = onShowSnackbar,
+            onClickWeather = { lat, long -> navController.navigateToHome(lat, long) }
         )
     }
 }

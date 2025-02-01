@@ -30,7 +30,8 @@ import com.sevban.ui.model.WeatherUiModel
 fun PlaceWeatherMarker(
     modifier: Modifier = Modifier,
     markerLocation: Place,
-    weatherForSelectedLocation: WeatherUiModel
+    weatherForSelectedLocation: WeatherUiModel,
+    onMarkerClick: () -> Unit,
 ) {
     val markerState = remember(markerLocation) {
         MarkerState(
@@ -55,7 +56,11 @@ fun PlaceWeatherMarker(
             weatherForSelectedLocation,
             markerState
         ),
-        state = markerState
+        state = markerState,
+        onClick = {
+            onMarkerClick()
+            false
+        }
     ) {
         Column(
             modifier = modifier
