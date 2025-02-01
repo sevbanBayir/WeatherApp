@@ -63,6 +63,7 @@ dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.common)
     implementation(projects.feature.home)
+    implementation(projects.feature.location)
     implementation(projects.feature.detail)
 
     implementation(libs.androidx.ktx)

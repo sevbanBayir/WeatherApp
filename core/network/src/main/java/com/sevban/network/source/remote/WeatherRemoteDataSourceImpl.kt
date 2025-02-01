@@ -14,7 +14,8 @@ class WeatherRemoteDataSourceImpl @Inject constructor(
         emit(weatherApiService.getLocationWeather(lat = lat, long = long))
     }
 
-    override fun getLocationForecast(lat: String, long: String): Flow<Response<ForecastDTO>> = flow {
-        emit(weatherApiService.getLocationForecast(lat = lat, long = long))
-    }
+    override fun getLocationForecast(lat: String, long: String): Flow<Response<ForecastDTO>> =
+        flow {
+            emit(weatherApiService.getLocationForecast(lat = lat, long = long))
+        }
 }

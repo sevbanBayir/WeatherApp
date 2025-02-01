@@ -9,8 +9,10 @@ fun ForecastDTO.toForecast() = Forecast(
     city = this.city?.name,
     cnt = this.cnt,
     message = this.message,
-    temp = this.list?.map { ForecastWeather(
-        temperature = it.main?.temp,
-        date = it.dtTxt
-    ) } ?: emptyList(),
+    temp = this.list?.map {
+        ForecastWeather(
+            temperature = it.main?.temp,
+            date = it.dtTxt
+        )
+    } ?: emptyList(),
 )

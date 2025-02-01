@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun HomeScreenRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     whenErrorOccurred: suspend (Throwable, String?) -> Unit,
+    onLocationClick: () -> Unit
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
@@ -39,6 +40,7 @@ fun HomeScreenRoute(
         error = error,
         whenErrorOccurred = whenErrorOccurred,
         onEvent = viewModel::onEvent,
+        onLocationClick = onLocationClick,
         weatherState = weatherState,
     )
 }
@@ -48,6 +50,7 @@ fun HomeScreen(
     weatherState: WeatherState,
     uiState: WeatherScreenUiState,
     onEvent: (HomeScreenEvent) -> Unit,
+    onLocationClick: () -> Unit,
     error: Flow<Throwable>,
     whenErrorOccurred: suspend (Throwable, String?) -> Unit
 ) {
@@ -95,9 +98,7 @@ fun HomeScreen(
                 is WeatherState.Success -> WeatherContent(
                     weather = weatherState.weather,
                     forecast = weatherState.forecast,
-                    onLocationClick = {
-                        // TODO: Implement location click
-                    },
+                    onLocationClick = onLocationClick,
                     onFutureDaysForecastClick = {
                         // TODO: Implement future days forecast click
                     }

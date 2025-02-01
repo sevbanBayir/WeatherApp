@@ -1,8 +1,8 @@
 package com.sevban.network.di
 
+import com.sevban.network.interceptor.ApiKeyInterceptor
 import com.sevban.network.source.remote.RetrofitService
 import com.sevban.network.util.Constants.BASE_URL
-import com.sevban.network.interceptor.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

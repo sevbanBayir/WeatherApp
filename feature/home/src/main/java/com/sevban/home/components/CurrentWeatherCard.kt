@@ -28,10 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sevban.designsystem.theme.ComposeScaffoldProjectTheme
 import com.sevban.home.R
-import com.sevban.home.model.WeatherUiModel
 import com.sevban.home.components.forecastquadrant.GraphStyle
 import com.sevban.home.components.forecastquadrant.LineChart
 import com.sevban.home.mapper.ForecastUiModel
+import com.sevban.home.model.WeatherUiModel
 
 @Composable
 fun CurrentWeatherCard(

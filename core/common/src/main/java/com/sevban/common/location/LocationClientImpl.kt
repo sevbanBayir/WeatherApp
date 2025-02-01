@@ -6,13 +6,11 @@ import android.location.Location
 import android.location.LocationManager
 import androidx.core.content.getSystemService
 import com.google.android.gms.location.CurrentLocationRequest
-import com.google.android.gms.location.LastLocationRequest
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationTokenSource
 import com.sevban.common.extensions.hasCoarseLocationPermission
 import com.sevban.common.extensions.hasFineLocationPermission
 import com.sevban.common.extensions.hasLocationPermission
@@ -41,7 +39,8 @@ class LocationClientImpl @Inject constructor(
 
             while (!isGpsEnabled && !isNetworkEnabled) {
                 isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+                isNetworkEnabled =
+                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
                 if (!isGpsEnabled && !isNetworkEnabled) {
                     delay(3000L)

@@ -4,22 +4,25 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.sevban.home.HomeScreenRoute
-
+import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome() {
-    navigate("home/") {
+    navigate(Home) {
         launchSingleTop = true
     }
 }
 
 fun NavGraphBuilder.homeScreen(
-    whenErrorOccured: suspend (Throwable, String?) -> Unit
+    whenErrorOccured: suspend (Throwable, String?) -> Unit,
+    onLocationClick: () -> Unit
 ) {
-    composable(
-        route = "home"
-    ) {
+    composable<Home> {
         HomeScreenRoute(
             whenErrorOccurred = whenErrorOccured,
+            onLocationClick = onLocationClick
         )
     }
 }
+
+@Serializable
+data object Home

@@ -17,7 +17,12 @@ internal const val ITEM_ID_ARG = "itemId"
 
 internal class DetailArgs(val itemId: String) {
     constructor(savedStateHandle: SavedStateHandle) :
-            this(URLDecoder.decode(checkNotNull(savedStateHandle[ITEM_ID_ARG]), URL_CHARACTER_ENCODING))
+            this(
+                URLDecoder.decode(
+                    checkNotNull(savedStateHandle[ITEM_ID_ARG]),
+                    URL_CHARACTER_ENCODING
+                )
+            )
 }
 
 fun NavController.navigateToDetail(itemId: String) {
