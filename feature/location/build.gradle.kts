@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,6 +8,12 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+}
+
+val localDefaults = Properties()
+val localDefaultsFile = rootProject.file("local.defaults.properties")
+if (localDefaultsFile.exists()) {
+    localDefaults.load(FileInputStream(localDefaultsFile))
 }
 
 android {
@@ -16,6 +25,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField ("String", "MAPS_API_KEY", "\"${localDefaults["MAPS_API_KEY"]}\"")
     }
 
     buildTypes {
@@ -36,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -66,6 +78,9 @@ dependencies {
 
     // Serialization
     implementation(libs.kotlin.serialization)
+
+    implementation(libs.google.maps.places)
+
 
     // Testing
     testImplementation(libs.bundles.testing)
