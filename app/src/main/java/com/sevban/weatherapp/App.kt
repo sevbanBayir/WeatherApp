@@ -2,7 +2,6 @@ package com.sevban.weatherapp
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -17,7 +16,7 @@ fun App(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold (
+    Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { scaffoldPadding ->
         WeatherAppNavHost(
@@ -25,7 +24,9 @@ fun App(
             onShowSnackbar = { failure, actionLabel ->
                 snackbarHostState.showSnackbar(failure.message ?: "", actionLabel)
             },
-            modifier = Modifier.padding(scaffoldPadding).safeDrawingPadding()
+            modifier = Modifier
+                .padding(scaffoldPadding)
+                .safeDrawingPadding()
         )
     }
 }

@@ -26,7 +26,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField ("String", "MAPS_API_KEY", "\"${localDefaults["MAPS_API_KEY"]}\"")
+        buildConfigField("String", "MAPS_API_KEY", "\"${localDefaults["MAPS_API_KEY"]}\"")
     }
 
     buildTypes {

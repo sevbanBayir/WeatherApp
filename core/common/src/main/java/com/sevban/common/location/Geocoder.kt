@@ -3,7 +3,6 @@ package com.sevban.common.location
 import android.content.Context
 import android.location.Geocoder
 import com.sevban.model.Place
-import com.sevban.model.PlaceCoordinates
 import com.sevban.model.PlaceText
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.IntentSender
 import android.location.Location
 import android.location.LocationManager
-import androidx.activity.result.IntentSenderRequest
 import androidx.core.content.getSystemService
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.CurrentLocationRequest
@@ -129,7 +128,7 @@ class LocationObserver @Inject constructor(
         }
 
         task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException){
+            if (exception is ResolvableApiException) {
                 // Location settings are not satisfied, but this can be fixed
                 // by showing the user a dialog.
                 try {

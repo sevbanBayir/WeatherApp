@@ -4,9 +4,9 @@ package com.sevban.network.model.forecast
 import com.google.gson.annotations.SerializedName
 import com.sevban.network.model.weather.Clouds
 import com.sevban.network.model.weather.Main
+import com.sevban.network.model.weather.NetworkWeather
 import com.sevban.network.model.weather.Rain
 import com.sevban.network.model.weather.Sys
-import com.sevban.network.model.weather.NetworkWeather
 import com.sevban.network.model.weather.Wind
 
 data class NetworkForecast(

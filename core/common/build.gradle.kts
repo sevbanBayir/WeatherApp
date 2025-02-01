@@ -47,7 +47,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     // Location
-    implementation (libs.gms.location)
+    implementation(libs.gms.location)
 
     // Testing
     testImplementation(libs.bundles.testing)

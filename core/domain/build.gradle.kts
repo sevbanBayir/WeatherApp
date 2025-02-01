@@ -42,7 +42,7 @@ dependencies {
     // Dagger-Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-    
+
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
 }

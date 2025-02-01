@@ -3,7 +3,6 @@ package com.sevban.weatherapp.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.sevban.detail.detailScreen
 import com.sevban.home.navigation.Home
 import com.sevban.home.navigation.homeScreen
 import com.sevban.location.navigation.locationScreen
