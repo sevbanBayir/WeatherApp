@@ -29,9 +29,6 @@ fun WeatherAppNavHost(
 
         locationScreen(
             whenErrorOccured = onShowSnackbar,
-            onLocationClick = {
-                // TODO: Navigate to location screen
-            }
         )
     }
 }
