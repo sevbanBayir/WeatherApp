@@ -12,16 +12,13 @@ class Geocoder @Inject constructor(
 ) {
     private val geocoder = Geocoder(context)
 
-    //TODO : These operations must be moved to appropriate dispatchers since they
-    // may be performing network operations see Geocoder documentation..
     fun getPlace(latitude: Double, longitude: Double): Place? {
         require(Geocoder.isPresent()) { "Geocoder is not present" }
 
-        //TODO : Can be optimized by adding limits to area to be searched for the name.
         val addresses = geocoder.getFromLocation(latitude, longitude, 1)
         return addresses?.firstOrNull()?.let { address ->
             Place(
-                name = address.locality,
+                cityName = address.locality,
                 country = address.countryName,
                 latitude = address.latitude,
                 longitude = address.longitude
@@ -32,16 +29,26 @@ class Geocoder @Inject constructor(
     fun getPlaceCoordinates(placeText: PlaceText): Place? {
         require(Geocoder.isPresent()) { "Geocoder is not present" }
 
-        //TODO : Can be optimized by adding limits to area to be searched for the name.
         val addresses = geocoder.getFromLocationName(placeText.fullText, 1)
         return addresses?.firstOrNull()?.let { address ->
-            println("Alindi ${placeText.fullText}")
-
-            println("Cikti ${address.locality} ${address.countryName}")
-
             Place(
-                name = placeText.primaryText,
+                cityName = placeText.primaryText,
                 country = placeText.secondaryText,
+                latitude = address.latitude,
+                longitude = address.longitude
+            )
+        }
+    }
+
+    fun getCityCoordinates(placeText: PlaceText): Place? {
+        require(Geocoder.isPresent()) { "Geocoder is not present" }
+
+        val addresses = geocoder.getFromLocationName(placeText.fullText, 1)
+        return addresses?.firstOrNull()?.let { address ->
+            if (address.locality == null) return null
+            Place(
+                cityName = address.locality,
+                country = address.countryName,
                 latitude = address.latitude,
                 longitude = address.longitude
             )

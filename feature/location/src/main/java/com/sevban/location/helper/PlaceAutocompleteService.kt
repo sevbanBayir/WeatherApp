@@ -9,7 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-class PlacesAutocompleter @Inject constructor(
+class PlaceAutocompleteService @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     private val apiKey = BuildConfig.MAPS_API_KEY

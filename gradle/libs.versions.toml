@@ -15,8 +15,6 @@ okHttp = "4.12.0"
 retrofitGson = "2.11.0"
 gmsLocation = "21.3.0"
 coilCompose = "2.7.0"
-playServicesMaps = "19.0.0"
-androidMapsUtils = "3.8.2"
 junitJupiter = "5.11.1"
 assertk = "0.28.1"
 turbine = "1.2.0"
@@ -24,6 +22,7 @@ mockk = "1.13.12"
 kotlinSerialization = "1.7.3"
 googleMapsCompose = "6.1.2"
 googleMapsPlaces = "4.1.0"
+composeAnimation = "1.8.0"
 
 # PLUGIN
 androidGradlePlugin = "8.8.0"
@@ -53,6 +52,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" , version.ref = "composeAnimation" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }

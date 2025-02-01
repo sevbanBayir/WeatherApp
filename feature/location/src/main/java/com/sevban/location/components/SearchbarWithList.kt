@@ -5,12 +5,12 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -62,21 +62,16 @@ fun SearchbarWithList(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .animateContentSize()
+                    .background(MaterialTheme.colorScheme.background)
             ) {
                 items(placeList) { place ->
-                    Card(
+                    PlaceListItem(
+                        place = place,
+                        onPlaceClick = onPlaceClick,
                         modifier = Modifier
                             .animateItem()
-                            .padding(vertical = 4.dp),
-                        onClick = { onPlaceClick(place) }
-                    ) {
-                        Text(
-                            text = place.name + ", " + place.country,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        )
-                    }
+                            .padding(vertical = 4.dp)
+                    )
                 }
             }
         }

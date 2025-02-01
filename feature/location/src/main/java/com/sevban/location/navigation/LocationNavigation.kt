@@ -13,11 +13,13 @@ fun NavController.navigateToLocationScreen() {
 }
 
 fun NavGraphBuilder.locationScreen(
+    onClickWeather: (lat: Double, long: Double) -> Unit,
     whenErrorOccured: suspend (Throwable, String?) -> Unit,
 ) {
     composable<Location> {
         LocationScreenRoute(
             whenErrorOccurred = whenErrorOccured,
+            onClickWeather = onClickWeather
         )
     }
 }
