@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="map_tf_search">Search</string>
+    <string name="map_tf_no_results">No result</string>
 </resources>

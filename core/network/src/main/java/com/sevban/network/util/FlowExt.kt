@@ -32,5 +32,5 @@ fun <T, Model> Flow<Response<T>>.asRestApiCall(mapper: (T) -> Model): Flow<Model
             }
             mapper(response.body()!!)
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
