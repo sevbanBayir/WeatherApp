@@ -85,7 +85,6 @@ fun PlaceList(
     )
 
     val shapeModifier = Modifier
-        .height(100.dp)
         .fillMaxWidth()
         .padding(horizontal = 17.dp)
         .clip(shape)
@@ -109,7 +108,8 @@ fun PlaceList(
         when {
             it -> {
                 Box(
-                    modifier = shapeModifier,
+                    modifier = shapeModifier
+                        .height(100.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     LoadingScreen()
@@ -118,7 +118,8 @@ fun PlaceList(
 
             placeListState is PlaceListState.Empty -> {
                 Box(
-                    modifier = shapeModifier,
+                    modifier = shapeModifier
+                        .height(100.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -129,7 +130,7 @@ fun PlaceList(
             }
 
             placeListState is PlaceListState.Success -> {
-                LazyColumn(modifier = modifier.then(shapeModifier)) {
+                LazyColumn(modifier = shapeModifier) {
                     items(placeListState.places) { place ->
                         PlaceListItem(
                             place = place,
