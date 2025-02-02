@@ -42,48 +42,47 @@ class HomeViewModel @Inject constructor(
     private val _error = Channel<Throwable>()
     val error = _error.receiveAsFlow()
 
-    val weatherState =
-        combine(
-            locationObserver.getCurrentLocation(),
-            savedStateHandle.getStateFlow<Double?>("latitude", null),
-            savedStateHandle.getStateFlow<Double?>("longitude", null)
-        ) { location, lat, long ->
-            if (lat != null && long != null) {
-                lat to long
+    val weatherState = combine(
+        locationObserver.getCurrentLocation(),
+        savedStateHandle.getStateFlow<Double?>(LATITUDE_ARG, null),
+        savedStateHandle.getStateFlow<Double?>(LONGITUDE_ARG, null)
+    ) { location, lat, long ->
+        if (lat != null && long != null) {
+            lat to long
+        } else {
+            location.latitude to location.longitude
+        }
+    }
+        .retry { cause ->
+            if (cause is MissingLocationPermissionException) {
+                delay(3.seconds)
+                true
             } else {
-                location.latitude to location.longitude
+                _error.send(cause)
+                false
             }
         }
-            .retry { cause ->
-                if (cause is MissingLocationPermissionException) {
-                    delay(3.seconds)
-                    true
-                } else {
-                    _error.send(cause)
-                    false
-                }
+        .flatMapLatest { (latitude, longitude) ->
+            combine(
+                getWeatherUseCase.execute(
+                    lat = latitude.toString(),
+                    long = longitude.toString()
+                ),
+                getForecastUseCase.execute(
+                    lat = latitude.toString(),
+                    long = longitude.toString()
+                )
+            ) { weather, forecast ->
+                WeatherState.Success(
+                    weather = weather.toWeatherUiModel(),
+                    forecast = forecast.toForecastUiModel()
+                )
             }
-            .flatMapLatest { (latitude, longitude) ->
-                combine(
-                    getWeatherUseCase.execute(
-                        lat = latitude.toString(),
-                        long = longitude.toString()
-                    ),
-                    getForecastUseCase.execute(
-                        lat = latitude.toString(),
-                        long = longitude.toString()
-                    )
-                ) { weather, forecast ->
-                    WeatherState.Success(
-                        weather = weather.toWeatherUiModel(),
-                        forecast = forecast.toForecastUiModel()
-                    )
-                }
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = WeatherState.Loading
-            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = WeatherState.Loading
+        )
 
     fun onEvent(event: HomeScreenEvent) {
         when (event) {
@@ -111,5 +110,10 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    companion object {
+        private const val LATITUDE_ARG = "latitude"
+        private const val LONGITUDE_ARG = "longitude"
     }
 }

@@ -32,7 +32,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.sevban.location.components.GoogleMapWithLoading
 import com.sevban.location.components.SearchbarWithList
 import com.sevban.location.model.LocationScreenUiState
-import com.sevban.model.Place
+import com.sevban.location.model.PlaceListState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -44,7 +44,7 @@ fun LocationScreenRoute(
 ) {
     val locationUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
-    val placeList by viewModel.placeList.collectAsStateWithLifecycle()
+    val placeListState by viewModel.placeListState.collectAsStateWithLifecycle()
     val error = viewModel.error
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -60,7 +60,7 @@ fun LocationScreenRoute(
     LocationScreen(
         uiState = locationUiState,
         searchQuery = searchQuery,
-        placeList = placeList,
+        placeListState = placeListState,
         onEvent = viewModel::onEvent,
         onClickWeather = onClickWeather,
     )
@@ -70,7 +70,7 @@ fun LocationScreenRoute(
 fun LocationScreen(
     uiState: LocationScreenUiState,
     searchQuery: String,
-    placeList: List<Place>,
+    placeListState: PlaceListState,
     onEvent: (LocationScreenEvent) -> Unit,
     onClickWeather: (lat: Double, long: Double) -> Unit,
 ) {
@@ -91,7 +91,7 @@ fun LocationScreen(
     val mapCameraPositionState = rememberCameraPositionState()
     val coroutineScope = rememberCoroutineScope()
 
-    var isLoading by remember {
+    var isMapLoading by remember {
         mutableStateOf(true)
     }
 
@@ -116,20 +116,19 @@ fun LocationScreen(
         GoogleMapWithLoading(
             mapColorScheme = mapColorScheme,
             properties = properties,
-            isLoading = isLoading,
+            isLoading = isMapLoading,
             mapCameraPositionState = mapCameraPositionState,
-            onMapLoaded = {
-                isLoading = false
-            },
+            onMapLoaded = { isMapLoading = false },
             markerLocation = uiState.selectedPlace,
             onMarkerClick = onClickWeather,
             weatherForSelectedLocation = uiState.weather,
         )
 
-        if (!isLoading)
+        if (!isMapLoading)
             SearchbarWithList(
                 searchQuery = searchQuery,
-                placeList = placeList,
+                isPlaceListLoading = uiState.isPlaceListLoading,
+                placeListState = placeListState,
                 onSearchQueryChanged = { onEvent(LocationScreenEvent.OnSearchQueryChanged(it)) },
                 onPlaceClick = { onEvent(LocationScreenEvent.OnLocationSelected(it)) },
                 modifier = Modifier.align(Alignment.TopCenter)
