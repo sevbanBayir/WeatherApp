@@ -3,6 +3,7 @@ package com.sevban.network.util
 import com.sevban.common.model.ErrorType
 import com.sevban.common.model.Failure
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
 
@@ -25,6 +26,8 @@ fun <T, Model> Flow<Response<T>>.asRestApiCall(mapper: (T) -> Model): Flow<Model
         try {
             mapper(body)
         } catch (e: Exception) {
+            // Make sure not to eat up cancellation exceptions.
+            cancellable()
             throw Failure(ErrorType.SERIALIZATION)
         }
     }
