@@ -1,14 +1,15 @@
 package com.sevban.common.model
 
-data class Failure(
-    val errorType: ErrorType,
-    val errorResponse: ErrorResponse?
-) : Exception(errorResponse?.message)
+data class Failure(val errorType: ErrorType) : Exception()
 
 enum class ErrorType {
-    API_ERROR,
-    UNEXPECTED_ERROR,
-    TIMEOUT_ERROR,
-    NO_CONNECTION_ERROR,
+    TOO_MANY_REQUESTS,
+    SERVER_ERROR,
+    UNKNOWN,
+    NOT_FOUND,
+    FORBIDDEN,
+    UNAUTHORIZED,
+    BAD_REQUEST,
     EMPTY_RESPONSE,
+    SERIALIZATION
 }
