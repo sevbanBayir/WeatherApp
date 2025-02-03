@@ -28,6 +28,7 @@ navigation = "2.8.6"
 activity = "1.10.0"
 appcompat = "1.7.0"
 hiltNavigation = "1.2.0"
+room = "2.6.1"
 
 # PLUGIN
 androidGradlePlugin = "8.8.0"
@@ -37,6 +38,9 @@ junitEnginePlugin = "1.11.2.0"
 ksp = "2.1.0-1.0.29"
 
 [libraries]
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
