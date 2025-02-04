@@ -27,7 +27,7 @@ class WeatherForecastRepositoryImpl @Inject constructor(
             .catch {
                 if (it is UnknownHostException) {
                     throw Failure(ErrorType.CONNECTIVITY_ERROR)
-                } else throw Failure(ErrorType.UNKNOWN)
+                } else throw it
             }
             .flowOn(dispatcherProvider.ioDispatcher)
 

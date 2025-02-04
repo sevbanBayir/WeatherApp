@@ -3,7 +3,11 @@ package com.sevban.common.model
 import android.content.Context
 import com.sevban.common.R
 
-data class Failure(val errorType: ErrorType) : Exception()
+data class Failure(val errorType: ErrorType) : Exception() {
+    constructor(throwable: Throwable) : this(errorType = ErrorType.UNKNOWN) {
+        throwable.printStackTrace()
+    }
+}
 
 enum class ErrorType {
     TOO_MANY_REQUESTS,

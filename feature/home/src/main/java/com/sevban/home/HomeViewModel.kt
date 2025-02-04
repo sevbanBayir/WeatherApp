@@ -15,6 +15,7 @@ import com.sevban.home.model.WeatherState
 import com.sevban.home.model.toWeatherUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,6 +23,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,17 +43,23 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(WeatherScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    val weatherState = combine(
-        locationObserver.getCurrentLocation(),
-        savedStateHandle.getStateFlow<Double?>(LATITUDE_ARG, null),
-        savedStateHandle.getStateFlow<Double?>(LONGITUDE_ARG, null)
-    ) { location, lat, long ->
-        if (lat != null && long != null) {
-            lat to long
-        } else {
-            location.latitude to location.longitude
+    private val retryTrigger = Channel<Unit>()
+
+    val weatherState = retryTrigger.receiveAsFlow()
+        .onStart { emit(Unit) }
+        .flatMapLatest {
+            combine(
+                locationObserver.getCurrentLocation(),
+                savedStateHandle.getStateFlow<Double?>(LATITUDE_ARG, null),
+                savedStateHandle.getStateFlow<Double?>(LONGITUDE_ARG, null)
+            ) { location, lat, long ->
+                if (lat != null && long != null) {
+                    lat to long
+                } else {
+                    location.latitude to location.longitude
+                }
+            }
         }
-    }
         .retry { cause ->
             (cause is MissingLocationPermissionException).also { if (it) delay(3.seconds) }
         }
@@ -72,7 +81,7 @@ class HomeViewModel @Inject constructor(
             }
         }
         .catch {
-            val failure = it as? Failure ?: Failure(ErrorType.UNKNOWN)
+            val failure = it as? Failure ?: Failure(throwable = it)
             emit(WeatherState.Error(failure))
         }
         .stateIn(
@@ -105,6 +114,10 @@ class HomeViewModel @Inject constructor(
                         shouldShowPermanentlyDeclinedDialog = false
                     )
                 }
+            }
+
+            is HomeScreenEvent.OnTryAgainClick -> {
+                retryTrigger.trySend(Unit)
             }
         }
     }
