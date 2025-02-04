@@ -11,8 +11,6 @@ import com.sevban.network.model.forecast.ForecastDTO
 import com.sevban.network.model.weather.WeatherDTO
 import com.sevban.network.source.remote.WeatherRemoteDataSource
 import com.sevban.network.util.asRestApiCall
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
