@@ -1,5 +1,8 @@
 package com.sevban.common.model
 
+import android.content.Context
+import com.sevban.common.R
+
 data class Failure(val errorType: ErrorType) : Exception()
 
 enum class ErrorType {
@@ -14,4 +17,18 @@ enum class ErrorType {
     SERIALIZATION,
     LOCATION_ERROR,
     CONNECTIVITY_ERROR
+}
+
+fun ErrorType.toLocalizedMessage(context: Context) = when (this) {
+    ErrorType.TOO_MANY_REQUESTS -> context.getString(R.string.made_too_many_requests)
+    ErrorType.SERVER_ERROR -> context.getString(R.string.server_error)
+    ErrorType.UNKNOWN -> context.getString(R.string.unknown_error)
+    ErrorType.NOT_FOUND -> context.getString(R.string.not_found)
+    ErrorType.FORBIDDEN -> context.getString(R.string.forbidden)
+    ErrorType.UNAUTHORIZED -> context.getString(R.string.unauthorized)
+    ErrorType.BAD_REQUEST -> context.getString(R.string.bad_request)
+    ErrorType.EMPTY_RESPONSE -> context.getString(R.string.empty_response)
+    ErrorType.SERIALIZATION -> context.getString(R.string.serialization_error)
+    ErrorType.LOCATION_ERROR -> context.getString(R.string.location_error)
+    ErrorType.CONNECTIVITY_ERROR -> context.getString(R.string.connectivity_error)
 }

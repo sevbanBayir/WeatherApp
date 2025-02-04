@@ -22,7 +22,7 @@ fun App(
         WeatherAppNavHost(
             appState = appState,
             onShowSnackbar = { failure, actionLabel ->
-                snackbarHostState.showSnackbar(failure.message ?: "", actionLabel)
+                snackbarHostState.showSnackbar(failure.message ?: failure.toString(), actionLabel)
             },
             modifier = Modifier
                 .padding(scaffoldPadding)

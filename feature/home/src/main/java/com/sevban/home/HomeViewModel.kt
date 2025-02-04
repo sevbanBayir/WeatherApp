@@ -14,13 +14,8 @@ import com.sevban.home.model.WeatherScreenUiState
 import com.sevban.home.model.WeatherState
 import com.sevban.home.model.toWeatherUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ChannelIterator
-import kotlinx.coroutines.channels.ChannelResult
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,8 +27,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.selects.SelectClause1
-import kotlinx.coroutines.selects.SelectClause2
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -49,9 +42,6 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(WeatherScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _error = Channel<Failure>()
-    val error = _error.receiveAsFlow()
-
     val weatherState = combine(
         locationObserver.getCurrentLocation(),
         savedStateHandle.getStateFlow<Double?>(LATITUDE_ARG, null),
@@ -66,7 +56,7 @@ class HomeViewModel @Inject constructor(
         .retry { cause ->
             (cause is MissingLocationPermissionException).also { if (it) delay(3.seconds) }
         }
-        .flatMapLatest { (latitude, longitude) ->
+        .flatMapLatest<Pair<Double, Double>, WeatherState> { (latitude, longitude) ->
             combine(
                 getWeatherUseCase.execute(
                     lat = latitude.toString(),
@@ -82,6 +72,10 @@ class HomeViewModel @Inject constructor(
                     forecast = forecast.toForecastUiModel()
                 )
             }
+        }
+        .catch {
+            val failure = it as? Failure ?: Failure(ErrorType.UNKNOWN)
+            emit(WeatherState.Error(failure))
         }
         .stateIn(
             scope = viewModelScope,

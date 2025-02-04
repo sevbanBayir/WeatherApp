@@ -11,19 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.sevban.common.extensions.openAppSettings
+import com.sevban.common.model.toLocalizedMessage
 import com.sevban.home.components.WeatherContent
 import com.sevban.home.model.WeatherScreenUiState
 import com.sevban.home.model.WeatherState
 import com.sevban.ui.components.LoadingScreen
 import com.sevban.ui.components.PermissionAlertDialog
 import com.sevban.ui.components.PermissionRequester
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreenRoute(
@@ -33,11 +29,9 @@ fun HomeScreenRoute(
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
-    val error = viewModel.error
 
     HomeScreen(
         uiState = homeUiState,
-        error = error,
         whenErrorOccurred = whenErrorOccurred,
         onEvent = viewModel::onEvent,
         onLocationClick = onLocationClick,
@@ -51,19 +45,9 @@ fun HomeScreen(
     uiState: WeatherScreenUiState,
     onEvent: (HomeScreenEvent) -> Unit,
     onLocationClick: () -> Unit,
-    error: Flow<Throwable>,
     whenErrorOccurred: suspend (Throwable, String?) -> Unit
 ) {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    LaunchedEffect(key1 = true) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            error.collectLatest {
-                whenErrorOccurred(it, null)
-            }
-        }
-    }
 
     if (uiState.shouldShowPermanentlyDeclinedDialog)
         PermissionAlertDialog(
@@ -94,6 +78,13 @@ fun HomeScreen(
             label = "WeatherAnimatedContent"
         ) { weatherState ->
             when (weatherState) {
+                is WeatherState.Error -> LaunchedEffect(key1 = uiState) {
+                    whenErrorOccurred(
+                        weatherState.failure,
+                        weatherState.failure.errorType.toLocalizedMessage(context)
+                    )
+                }
+
                 is WeatherState.Loading -> LoadingScreen()
                 is WeatherState.Success -> WeatherContent(
                     weather = weatherState.weather,
