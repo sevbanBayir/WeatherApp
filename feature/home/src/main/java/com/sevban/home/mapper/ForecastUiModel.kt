@@ -37,7 +37,6 @@ fun Forecast.toForecastUiModel(): ForecastUiModel {
             date = LocalDateTime.parse(it.date, dateFormatter).format(timeFormatter)
         )
     }
-    println(forecastBy3Hours)
 
     return ForecastUiModel(
         cod = cod,
