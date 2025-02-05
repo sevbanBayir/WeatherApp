@@ -24,7 +24,8 @@ fun WeatherAppNavHost(
     ) {
         homeScreen(
             whenErrorOccured = onShowSnackbar,
-            onLocationClick = navController::navigateToLocationScreen
+            onLocationClick = navController::navigateToLocationScreen,
+            onFutureDaysForecastClick = { /*TODO("Implement future days forecast screen navigation")*/ }
         )
 
         locationScreen(
