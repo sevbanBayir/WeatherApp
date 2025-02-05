@@ -1,9 +1,12 @@
 package com.sevban.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sevban.common.extensions.openAppSettings
@@ -48,6 +51,7 @@ fun HomeScreen(
 
     AnimatedContent(
         targetState = weatherState,
+        modifier = Modifier.padding(16.dp),
         label = "WeatherAnimatedContent"
     ) {
         when (it) {
