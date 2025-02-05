@@ -47,6 +47,7 @@ class Geocoder @Inject constructor(
         withContext(dispatcherProvider.defaultDispatcher) {
             require(Geocoder.isPresent()) { "Geocoder is not present" }
 
+            // Todo: If "gj" text comes from this api, an exception thrown ???
             val addresses = geocoder.getFromLocationName(placeText.fullText, 1)
             addresses?.firstOrNull()?.let { address ->
                 if (address.locality == null) return@withContext null
