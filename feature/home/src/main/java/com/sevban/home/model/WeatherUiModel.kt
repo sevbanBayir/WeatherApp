@@ -39,6 +39,6 @@ fun Weather.toWeatherUiModel() = WeatherUiModel(
     windSpeed = windSpeed?.toString() ?: String.EMPTY,
 )
 
-private fun createWeatherIconURL(icon: String): String {
+fun createWeatherIconURL(icon: String): String {
     return Constants.WEATHER_IMAGE_BASE_URL + icon + Constants.IMAGE_RESOLUTION
 }

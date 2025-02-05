@@ -12,7 +12,9 @@ fun ForecastDTO.toForecast() = Forecast(
     temp = this.list?.map {
         ForecastWeather(
             temperature = it.main?.temp,
-            date = it.dtTxt
+            date = it.dtTxt,
+            icon = it.weather?.firstOrNull()?.icon,
+            description = it.weather?.firstOrNull()?.description
         )
     } ?: emptyList(),
 )

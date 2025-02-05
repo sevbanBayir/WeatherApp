@@ -1,5 +1,7 @@
 package com.sevban.home.mapper
 
+import com.sevban.common.extensions.toTitleCase
+import com.sevban.home.model.createWeatherIconURL
 import com.sevban.model.Forecast
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -11,7 +13,7 @@ data class ForecastUiModel(
     val temperaturesBy5Days: List<List<Int>>,
     val hoursBy5Days: List<List<Int>>,
     val forecastBy3Hours: List<ForecastWeatherUi>,
-    val chartData: ChartData
+    val chartData: ChartData,
 )
 
 data class ChartData(
@@ -21,7 +23,9 @@ data class ChartData(
 
 data class ForecastWeatherUi(
     val temperature: Int,
-    val date: String
+    val date: String,
+    val icon: String,
+    val description: String
 )
 
 fun Forecast.toForecastUiModel(): ForecastUiModel {
@@ -31,30 +35,38 @@ fun Forecast.toForecastUiModel(): ForecastUiModel {
     val tempGroupedByDay = temp.groupBy {
         LocalDateTime.parse(it.date, dateFormatter).toLocalDate()
     }
-    val forecastBy3Hours = temp.map {
+
+    val forecastBy3Hours = temp.map { forecastWeather ->
         ForecastWeatherUi(
-            temperature = it.temperature?.roundToInt() ?: 0,
-            date = LocalDateTime.parse(it.date, dateFormatter).format(timeFormatter)
+            temperature = forecastWeather.temperature?.roundToInt() ?: 0,
+            date = LocalDateTime.parse(forecastWeather.date, dateFormatter).format(timeFormatter),
+            icon = createWeatherIconURL(forecastWeather.icon ?: ""),
+            description = forecastWeather.description?.split(" ")?.joinToString(" ") { it.toTitleCase() }
+                ?: ""
         )
     }
 
+    val chartData = ChartData(
+        temperatures = forecastBy3Hours.map { it.temperature }.take(8),
+        dateList = forecastBy3Hours.map { it.date }.take(8)
+    )
+    val hoursBy5Days = tempGroupedByDay.map {
+        it.value.map {
+            LocalDateTime.parse(it.date, dateFormatter).hour
+        }
+    }
+    val temperaturesBy5Days = tempGroupedByDay.map {
+        it.value.map {
+            it.temperature?.toInt() ?: 0
+        }
+    }
     return ForecastUiModel(
         cod = cod,
         city = city,
-        temperaturesBy5Days = tempGroupedByDay.map {
-            it.value.map {
-                it.temperature?.toInt() ?: 0
-            }
-        },
-        hoursBy5Days = tempGroupedByDay.map {
-            it.value.map {
-                LocalDateTime.parse(it.date, dateFormatter).hour
-            }
-        },
+
+        temperaturesBy5Days = temperaturesBy5Days,
+        hoursBy5Days = hoursBy5Days,
         forecastBy3Hours = forecastBy3Hours,
-        chartData = ChartData(
-            temperatures = forecastBy3Hours.map { it.temperature }.take(8),
-            dateList = forecastBy3Hours.map { it.date }.take(8)
-        )
+        chartData = chartData
     )
 }

@@ -44,13 +44,11 @@ fun CurrentWeatherCard(
     onLocationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val scrollState = rememberScrollState()
     Card(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
-                .verticalScroll(scrollState),
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
                 TextButton(
