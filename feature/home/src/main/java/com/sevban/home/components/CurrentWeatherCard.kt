@@ -32,6 +32,7 @@ import com.sevban.designsystem.theme.ComposeScaffoldProjectTheme
 import com.sevban.home.R
 import com.sevban.home.components.forecastquadrant.GraphStyle
 import com.sevban.home.components.forecastquadrant.LineChart
+import com.sevban.home.mapper.ChartData
 import com.sevban.home.mapper.ForecastUiModel
 import com.sevban.home.model.WeatherUiModel
 
@@ -131,8 +132,8 @@ fun CurrentWeatherCard(
                             .fillMaxWidth()
                             .height(216.dp),
                         graphStyle = GraphStyle(backgroundColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                        yAxisData = forecast.temperaturesBy5Days.first(),
-                        xAxisData = forecast.hoursBy5Days.first()
+                        yAxisData = forecast.chartData.temperatures,
+                        xAxisData = forecast.chartData.dateList
                     )
                 }
             }
@@ -167,7 +168,12 @@ private fun FeelsLikeCardPrev() {
                 cod = null,
                 city = null,
                 temperaturesBy5Days = listOf(),
-                hoursBy5Days = listOf()
+                hoursBy5Days = listOf(),
+                forecastBy3Hours = listOf(),
+                chartData = ChartData(
+                    temperatures = listOf(),
+                    dateList = listOf()
+                )
             )
         )
     }

@@ -28,7 +28,7 @@ import kotlin.random.Random
 fun LineChart(
     yAxisData: List<Int>,
     modifier: Modifier = Modifier,
-    xAxisData: List<Int> = (3..24 step 3).toList(),
+    xAxisData: List<String>,
     graphStyle: GraphStyle = GraphStyle(
         lineColor = MaterialTheme.colorScheme.onBackground,
         jointColor = MaterialTheme.colorScheme.primary,
@@ -65,7 +65,7 @@ fun LineChart(
                     fontSize = 11.sp
                 )
             )
-            yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
+//            yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
 
             drawText(
                 textLayoutResult = textResult,
@@ -178,6 +178,7 @@ fun LineChart(
     }
 }
 
+/*
 @PreviewLightDark
 @Preview(showBackground = true)
 @Composable
@@ -186,6 +187,7 @@ private fun ForecastQuadrantPrev() {
         LineChart(yAxisData = generateTemperatureList(20, 30, 10))
     }
 }
+*/
 
 fun generateTemperatureList(minTemp: Int, maxTemp: Int, maxNumber: Int): List<Int> {
     require(minTemp <= maxTemp) { "Minimum temperature must be less than or equal to maximum temperature" }
