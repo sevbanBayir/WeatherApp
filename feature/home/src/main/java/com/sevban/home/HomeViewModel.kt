@@ -28,6 +28,8 @@ import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -71,6 +73,13 @@ class HomeViewModel @Inject constructor(
                         long = longitude.toString()
                     )
                 ) { weather, forecast ->
+                    _uiState.update {
+                        it.copy(
+                            lastFetchedTime = LocalDateTime.now().format(
+                                DateTimeFormatter.ofPattern("HH:mm")
+                            )
+                        )
+                    }
                     WeatherState.Success(
                         weather = weather.toWeatherUiModel(),
                         forecast = forecast.toForecastUiModel()

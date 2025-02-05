@@ -89,6 +89,7 @@ fun HomeScreen(
                     weather = weatherState.weather,
                     forecast = weatherState.forecast,
                     onLocationClick = onLocationClick,
+                    lastFetchedTime = uiState.lastFetchedTime!!,
                     onFutureDaysForecastClick = {
                         // TODO: Implement future days forecast click
                     }

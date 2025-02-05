@@ -4,7 +4,8 @@ import com.sevban.common.model.Failure
 import com.sevban.home.mapper.ForecastUiModel
 
 data class WeatherScreenUiState(
-    val shouldShowPermanentlyDeclinedDialog: Boolean = false
+    val shouldShowPermanentlyDeclinedDialog: Boolean = false,
+    val lastFetchedTime: String? = null
 )
 
 sealed interface WeatherState {
