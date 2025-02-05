@@ -79,7 +79,7 @@ class HomeViewModel @Inject constructor(
             }.catch {
                 val failure = it as? Failure ?: Failure(throwable = it)
                 emit(WeatherState.Error(failure))
-            }
+            }.onStart { emit(WeatherState.Loading) }
         }
         .stateIn(
             scope = viewModelScope,
