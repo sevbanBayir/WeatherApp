@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sevban.common.location.LocationObserver
 import com.sevban.common.location.MissingLocationPermissionException
-import com.sevban.common.model.ErrorType
 import com.sevban.common.model.Failure
 import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.domain.usecase.GetWeatherUseCase
@@ -28,6 +27,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -58,31 +58,28 @@ class HomeViewModel @Inject constructor(
                 } else {
                     location.latitude to location.longitude
                 }
+            }.retry { cause ->
+                (cause is MissingLocationPermissionException).also { if (it) delay(3.seconds) }
+            }.flatMapLatest<Pair<Double, Double>, WeatherState> { (latitude, longitude) ->
+                combine(
+                    getWeatherUseCase.execute(
+                        lat = latitude.toString(),
+                        long = longitude.toString()
+                    ),
+                    getForecastUseCase.execute(
+                        lat = latitude.toString(),
+                        long = longitude.toString()
+                    )
+                ) { weather, forecast ->
+                    WeatherState.Success(
+                        weather = weather.toWeatherUiModel(),
+                        forecast = forecast.toForecastUiModel()
+                    )
+                }
+            }.catch {
+                val failure = it as? Failure ?: Failure(throwable = it)
+                emit(WeatherState.Error(failure))
             }
-        }
-        .retry { cause ->
-            (cause is MissingLocationPermissionException).also { if (it) delay(3.seconds) }
-        }
-        .flatMapLatest<Pair<Double, Double>, WeatherState> { (latitude, longitude) ->
-            combine(
-                getWeatherUseCase.execute(
-                    lat = latitude.toString(),
-                    long = longitude.toString()
-                ),
-                getForecastUseCase.execute(
-                    lat = latitude.toString(),
-                    long = longitude.toString()
-                )
-            ) { weather, forecast ->
-                WeatherState.Success(
-                    weather = weather.toWeatherUiModel(),
-                    forecast = forecast.toForecastUiModel()
-                )
-            }
-        }
-        .catch {
-            val failure = it as? Failure ?: Failure(throwable = it)
-            emit(WeatherState.Error(failure))
         }
         .stateIn(
             scope = viewModelScope,
@@ -117,7 +114,9 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeScreenEvent.OnTryAgainClick -> {
-                retryTrigger.trySend(Unit)
+                viewModelScope.launch {
+                    retryTrigger.send(Unit)
+                }
             }
         }
     }
