@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="made_too_many_requests">Too many requests. Try again later.</string>
+    <string name="server_error">Server error. Please try again.</string>
+    <string name="unknown_error">An error occurred. Try again.</string>
+    <string name="not_found">Not found.</string>
+    <string name="forbidden">Access denied.</string>
+    <string name="unauthorized">Unauthorized. Check your login.</string>
+    <string name="bad_request">Invalid request.</string>
+    <string name="empty_response">No data available.</string>
+    <string name="serialization_error">Data processing error.</string>
+    <string name="location_error">Location unavailable.</string>
+    <string name="connectivity_error">No internet connection.</string>
+</resources>

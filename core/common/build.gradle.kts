@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -44,7 +44,7 @@ dependencies {
     // Dagger-Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     // Location
     implementation(libs.gms.location)

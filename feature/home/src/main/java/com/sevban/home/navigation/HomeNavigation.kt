@@ -17,12 +17,14 @@ fun NavController.navigateToHome(
 
 fun NavGraphBuilder.homeScreen(
     whenErrorOccured: suspend (Throwable, String?) -> Unit,
-    onLocationClick: () -> Unit
+    onLocationClick: () -> Unit,
+    onFutureDaysForecastClick: () -> Unit
 ) {
     composable<Home> {
         HomeScreenRoute(
             whenErrorOccurred = whenErrorOccured,
-            onLocationClick = onLocationClick
+            onLocationClick = onLocationClick,
+            onFutureDaysForecastClick = onFutureDaysForecastClick
         )
     }
 }

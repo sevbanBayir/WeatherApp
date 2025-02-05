@@ -1,36 +1,33 @@
 package com.sevban.network.util
 
-import com.google.gson.GsonBuilder
 import com.sevban.common.model.ErrorType
 import com.sevban.common.model.Failure
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
 
 fun <T, Model> Flow<Response<T>>.asRestApiCall(mapper: (T) -> Model): Flow<Model> =
     map { response ->
-        response.run {
-            if (isSuccessful) {
-                body() ?: throw Failure(
-                    ErrorType.EMPTY_RESPONSE,
-                    errorResponse = null
-                )
-            } else {
-                //TODO: EXPENSIVE OPERATION !!!
-                val gson = GsonBuilder().create()
-                val errorResponse = gson.fromJson(
-                    errorBody()?.string(),
-                    com.sevban.common.model.ErrorResponse::class.java
-                )
-
-                throw Failure(
-                    errorType = ErrorType.API_ERROR,
-                    errorResponse = errorResponse
-                )
+        if (response.isSuccessful.not()) {
+            when (response.code()) {
+                400 -> throw Failure(ErrorType.BAD_REQUEST)
+                401 -> throw Failure(ErrorType.UNAUTHORIZED)
+                403 -> throw Failure(ErrorType.FORBIDDEN)
+                404 -> throw Failure(ErrorType.NOT_FOUND)
+                429 -> throw Failure(ErrorType.TOO_MANY_REQUESTS)
+                in 500..599 -> throw Failure(ErrorType.SERVER_ERROR)
+                else -> throw Failure(ErrorType.UNKNOWN)
             }
-            mapper(response.body()!!)
+        }
+
+        val body = response.body() ?: throw Failure(ErrorType.EMPTY_RESPONSE)
+
+        try {
+            mapper(body)
+        } catch (e: Exception) {
+            // Make sure not to eat up cancellation exceptions.
+            cancellable()
+            throw Failure(ErrorType.SERIALIZATION)
         }
     }
-
