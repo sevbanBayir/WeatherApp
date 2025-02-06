@@ -15,38 +15,41 @@ class Geocoder @Inject constructor(
 ) {
     private val geocoder = Geocoder(context)
 
-    suspend fun getPlace(latitude: Double, longitude: Double): Place? = withContext(dispatcherProvider.defaultDispatcher) {
-        require(Geocoder.isPresent()) { "Geocoder is not present" }
+    suspend fun getPlace(latitude: Double, longitude: Double): Place? =
+        withContext(dispatcherProvider.defaultDispatcher) {
+            require(Geocoder.isPresent()) { "Geocoder is not present" }
 
-        val addresses = geocoder.getFromLocation(latitude, longitude, 1)
-        addresses?.firstOrNull()?.let { address ->
-            Place(
-                cityName = address.locality,
-                country = address.countryName,
-                latitude = address.latitude,
-                longitude = address.longitude
-            )
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            addresses?.firstOrNull()?.let { address ->
+                Place(
+                    cityName = address.locality,
+                    country = address.countryName,
+                    latitude = address.latitude,
+                    longitude = address.longitude
+                )
+            }
         }
-    }
 
-    suspend fun getPlaceCoordinates(placeText: PlaceText): Place? = withContext(dispatcherProvider.defaultDispatcher) {
-        require(Geocoder.isPresent()) { "Geocoder is not present" }
+    suspend fun getPlaceCoordinates(placeText: PlaceText): Place? =
+        withContext(dispatcherProvider.defaultDispatcher) {
+            require(Geocoder.isPresent()) { "Geocoder is not present" }
 
-        val addresses = geocoder.getFromLocationName(placeText.fullText, 1)
-        addresses?.firstOrNull()?.let { address ->
-            Place(
-                cityName = placeText.primaryText,
-                country = placeText.secondaryText,
-                latitude = address.latitude,
-                longitude = address.longitude
-            )
+            val addresses = geocoder.getFromLocationName(placeText.fullText, 1)
+            addresses?.firstOrNull()?.let { address ->
+                Place(
+                    cityName = placeText.primaryText,
+                    country = placeText.secondaryText,
+                    latitude = address.latitude,
+                    longitude = address.longitude
+                )
+            }
         }
-    }
 
     suspend fun getCityCoordinates(placeText: PlaceText): Place? =
         withContext(dispatcherProvider.defaultDispatcher) {
             require(Geocoder.isPresent()) { "Geocoder is not present" }
 
+            // Todo: If "gj" text comes from this api, an exception thrown ???
             val addresses = geocoder.getFromLocationName(placeText.fullText, 1)
             addresses?.firstOrNull()?.let { address ->
                 if (address.locality == null) return@withContext null

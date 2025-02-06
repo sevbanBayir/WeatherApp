@@ -2,4 +2,6 @@
 <resources>
     <string name="map_tf_search">Search</string>
     <string name="map_tf_no_results">No result</string>
+    <string name="cd_search_icon">Search icon</string>
+    <string name="cd_clear_search_icon">Clear search icon</string>
 </resources>

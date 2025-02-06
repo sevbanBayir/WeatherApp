@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -95,6 +96,8 @@ fun LocationScreen(
         mutableStateOf(true)
     }
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     LaunchedEffect(uiState.selectedPlace) {
         if (uiState.selectedPlace != null) {
             val cameraPosition = CameraPosition.builder()
@@ -107,6 +110,11 @@ fun LocationScreen(
         }
     }
 
+    LaunchedEffect(mapCameraPositionState.isMoving) {
+        if (!mapCameraPositionState.isMoving)
+            keyboardController?.hide()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -115,6 +123,7 @@ fun LocationScreen(
     ) {
         GoogleMapWithLoading(
             mapColorScheme = mapColorScheme,
+            modifier = Modifier,
             properties = properties,
             isLoading = isMapLoading,
             mapCameraPositionState = mapCameraPositionState,
