@@ -1,4 +1,4 @@
-package com.sevban.home.components
+package com.sevban.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.sevban.home.mapper.ForecastWeatherUi
+import com.sevban.ui.model.ForecastWeatherUi
 
 @Composable
 fun ForecastCard(

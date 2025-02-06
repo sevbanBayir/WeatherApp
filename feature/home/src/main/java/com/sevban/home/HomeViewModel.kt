@@ -55,11 +55,18 @@ class HomeViewModel @Inject constructor(
                 savedStateHandle.getStateFlow<Double?>(LATITUDE_ARG, null),
                 savedStateHandle.getStateFlow<Double?>(LONGITUDE_ARG, null)
             ) { location, lat, long ->
-                if (lat != null && long != null) {
+                val (latitude, longitude) = if (lat != null && long != null) {
                     lat to long
                 } else {
                     location.latitude to location.longitude
                 }
+                _uiState.update {
+                    it.copy(
+                        latitude = latitude,
+                        longitude = longitude
+                    )
+                }
+                latitude to longitude
             }.retry { cause ->
                 (cause is MissingLocationPermissionException).also { if (it) delay(3.seconds) }
             }.flatMapLatest<Pair<Double, Double>, WeatherState> { (latitude, longitude) ->

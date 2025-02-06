@@ -3,6 +3,8 @@ package com.sevban.weatherapp.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.sevban.detail.detailScreen
+import com.sevban.detail.navigateToDetail
 import com.sevban.home.navigation.Home
 import com.sevban.home.navigation.homeScreen
 import com.sevban.home.navigation.navigateToHome
@@ -25,7 +27,13 @@ fun WeatherAppNavHost(
         homeScreen(
             whenErrorOccured = onShowSnackbar,
             onLocationClick = navController::navigateToLocationScreen,
-            onFutureDaysForecastClick = { /*TODO("Implement future days forecast screen navigation")*/ }
+            onFutureDaysForecastClick = { lat, long ->
+                navController.navigateToDetail(lat, long)
+            }
+        )
+
+        detailScreen(
+            whenErrorOccured = onShowSnackbar,
         )
 
         locationScreen(

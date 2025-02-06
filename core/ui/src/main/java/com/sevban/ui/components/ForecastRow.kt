@@ -1,9 +1,12 @@
-package com.sevban.home.components
+package com.sevban.ui.components
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
@@ -11,11 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sevban.home.mapper.ForecastUiModel
+import com.sevban.ui.model.ForecastWeatherUi
 
 @Composable
 fun ForecastRow(
-    forecast: ForecastUiModel,
+    forecast: List<ForecastWeatherUi>,
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier) {
@@ -24,19 +27,26 @@ fun ForecastRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            forecast.forecastBy3Hours.forEachIndexed { index, it ->
+            forecast.forEachIndexed { index, it ->
                 if (index == 0) {
                     ElevatedCard(
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        ForecastCard(
-                            modifier = Modifier.padding(4.dp),
-                            forecastWeatherUi = it
-                        )
+                        Column(
+                            modifier = Modifier.widthIn(min = 120.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            ForecastCard(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                forecastWeatherUi = it
+                            )
+                        }
                     }
                 } else {
                     ForecastCard(
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier
+                            .widthIn(min = 120.dp),
                         forecastWeatherUi = it
                     )
                 }

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="try_again">Try again</string>
+
+    <!-- Weather Feature Formatters-->
+    <string name="wind">%sm/h</string>
+    <string name="humidity">%s%%</string>
+    <string name="visibility">%sm</string>
+    <string name="temperature_celsius">%s °</string>
+    <string name="temperature_celsius_without_space">%s°</string>
+    <string name="cd_wind_icon">Wind icon</string>
+    <string name="cd_humidity_icon">Humidity icon</string>
+    <string name="cd_visibility_icon">Visibility icon</string>
 </resources>
