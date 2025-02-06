@@ -1,62 +1,53 @@
 package com.sevban.detail.mapper
 
 import com.sevban.common.extensions.EMPTY
+import com.sevban.common.extensions.toHourAndMinute
+import com.sevban.common.extensions.toLocalDate
 import com.sevban.common.extensions.toTitleCase
+import com.sevban.common.helper.dayOfMonthAndName
+import com.sevban.common.helper.isToday
 import com.sevban.model.Forecast
+import com.sevban.model.ForecastWeather
 import com.sevban.ui.model.ForecastWeatherUi
 import com.sevban.ui.model.createWeatherIconURL
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 data class ForecastUiModel(
-    val cod: String?,
-    val city: String?,
+    val city: String,
     val eachDayWithAverage: List<EachDayWithAverage>,
     val today: List<ForecastWeatherUi>,
 )
 
 data class EachDayWithAverage(
     val temperature: Int,
-    val localDate: LocalDate,
-    val dateAsDay: String,
+    val dayOfMonth: String,
+    val dayOfWeek: String,
     val icon: String,
     val description: String
 )
 
 fun Forecast.toForecastUiModel(): ForecastUiModel {
-    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-
-    val tempGroupedByDay = temp.dropWhile {
-        val parsed = LocalDateTime.parse(it.date, dateFormatter).toLocalDate()
-        val today = LocalDate.now()
-        parsed == today
-    }.groupBy {
-        LocalDateTime.parse(it.date, dateFormatter).toLocalDate()
-    }
+    val tempGroupedByDay = temp
+        .dropWhile { it.date.toLocalDate().isToday() }
+        .groupBy { it.date.toLocalDate() }
 
     val otherDaysForecastMap = tempGroupedByDay.map {
         val weatherList = it.value
-        val average =
-            weatherList.mapNotNull { forecastWeather -> forecastWeather.temperature }.average()
+        val average = weatherList.mapNotNull(ForecastWeather::temperature).average()
+        val dayOfMonthAndName = it.key.dayOfMonthAndName.lowercase()
+
         EachDayWithAverage(
             temperature = average.roundToInt(),
-            localDate = it.key,
-            dateAsDay = it.key.dayOfWeek.name,
-            icon = createWeatherIconURL(weatherList.first().icon ?: String.EMPTY),
+            dayOfMonth = dayOfMonthAndName.toTitleCase(),
+            dayOfWeek = it.key.dayOfWeek.name,
+            icon = createWeatherIconURL(weatherList.first().icon),
             description = weatherList.first().description?.toTitleCase() ?: String.EMPTY
         )
     }
 
-    val today = temp.takeWhile {
-        val parsed = LocalDateTime.parse(it.date, dateFormatter).toLocalDate()
-        val today = LocalDate.now()
-        parsed == today
-    }.map {
+    val today = temp.takeWhile { it.date.toLocalDate().isToday() }.map {
         ForecastWeatherUi(
-            date = LocalDateTime.parse(it.date, dateFormatter).format(timeFormatter),
+            date = it.date.toHourAndMinute(),
             icon = createWeatherIconURL(it.icon ?: String.EMPTY),
             description = it.description?.toTitleCase() ?: String.EMPTY,
             temperature = it.temperature?.roundToInt() ?: 0
@@ -64,8 +55,7 @@ fun Forecast.toForecastUiModel(): ForecastUiModel {
     }
 
     return ForecastUiModel(
-        cod = cod,
-        city = city,
+        city = city ?: String.EMPTY,
         eachDayWithAverage = otherDaysForecastMap,
         today = today
     )

@@ -17,8 +17,8 @@ fun OtherDaysForecastContent(
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
         forecast.forEachIndexed { index, it ->
             DayForecast(
-                dayName = if (index == 0) stringResource(R.string.tomorrow) else it.dateAsDay,
-                date = it.localDate,
+                dayOfWeek = if (index == 0) stringResource(R.string.tomorrow) else it.dayOfWeek,
+                dayOfMonth = it.dayOfMonth,
                 iconUrl = it.icon,
                 description = it.description,
                 temperature = it.temperature

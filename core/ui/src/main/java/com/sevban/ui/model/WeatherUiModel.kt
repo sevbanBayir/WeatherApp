@@ -25,7 +25,7 @@ data class WeatherUiModel(
 fun Weather.toWeatherUiModel() = WeatherUiModel(
     id = id,
     description = description?.toTitleCase() ?: String.EMPTY,
-    iconUrl = createWeatherIconURL(icon = icon ?: String.EMPTY),
+    iconUrl = createWeatherIconURL(icon),
     cityName = cityName ?: String.EMPTY,
     feelsLike = feelsLike?.toInt().toString(),
     grndLevel = grndLevel?.toString() ?: String.EMPTY,
@@ -39,6 +39,7 @@ fun Weather.toWeatherUiModel() = WeatherUiModel(
     windSpeed = windSpeed?.toString() ?: String.EMPTY,
 )
 
-fun createWeatherIconURL(icon: String): String {
+fun createWeatherIconURL(icon: String?): String {
+    require(!icon.isNullOrEmpty()) { "Icon cannot be null or empty" }
     return Constants.WEATHER_IMAGE_BASE_URL + icon + Constants.IMAGE_RESOLUTION
 }

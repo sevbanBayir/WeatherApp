@@ -16,13 +16,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.sevban.common.extensions.toTitleCase
 import com.sevban.ui.R
-import java.time.LocalDate
 
 @Composable
 fun DayForecast(
     modifier: Modifier = Modifier,
-    dayName: String,
-    date: LocalDate,
+    dayOfWeek: String,
+    dayOfMonth: String,
     iconUrl: String,
     description: String,
     temperature: Int
@@ -34,11 +33,11 @@ fun DayForecast(
     ) {
         Column {
             Text(
-                dayName.lowercase().toTitleCase(),
+                dayOfWeek.lowercase().toTitleCase(),
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(Modifier.height(8.dp))
-            Text(date.dayOfMonth.toString() + " " + date.month.name.lowercase().toTitleCase())
+            Text(dayOfMonth)
         }
         Spacer(Modifier.height(16.dp))
         Text(
