@@ -23,7 +23,7 @@ fun HomeScreenRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     whenErrorOccurred: suspend (Throwable, String?) -> Unit,
     onLocationClick: () -> Unit,
-    onFutureDaysForecastClick: () -> Unit
+    onFutureDaysForecastClick: (Double, Double) -> Unit
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val weatherState by viewModel.weatherState.collectAsStateWithLifecycle()
@@ -44,7 +44,7 @@ fun HomeScreen(
     uiState: WeatherScreenUiState,
     onEvent: (HomeScreenEvent) -> Unit,
     onLocationClick: () -> Unit,
-    onFutureDaysForecastClick: () -> Unit,
+    onFutureDaysForecastClick: (Double, Double) -> Unit,
     whenErrorOccurred: suspend (Throwable, String?) -> Unit
 ) {
     val context = LocalContext.current
@@ -67,7 +67,7 @@ fun HomeScreen(
                 forecast = it.forecast,
                 onLocationClick = onLocationClick,
                 lastFetchedTime = uiState.lastFetchedTime,
-                onFutureDaysForecastClick = onFutureDaysForecastClick
+                onFutureDaysForecastClick = { onFutureDaysForecastClick(uiState.latitude, uiState.longitude) }
             )
         }
     }

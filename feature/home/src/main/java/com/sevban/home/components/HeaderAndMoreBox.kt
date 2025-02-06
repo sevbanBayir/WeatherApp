@@ -20,7 +20,7 @@ fun HeaderAndMoreBox(
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.today_all_data_title),
+            text = stringResource(R.string.next_24_hours),
             modifier = Modifier.align(Alignment.CenterStart)
         )
 

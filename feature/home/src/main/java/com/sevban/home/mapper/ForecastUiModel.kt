@@ -1,11 +1,16 @@
 package com.sevban.home.mapper
 
+import com.sevban.common.extensions.EMPTY
 import com.sevban.common.extensions.toTitleCase
-import com.sevban.home.model.createWeatherIconURL
 import com.sevban.model.Forecast
+import com.sevban.ui.model.ForecastWeatherUi
+import com.sevban.ui.model.createWeatherIconURL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
+
+val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 data class ForecastUiModel(
     val cod: String?,
@@ -14,23 +19,30 @@ data class ForecastUiModel(
     val hoursBy5Days: List<List<Int>>,
     val forecastBy3Hours: List<ForecastWeatherUi>,
     val chartData: ChartData,
+    val next24Hours: List<ForecastWeatherUi>
 )
+
+fun Forecast.nex24Hours(): List<ForecastWeatherUi> {
+    return temp.takeWhile {
+        val now = LocalDateTime.now()
+        val date = LocalDateTime.parse(it.date, dateFormatter)
+        date < now.plusHours(24)
+    }.map {
+        ForecastWeatherUi(
+            temperature = it.temperature?.roundToInt() ?: 0,
+            date = LocalDateTime.parse(it.date, dateFormatter).format(DateTimeFormatter.ofPattern("HH:mm")),
+            icon = createWeatherIconURL(it.icon ?: String.EMPTY),
+            description = it.description?.toTitleCase() ?: String.EMPTY
+        )
+    }
+}
 
 data class ChartData(
     val temperatures: List<Int>,
     val dateList: List<String>
 )
 
-data class ForecastWeatherUi(
-    val temperature: Int,
-    val date: String,
-    val icon: String,
-    val description: String
-)
-
 fun Forecast.toForecastUiModel(): ForecastUiModel {
-    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     val tempGroupedByDay = temp.groupBy {
         LocalDateTime.parse(it.date, dateFormatter).toLocalDate()
@@ -40,9 +52,8 @@ fun Forecast.toForecastUiModel(): ForecastUiModel {
         ForecastWeatherUi(
             temperature = forecastWeather.temperature?.roundToInt() ?: 0,
             date = LocalDateTime.parse(forecastWeather.date, dateFormatter).format(timeFormatter),
-            icon = createWeatherIconURL(forecastWeather.icon ?: ""),
-            description = forecastWeather.description?.split(" ")?.joinToString(" ") { it.toTitleCase() }
-                ?: ""
+            icon = createWeatherIconURL(forecastWeather.icon ?: String.EMPTY),
+            description = forecastWeather.description?.toTitleCase() ?: String.EMPTY
         )
     }
 
@@ -63,10 +74,10 @@ fun Forecast.toForecastUiModel(): ForecastUiModel {
     return ForecastUiModel(
         cod = cod,
         city = city,
-
         temperaturesBy5Days = temperaturesBy5Days,
         hoursBy5Days = hoursBy5Days,
         forecastBy3Hours = forecastBy3Hours,
-        chartData = chartData
+        chartData = chartData,
+        next24Hours = nex24Hours()
     )
 }

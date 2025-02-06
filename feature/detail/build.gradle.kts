@@ -4,7 +4,8 @@ plugins {
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.compose.compiler)
-
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -44,18 +45,25 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.model)
     implementation(projects.core.common)
+    implementation(projects.core.designsystem)
 
-    // Compose-Ui
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.appcompat)
+
+    // Compose
     implementation(libs.bundles.compose)
     androidTestImplementation(libs.bundles.compose.testing)
+
+    // Coil
+    implementation(libs.coil.compose)
 
     // Dagger-Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
 
-    implementation(libs.androidx.ktx)
-    implementation(libs.androidx.appcompat)
+    // Serialization
+    implementation(libs.kotlin.serialization)
 
     // Testing
     testImplementation(libs.bundles.testing)

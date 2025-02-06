@@ -6,7 +6,9 @@ import com.sevban.home.mapper.ForecastUiModel
 
 data class WeatherScreenUiState(
     val shouldShowPermanentlyDeclinedDialog: Boolean = false,
-    val lastFetchedTime: String = String.EMPTY
+    val lastFetchedTime: String = String.EMPTY,
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0
 )
 
 sealed interface WeatherState {

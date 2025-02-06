@@ -18,7 +18,7 @@ fun NavController.navigateToHome(
 fun NavGraphBuilder.homeScreen(
     whenErrorOccured: suspend (Throwable, String?) -> Unit,
     onLocationClick: () -> Unit,
-    onFutureDaysForecastClick: () -> Unit
+    onFutureDaysForecastClick: (Double, Double) -> Unit
 ) {
     composable<Home> {
         HomeScreenRoute(

@@ -76,7 +76,8 @@ private fun FeelsLikeCardPrev() {
                 chartData = ChartData(
                     temperatures = listOf(),
                     dateList = listOf()
-                )
+                ),
+                next24Hours = listOf()
             )
         )
     }
