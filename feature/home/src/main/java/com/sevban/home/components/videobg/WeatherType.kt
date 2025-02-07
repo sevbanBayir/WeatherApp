@@ -1,7 +1,6 @@
 package com.sevban.home.components.videobg
 
 import com.sevban.common.helper.isDaylight
-import java.time.LocalTime
 
 enum class WeatherType {
     SUNNY,
