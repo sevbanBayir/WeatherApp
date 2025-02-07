@@ -41,6 +41,6 @@ class PlaceAutocompleteService @Inject constructor(
             trySend(emptyList())
             close(exception)
         }
-        awaitClose ()
+        awaitClose()
     }.flowOn(dispatcherProvider.ioDispatcher)
 }

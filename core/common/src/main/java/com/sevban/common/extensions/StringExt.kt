@@ -13,4 +13,5 @@ fun String.toLocalDate(): LocalDate = LocalDateTime.parse(this, dateFormatter).t
 
 fun String.toLocalDateTime(): LocalDateTime = LocalDateTime.parse(this, dateFormatter)
 
-fun String.toHourAndMinute(): String = LocalDateTime.parse(this, dateFormatter).format(timeFormatter)
+fun String.toHourAndMinute(): String =
+    LocalDateTime.parse(this, dateFormatter).format(timeFormatter)

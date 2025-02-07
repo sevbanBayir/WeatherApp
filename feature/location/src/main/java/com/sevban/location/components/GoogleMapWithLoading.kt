@@ -37,7 +37,12 @@ fun GoogleMapWithLoading(
             PlaceWeatherMarker(
                 markerLocation = markerLocation,
                 weatherForSelectedLocation = weatherForSelectedLocation,
-                onMarkerClick = { onMarkerClick(markerLocation.latitude, markerLocation.longitude) },
+                onMarkerClick = {
+                    onMarkerClick(
+                        markerLocation.latitude,
+                        markerLocation.longitude
+                    )
+                },
             )
     }
     AnimatedVisibility(

@@ -67,7 +67,12 @@ fun HomeScreen(
                 forecast = it.forecast,
                 onLocationClick = onLocationClick,
                 lastFetchedTime = uiState.lastFetchedTime,
-                onFutureDaysForecastClick = { onFutureDaysForecastClick(uiState.latitude, uiState.longitude) }
+                onFutureDaysForecastClick = {
+                    onFutureDaysForecastClick(
+                        uiState.latitude,
+                        uiState.longitude
+                    )
+                }
             )
         }
     }

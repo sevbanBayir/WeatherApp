@@ -65,6 +65,9 @@ dependencies {
     // Serialization
     implementation(libs.kotlin.serialization)
 
+    // Exoplayer
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     // Testing
     testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.bundles.android.testing)

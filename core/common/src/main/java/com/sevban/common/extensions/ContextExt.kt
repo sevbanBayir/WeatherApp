@@ -35,3 +35,9 @@ fun Context.openAppSettings() {
 fun Context.shouldShowPermissionRationale(permission: String): Boolean {
     return (this as Activity).shouldShowRequestPermissionRationale(permission)
 }
+
+fun Context.getVideoUri(videoName: String): Uri {
+    val rawId = resources.getIdentifier(videoName, "raw", packageName)
+    val videoUri = "android.resource://$packageName/$rawId"
+    return Uri.parse(videoUri)
+}

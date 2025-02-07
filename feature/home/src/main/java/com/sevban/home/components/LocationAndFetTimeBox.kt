@@ -40,6 +40,7 @@ fun LocationAndFetTimeBox(
             )
             Text(
                 text = weather.cityName,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
 
