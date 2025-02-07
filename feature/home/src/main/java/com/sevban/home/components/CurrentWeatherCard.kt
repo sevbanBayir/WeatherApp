@@ -69,7 +69,7 @@ fun CurrentWeatherCard(
 
                 LineChartContainer(
                     xAxisData = forecast.chartData.dateList,
-                    yAxistData = forecast.chartData.temperatures,
+                    yAxisData = forecast.chartData.temperatures,
                     modifier = Modifier.padding(12.dp)
                 )
             }

@@ -11,11 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sevban.home.components.forecastquadrant.GraphStyle
 import com.sevban.home.components.forecastquadrant.LineChart
-import com.sevban.home.mapper.ForecastUiModel
 
 @Composable
 fun LineChartContainer(
-    yAxistData: List<Int>,
+    yAxisData: List<Int>,
     xAxisData: List<String>,
     modifier: Modifier = Modifier
 ) {
@@ -35,7 +34,7 @@ fun LineChartContainer(
                 jointColor = MaterialTheme.colorScheme.primary,
                 textColor = MaterialTheme.colorScheme.onSurface,
             ),
-            yAxisData = yAxistData,
+            yAxisData = yAxisData,
             xAxisData = xAxisData
         )
     }

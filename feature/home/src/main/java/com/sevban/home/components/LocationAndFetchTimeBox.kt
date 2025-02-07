@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sevban.designsystem.theme.WeatherAppIcons
 import com.sevban.home.R
-import com.sevban.home.model.WeatherUiModel
 
 @Composable
 fun LocationAndFetchTimeBox(
