@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sevban.home.R
 import com.sevban.home.model.WeatherUiModel
 
 @Composable
@@ -27,7 +26,10 @@ fun TemperatureContainer(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(id = com.sevban.ui.R.string.temperature_celsius_without_space, weather.temp),
+            text = stringResource(
+                id = com.sevban.ui.R.string.temperature_celsius_without_space,
+                weather.temp
+            ),
             modifier = Modifier.offset(8.dp),
             style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp)
         )

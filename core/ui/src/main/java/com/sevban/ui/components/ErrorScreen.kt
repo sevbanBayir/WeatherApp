@@ -38,7 +38,9 @@ fun ErrorScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(16.dp).fillMaxSize()
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
     ) {
         Text(
             text = failure.errorType.toLocalizedMessage(context),

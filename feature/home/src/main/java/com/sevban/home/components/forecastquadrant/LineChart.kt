@@ -17,12 +17,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sevban.designsystem.theme.ComposeScaffoldProjectTheme
-import kotlin.random.Random
 
 @Composable
 fun LineChart(
@@ -59,7 +55,7 @@ fun LineChart(
         xAxisData.forEach { value ->
 
             val textResult = textMeasurer.measure(
-                value.toString(),
+                value,
                 style = TextStyle(
                     color = graphStyle.textColor,
                     fontSize = 11.sp
@@ -176,22 +172,4 @@ fun LineChart(
             xCursor += oneInterval
         }
     }
-}
-
-/*
-@PreviewLightDark
-@Preview(showBackground = true)
-@Composable
-private fun ForecastQuadrantPrev() {
-    ComposeScaffoldProjectTheme {
-        LineChart(yAxisData = generateTemperatureList(20, 30, 10))
-    }
-}
-*/
-
-fun generateTemperatureList(minTemp: Int, maxTemp: Int, maxNumber: Int): List<Int> {
-    require(minTemp <= maxTemp) { "Minimum temperature must be less than or equal to maximum temperature" }
-    require(maxNumber > 0) { "Number of elements must be greater than zero" }
-
-    return List(maxNumber) { Random.nextInt(minTemp, maxTemp + 1) }
 }

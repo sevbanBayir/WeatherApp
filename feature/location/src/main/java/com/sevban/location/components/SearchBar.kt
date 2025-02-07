@@ -4,9 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -37,8 +35,8 @@ fun SearchBar(
         leadingIcon = {
             AnimatedVisibility(
                 visible = searchQuery.isEmpty(),
-                enter = slideInHorizontally { -2*it } + fadeIn(),
-                exit = slideOutHorizontally { -2*it } + fadeOut(),
+                enter = slideInHorizontally { -2 * it } + fadeIn(),
+                exit = slideOutHorizontally { -2 * it } + fadeOut(),
             ) {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -49,8 +47,8 @@ fun SearchBar(
         trailingIcon = {
             AnimatedVisibility(
                 visible = searchQuery.isNotEmpty(),
-                exit = slideOutHorizontally { 2*it } + fadeOut(),
-                enter = slideInHorizontally { 2*it } + fadeIn(),
+                exit = slideOutHorizontally { 2 * it } + fadeOut(),
+                enter = slideInHorizontally { 2 * it } + fadeIn(),
             ) {
                 IconButton(onClick = { onSearchQueryChanged(String.EMPTY) }) {
                     Icon(

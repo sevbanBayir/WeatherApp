@@ -24,7 +24,4 @@ object WeatherAppIcons {
         @Composable
         get() = ImageVector.vectorResource(id = R.drawable.ic_visibility)
 
-    val City: ImageVector
-        @Composable
-        get() = ImageVector.vectorResource(id = R.drawable.ic_city)
 }

@@ -5,8 +5,8 @@ import java.time.LocalDate.now
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 val LocalDate.dayOfMonthAndName: String
     get() = dayOfMonth.toString() + " " + month.name
