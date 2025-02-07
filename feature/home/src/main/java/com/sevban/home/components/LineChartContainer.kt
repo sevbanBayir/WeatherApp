@@ -15,7 +15,8 @@ import com.sevban.home.mapper.ForecastUiModel
 
 @Composable
 fun LineChartContainer(
-    forecast: ForecastUiModel,
+    yAxistData: List<Int>,
+    xAxisData: List<String>,
     modifier: Modifier = Modifier
 ) {
     val bgColor = MaterialTheme.colorScheme.surfaceContainerLow
@@ -34,8 +35,8 @@ fun LineChartContainer(
                 jointColor = MaterialTheme.colorScheme.primary,
                 textColor = MaterialTheme.colorScheme.onSurface,
             ),
-            yAxisData = forecast.chartData.temperatures,
-            xAxisData = forecast.chartData.dateList
+            yAxisData = yAxistData,
+            xAxisData = xAxisData
         )
     }
 }

@@ -19,7 +19,7 @@ import com.sevban.home.model.WeatherUiModel
 
 @Composable
 fun LocationAndFetchTimeBox(
-    weather: WeatherUiModel,
+    cityName: String,
     lastFetchedTime: String,
     onLocationClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -39,15 +39,15 @@ fun LocationAndFetchTimeBox(
                 contentDescription = stringResource(id = R.string.cd_location_icon)
             )
             Text(
-                text = weather.cityName,
+                text = cityName,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
 
-        Text(
+/*        Text(
             text = stringResource(id = R.string.last_fetched_at, lastFetchedTime),
             modifier = Modifier.align(Alignment.CenterEnd),
             style = MaterialTheme.typography.labelSmall
-        )
+        )*/
     }
 }

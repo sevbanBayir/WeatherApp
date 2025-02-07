@@ -3,10 +3,10 @@ package com.sevban.home.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -33,7 +33,9 @@ fun CurrentWeatherCard(
             weather.description.toWeatherType().getVideoName()?.let {
                 VideoPlayer(
                     videoName = it,
-                    modifier = Modifier.height(550.dp)
+                    modifier = Modifier
+                        .heightIn(min = 570.dp)
+                        .fillMaxHeight()
                 )
             }
 
@@ -47,18 +49,29 @@ fun CurrentWeatherCard(
                     )
             ) {
                 LocationAndFetchTimeBox(
-                    weather = weather,
+                    modifier = Modifier.padding(12.dp),
+                    cityName = weather.cityName,
                     lastFetchedTime = lastFetchedTime,
                     onLocationClick = onLocationClick
                 )
 
-                TemperatureContainer(weather = weather)
+                TemperatureAndDescription(
+                    temp = weather.temp,
+                    description = weather.description
+                )
 
-                WeatherFeaturesCard(weather = weather)
+                WeatherFeaturesCard(
+                    windSpeed = weather.windSpeed,
+                    humidity = weather.humidity,
+                    visibility = weather.visibility,
+                    modifier = Modifier.padding(12.dp)
+                )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                LineChartContainer(forecast = forecast, Modifier.padding(12.dp))
+                LineChartContainer(
+                    xAxisData = forecast.chartData.dateList,
+                    yAxistData = forecast.chartData.temperatures,
+                    modifier = Modifier.padding(12.dp)
+                )
             }
         }
     }
