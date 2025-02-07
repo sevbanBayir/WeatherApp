@@ -18,7 +18,7 @@ import com.sevban.home.R
 import com.sevban.home.model.WeatherUiModel
 
 @Composable
-fun LocationAndFetTimeBox(
+fun LocationAndFetchTimeBox(
     weather: WeatherUiModel,
     lastFetchedTime: String,
     onLocationClick: () -> Unit,

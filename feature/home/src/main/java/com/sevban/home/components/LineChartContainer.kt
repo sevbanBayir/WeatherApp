@@ -1,9 +1,9 @@
 package com.sevban.home.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -18,17 +18,24 @@ fun LineChartContainer(
     forecast: ForecastUiModel,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(modifier = modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            LineChart(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .fillMaxWidth()
-                    .height(216.dp),
-                graphStyle = GraphStyle(backgroundColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                yAxisData = forecast.chartData.temperatures,
-                xAxisData = forecast.chartData.dateList
-            )
-        }
+    val bgColor = MaterialTheme.colorScheme.surfaceContainerLow
+    ElevatedCard(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.elevatedCardColors(containerColor = bgColor)
+    ) {
+        LineChart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+                .height(216.dp),
+            graphStyle = GraphStyle(
+                backgroundColor = bgColor,
+                lineColor = MaterialTheme.colorScheme.primary,
+                jointColor = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onSurface,
+            ),
+            yAxisData = forecast.chartData.temperatures,
+            xAxisData = forecast.chartData.dateList
+        )
     }
 }

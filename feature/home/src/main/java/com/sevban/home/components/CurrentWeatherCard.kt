@@ -33,7 +33,7 @@ fun CurrentWeatherCard(
             weather.description.toWeatherType().getVideoName()?.let {
                 VideoPlayer(
                     videoName = it,
-                    modifier = Modifier.height(530.dp)
+                    modifier = Modifier.height(550.dp)
                 )
             }
 
@@ -46,7 +46,7 @@ fun CurrentWeatherCard(
                         shape = RoundedCornerShape(12.dp)
                     )
             ) {
-                LocationAndFetTimeBox(
+                LocationAndFetchTimeBox(
                     weather = weather,
                     lastFetchedTime = lastFetchedTime,
                     onLocationClick = onLocationClick
@@ -58,7 +58,7 @@ fun CurrentWeatherCard(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                LineChartContainer(forecast = forecast)
+                LineChartContainer(forecast = forecast, Modifier.padding(12.dp))
             }
         }
     }
