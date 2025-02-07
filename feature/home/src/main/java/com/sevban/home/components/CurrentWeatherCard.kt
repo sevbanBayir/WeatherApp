@@ -1,17 +1,22 @@
 package com.sevban.home.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sevban.designsystem.theme.ComposeScaffoldProjectTheme
-import com.sevban.home.mapper.ChartData
+import com.sevban.home.components.videobg.VideoPlayer
+import com.sevban.home.components.videobg.getVideoName
+import com.sevban.home.components.videobg.toWeatherType
 import com.sevban.home.mapper.ForecastUiModel
 import com.sevban.home.model.WeatherUiModel
 
@@ -24,22 +29,37 @@ fun CurrentWeatherCard(
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(12.dp).fillMaxWidth()
-        ) {
-            LocationAndFetTimeBox(
-                weather = weather,
-                lastFetchedTime = lastFetchedTime,
-                onLocationClick = onLocationClick
-            )
+        Box(modifier = Modifier.fillMaxSize()) {
+            weather.description.toWeatherType().getVideoName()?.let {
+                VideoPlayer(
+                    videoName = it,
+                    modifier = Modifier.height(530.dp)
+                )
+            }
 
-            TemperatureContainer(weather = weather)
+            Column(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxWidth()
+                    .background(
+                        color = MaterialTheme.colorScheme.background.copy(alpha = 0.4f),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+            ) {
+                LocationAndFetTimeBox(
+                    weather = weather,
+                    lastFetchedTime = lastFetchedTime,
+                    onLocationClick = onLocationClick
+                )
 
-            WeatherFeaturesCard(weather = weather)
+                TemperatureContainer(weather = weather)
 
-            Spacer(modifier = Modifier.height(16.dp))
+                WeatherFeaturesCard(weather = weather)
 
-            LineChartContainer(forecast = forecast)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                LineChartContainer(forecast = forecast)
+            }
         }
     }
 }
