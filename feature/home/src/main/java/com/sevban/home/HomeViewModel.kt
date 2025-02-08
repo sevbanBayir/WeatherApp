@@ -3,11 +3,15 @@ package com.sevban.home
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import com.sevban.common.location.LocationObserver
 import com.sevban.common.location.MissingLocationPermissionException
 import com.sevban.common.model.Failure
 import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.domain.usecase.GetWeatherUseCase
+import com.sevban.home.components.videobg.getVideoName
+import com.sevban.home.components.videobg.toWeatherType
 import com.sevban.home.mapper.toForecastUiModel
 import com.sevban.home.model.WeatherScreenUiState
 import com.sevban.home.model.WeatherState
