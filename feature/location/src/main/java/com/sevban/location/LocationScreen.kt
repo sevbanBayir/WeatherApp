@@ -38,36 +38,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun LocationScreenRoute(
-    viewModel: LocationScreenViewModel = hiltViewModel(),
-    whenErrorOccurred: suspend (Throwable, String?) -> Unit,
-    onClickWeather: (lat: Double, long: Double) -> Unit,
-) {
-    val locationUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
-    val placeListState by viewModel.placeListState.collectAsStateWithLifecycle()
-    val error = viewModel.error
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    LaunchedEffect(key1 = true) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            error.collectLatest {
-                whenErrorOccurred(it, null)
-            }
-        }
-    }
-
-    LocationScreen(
-        uiState = locationUiState,
-        searchQuery = searchQuery,
-        placeListState = placeListState,
-        onEvent = viewModel::onEvent,
-        onClickWeather = onClickWeather,
-    )
-}
-
-@Composable
 fun LocationScreen(
     uiState: LocationScreenUiState,
     searchQuery: String,
