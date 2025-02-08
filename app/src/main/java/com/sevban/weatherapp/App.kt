@@ -18,9 +18,7 @@ fun App(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .safeDrawingPadding(),
+        modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { scaffoldPadding ->
         WeatherAppNavHost(
@@ -29,6 +27,7 @@ fun App(
                 snackbarHostState.showSnackbar(message ?: failure.toString())
             },
             modifier = Modifier
+                .safeDrawingPadding()
                 .padding(scaffoldPadding)
                 .fillMaxSize()
         )
