@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.junit5.engine)
 }
 
 android {
@@ -67,5 +68,6 @@ dependencies {
 
     // Testing
     testImplementation(libs.bundles.testing)
+    testImplementation(projects.core.testing)
     androidTestImplementation(libs.bundles.android.testing)
 }

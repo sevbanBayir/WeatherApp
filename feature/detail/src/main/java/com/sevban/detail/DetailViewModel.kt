@@ -13,6 +13,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -28,17 +29,19 @@ class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val retryTrigger = Channel<Unit>()
+    private val _retryTrigger = Channel<Unit>()
+    val retryTrigger = _retryTrigger.receiveAsFlow()
 
-    val forecastState = retryTrigger.receiveAsFlow()
+    val forecastState = retryTrigger
         .onStart { emit(Unit) }
         .flatMapLatest {
             combine(
                 savedStateHandle.getStateFlow<Double?>(LATITUDE_ARG, null),
                 savedStateHandle.getStateFlow<Double?>(LONGITUDE_ARG, null)
             ) { lat, long ->
+                if (lat == null || long == null) { return@combine null }
                 lat to long
-            }.flatMapLatest { (latitude, longitude) ->
+            }.filterNotNull().flatMapLatest { (latitude, longitude) ->
                 getForecastUseCase.execute(
                     lat = latitude.toString(),
                     long = longitude.toString()
@@ -60,14 +63,14 @@ class DetailViewModel @Inject constructor(
         when (event) {
             is DetailScreenEvent.OnTryAgainClick -> {
                 viewModelScope.launch {
-                    retryTrigger.send(Unit)
+                    _retryTrigger.send(Unit)
                 }
             }
         }
     }
 
     companion object {
-        private const val LATITUDE_ARG = "latitude"
-        private const val LONGITUDE_ARG = "longitude"
+        const val LATITUDE_ARG = "latitude"
+        const val LONGITUDE_ARG = "longitude"
     }
 }
