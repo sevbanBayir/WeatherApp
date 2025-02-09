@@ -1,5 +1,8 @@
 package com.sevban.detail
 
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -18,7 +21,12 @@ fun NavGraphBuilder.detailScreen(
     whenErrorOccured: suspend (Throwable, String?) -> Unit,
 ) {
     composable<Detail> {
-        DetailScreenRoute(
+        val viewModel: DetailViewModel = hiltViewModel()
+        val weatherState by viewModel.forecastState.collectAsStateWithLifecycle()
+
+        DetailScreen(
+            forecastState = weatherState,
+            onEvent = viewModel::onEvent,
             whenErrorOccurred = whenErrorOccured,
         )
     }

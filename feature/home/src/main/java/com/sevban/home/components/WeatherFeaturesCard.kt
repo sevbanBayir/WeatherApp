@@ -11,11 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sevban.designsystem.theme.WeatherAppIcons
-import com.sevban.home.model.WeatherUiModel
 
 @Composable
 fun WeatherFeaturesCard(
-    weather: WeatherUiModel,
+    windSpeed: String,
+    humidity: String,
+    visibility: String,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -31,7 +32,7 @@ fun WeatherFeaturesCard(
                     contentDescription = stringResource(id = com.sevban.ui.R.string.cd_wind_icon),
                 )
             },
-            text = stringResource(id = com.sevban.ui.R.string.wind, weather.windSpeed)
+            text = stringResource(id = com.sevban.ui.R.string.wind, windSpeed)
         )
         FeatureRow(
             icon = {
@@ -41,7 +42,7 @@ fun WeatherFeaturesCard(
                     contentDescription = stringResource(id = com.sevban.ui.R.string.cd_humidity_icon),
                 )
             },
-            text = stringResource(id = com.sevban.ui.R.string.humidity, weather.humidity)
+            text = stringResource(id = com.sevban.ui.R.string.humidity, humidity)
         )
         FeatureRow(
             icon = {
@@ -51,7 +52,7 @@ fun WeatherFeaturesCard(
                     contentDescription = stringResource(id = com.sevban.ui.R.string.cd_visibility_icon),
                 )
             },
-            text = stringResource(id = com.sevban.ui.R.string.visibility, weather.visibility)
+            text = stringResource(id = com.sevban.ui.R.string.visibility, visibility)
         )
     }
 }

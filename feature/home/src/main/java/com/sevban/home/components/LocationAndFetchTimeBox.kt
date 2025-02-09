@@ -15,11 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sevban.designsystem.theme.WeatherAppIcons
 import com.sevban.home.R
-import com.sevban.home.model.WeatherUiModel
 
 @Composable
-fun LocationAndFetTimeBox(
-    weather: WeatherUiModel,
+fun LocationAndFetchTimeBox(
+    cityName: String,
     lastFetchedTime: String,
     onLocationClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -39,15 +38,15 @@ fun LocationAndFetTimeBox(
                 contentDescription = stringResource(id = R.string.cd_location_icon)
             )
             Text(
-                text = weather.cityName,
+                text = cityName,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
 
-        Text(
+/*        Text(
             text = stringResource(id = R.string.last_fetched_at, lastFetchedTime),
             modifier = Modifier.align(Alignment.CenterEnd),
             style = MaterialTheme.typography.labelSmall
-        )
+        )*/
     }
 }

@@ -3,7 +3,6 @@ package com.sevban.home.components.forecastquadrant
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -14,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -36,11 +36,13 @@ fun LineChart(
     )
 ) {
     val textMeasurer = rememberTextMeasurer()
+    val context = LocalContext.current
+    val tempRepresentation: (Int) -> String = {
+        context.getString(com.sevban.ui.R.string.temperature_celsius, it.toString())
+    }
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .background(graphStyle.backgroundColor)
-            .height(350.dp)
             .padding(16.dp)
     ) {
         val path = Path()
@@ -58,7 +60,7 @@ fun LineChart(
                 value,
                 style = TextStyle(
                     color = graphStyle.textColor,
-                    fontSize = 11.sp
+                    fontSize = 10.sp
                 )
             )
 //            yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
@@ -77,7 +79,8 @@ fun LineChart(
         path.apply {
             yAxisData.forEach { value ->
                 val textResult = textMeasurer.measure(
-                    "$value֯ ", style = TextStyle(
+                    tempRepresentation(value),
+                    style = TextStyle(
                         color = graphStyle.textColor,
                         fontSize = 11.sp
                     )
@@ -98,28 +101,6 @@ fun LineChart(
         }
 
         drawWithLayer {
-
-            path.apply {
-                yAxisData.forEach { value ->
-                    yCursor = graphDepth - ((value - yAxisData.min()) * oneDegree)
-                    drawLine(
-                        Color.Gray,
-                        start = Offset(0f, yCursor),
-                        end = Offset(xCursor, yCursor),
-                        strokeWidth = 3f,
-                        pathEffect = PathEffect.dashPathEffect(
-                            intervals = floatArrayOf(
-                                10f,
-                                5.dp.toPx()
-                            )
-                        )
-                    )
-                    moveTo(xCursor, yCursor)
-                    xCursor += oneInterval
-                }
-                xCursor = 0f
-                yCursor = graphDepth - ((yAxisData.first() - yAxisData.min()) * oneDegree)
-            }
 
             path.apply {
                 moveTo(0f, yCursor)

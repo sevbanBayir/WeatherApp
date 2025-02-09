@@ -25,11 +25,9 @@ fun WeatherAppNavHost(
         modifier = modifier,
     ) {
         homeScreen(
-            whenErrorOccured = onShowSnackbar,
+            whenErrorOccurred = onShowSnackbar,
             onLocationClick = navController::navigateToLocationScreen,
-            onFutureDaysForecastClick = { lat, long ->
-                navController.navigateToDetail(lat, long)
-            }
+            onFutureDaysForecastClick = navController::navigateToDetail
         )
 
         detailScreen(
@@ -37,8 +35,8 @@ fun WeatherAppNavHost(
         )
 
         locationScreen(
-            whenErrorOccured = onShowSnackbar,
-            onClickWeather = { lat, long -> navController.navigateToHome(lat, long) }
+            whenErrorOccurred = onShowSnackbar,
+            onClickWeather = navController::navigateToHome
         )
     }
 }
