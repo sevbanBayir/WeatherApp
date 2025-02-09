@@ -2,6 +2,7 @@ package com.sevban.location
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sevban.common.extensions.EMPTY
 import com.sevban.common.location.Geocoder
 import com.sevban.domain.usecase.GetWeatherUseCase
 import com.sevban.location.helper.PlaceAutocompleteService
@@ -40,7 +41,7 @@ class LocationScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LocationScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _searchQuery = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow(String.EMPTY)
     val searchQuery = _searchQuery.asStateFlow()
 
     val placeListState: StateFlow<PlaceListState> = _searchQuery
@@ -80,7 +81,7 @@ class LocationScreenViewModel @Inject constructor(
 
             is LocationScreenEvent.OnLocationSelected -> {
                 _uiState.update { it.copy(selectedPlace = event.prediction) }
-                _searchQuery.update { "" }
+                _searchQuery.update { String.EMPTY }
                 viewModelScope.launch {
                     getWeatherUseCase.execute(
                         event.prediction.latitude.toString(),
