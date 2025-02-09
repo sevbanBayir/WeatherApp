@@ -1,6 +1,7 @@
 package com.sevban.common.di
 
 import android.content.Context
+import com.sevban.common.location.AndroidLocationObserver
 import com.sevban.common.location.LocationObserver
 import dagger.Module
 import dagger.Provides
@@ -20,5 +21,5 @@ object LocationModule {
 
     @Provides
     @Singleton
-    fun provideLocationObserver(@ApplicationContext context: Context) = LocationObserver(context)
+    fun provideLocationObserver(@ApplicationContext context: Context): LocationObserver = AndroidLocationObserver(context)
 }

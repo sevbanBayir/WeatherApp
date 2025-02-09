@@ -3,6 +3,7 @@ package com.sevban.home.model
 import com.sevban.common.extensions.EMPTY
 import com.sevban.common.model.Failure
 import com.sevban.home.mapper.ForecastUiModel
+import com.sevban.ui.model.WeatherUiModel
 
 data class WeatherScreenUiState(
     val shouldShowPermanentlyDeclinedDialog: Boolean = false,

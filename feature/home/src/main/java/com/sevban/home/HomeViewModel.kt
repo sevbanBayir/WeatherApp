@@ -3,19 +3,15 @@ package com.sevban.home
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import com.sevban.common.location.LocationObserver
 import com.sevban.common.location.MissingLocationPermissionException
 import com.sevban.common.model.Failure
 import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.domain.usecase.GetWeatherUseCase
-import com.sevban.home.components.videobg.getVideoName
-import com.sevban.home.components.videobg.toWeatherType
 import com.sevban.home.mapper.toForecastUiModel
 import com.sevban.home.model.WeatherScreenUiState
 import com.sevban.home.model.WeatherState
-import com.sevban.home.model.toWeatherUiModel
+import com.sevban.ui.model.toWeatherUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -72,7 +68,9 @@ class HomeViewModel @Inject constructor(
                 }
                 latitude to longitude
             }.retry { cause ->
-                (cause is MissingLocationPermissionException).also { if (it) delay(3.seconds) }
+                (cause is MissingLocationPermissionException).also {
+                    if (it) delay(MISSING_PERMISSION_RETRY_DURATION)
+                }
             }.flatMapLatest<Pair<Double, Double>, WeatherState> { (latitude, longitude) ->
                 combine(
                     getWeatherUseCase.execute(
@@ -142,7 +140,8 @@ class HomeViewModel @Inject constructor(
     }
 
     companion object {
-        private const val LATITUDE_ARG = "latitude"
-        private const val LONGITUDE_ARG = "longitude"
+        val MISSING_PERMISSION_RETRY_DURATION = 3.seconds
+        const val LATITUDE_ARG = "latitude"
+        const val LONGITUDE_ARG = "longitude"
     }
 }
