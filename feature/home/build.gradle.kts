@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.junit5.engine)
 }
 
 android {
@@ -68,7 +69,9 @@ dependencies {
     // Exoplayer
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
+
     // Testing
     testImplementation(libs.bundles.testing)
+    testImplementation(projects.core.testing)
     androidTestImplementation(libs.bundles.android.testing)
 }
