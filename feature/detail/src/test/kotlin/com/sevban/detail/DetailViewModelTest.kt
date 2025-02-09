@@ -30,7 +30,7 @@ class DetailViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        getForecastUseCase = mockk()
+        getForecastUseCase = mockk(relaxed = true)
         savedStateHandle = SavedStateHandle()
         viewModel = DetailViewModel(getForecastUseCase, savedStateHandle)
     }

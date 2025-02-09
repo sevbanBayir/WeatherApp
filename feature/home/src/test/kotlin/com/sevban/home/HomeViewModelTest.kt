@@ -37,8 +37,8 @@ class HomeViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        getWeatherUseCase = mockk()
-        getForecastUseCase = mockk()
+        getWeatherUseCase = mockk(relaxed = true)
+        getForecastUseCase = mockk(relaxed = true)
         locationObserver = FakeLocationObserver()
         savedStateHandle = SavedStateHandle()
         viewModel = HomeViewModel(
