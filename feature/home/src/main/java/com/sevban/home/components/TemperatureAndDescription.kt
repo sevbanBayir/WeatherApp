@@ -13,11 +13,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sevban.home.model.WeatherUiModel
 
 @Composable
-fun TemperatureContainer(
-    weather: WeatherUiModel,
+fun TemperatureAndDescription(
+    temp: String,
+    description: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -28,14 +28,14 @@ fun TemperatureContainer(
         Text(
             text = stringResource(
                 id = com.sevban.ui.R.string.temperature_celsius_without_space,
-                weather.temp
+                temp
             ),
             modifier = Modifier.offset(8.dp),
             style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp)
         )
 
         Text(
-            text = weather.description,
+            text = description,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
         )
     }
