@@ -18,23 +18,16 @@ fun DetailScreen(
     whenErrorOccurred: suspend (Throwable, String?) -> Unit,
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
-        AnimatedContent(
-            targetState = forecastState,
-            modifier = Modifier.padding(16.dp),
-            label = "ForecastAnimatedContent"
-        ) {
-            when (it) {
-                is ForecastState.Error -> ErrorScreen(
-                    whenErrorOccurred = whenErrorOccurred,
-                    failure = it.failure,
-                    onTryAgainClick = { onEvent(DetailScreenEvent.OnTryAgainClick) }
-                )
-
-                is ForecastState.Loading -> LoadingScreen(1f)
-                is ForecastState.Success -> AllDaysForecastContent(forecast = it.forecast)
-            }
+        when (forecastState) {
+            is ForecastState.Success -> AllDaysForecastContent(forecast = forecastState.forecast)
+            is ForecastState.Loading -> LoadingScreen(1f)
+            is ForecastState.Error -> ErrorScreen(
+                whenErrorOccurred = whenErrorOccurred,
+                failure = forecastState.failure,
+                onTryAgainClick = { onEvent(DetailScreenEvent.OnTryAgainClick) }
+            )
         }
     }
 }
