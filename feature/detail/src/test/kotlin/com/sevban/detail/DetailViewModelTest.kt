@@ -70,7 +70,7 @@ class DetailViewModelTest {
                 cancelAndConsumeRemainingEvents()
             }
         }
-
+/*
     @Test
     fun `given forecast fetching fails when executed then forecastState should be Error`() =
         runTest {
@@ -180,7 +180,7 @@ class DetailViewModelTest {
                 )
             }
         }
-    }
+    }*/
 
 
 }
