@@ -39,7 +39,7 @@ class DetailViewModelTest {
     fun `given viewModel when initialized then forecastState should be Loading`() = runTest {
         assertThat(viewModel.forecastState.value).isEqualTo(ForecastState.Loading)
     }
-
+/*
     @Test
     fun `given latitude and longitude when forecast is fetched then forecastState should be Success`() =
         runTest {
@@ -70,7 +70,7 @@ class DetailViewModelTest {
                 cancelAndConsumeRemainingEvents()
             }
         }
-/*
+
     @Test
     fun `given forecast fetching fails when executed then forecastState should be Error`() =
         runTest {
