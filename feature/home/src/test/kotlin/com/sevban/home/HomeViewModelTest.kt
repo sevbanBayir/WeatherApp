@@ -14,6 +14,7 @@ import com.sevban.testing.extension.MainCoroutineExtension
 import com.sevban.testing.testdata.dummyForecast
 import com.sevban.testing.testdata.dummyWeather
 import com.sevban.ui.model.toWeatherUiModel
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -53,15 +54,15 @@ class HomeViewModelTest {
     fun `given viewModel when initialized then weatherState should be Loading`() = runTest {
         assertThat(viewModel.weatherState.value).isEqualTo(WeatherState.Loading)
     }
-/*
+
    @Test
     fun `given location permission granted when weather is fetched then weatherState should be Success`() =
         runTest {
-            every { getWeatherUseCase.execute(any(), any()) } returns flow {
+            coEvery { getWeatherUseCase.execute(any(), any()) } returns flow {
                 delay(10)
                 emit(dummyWeather)
             }
-            every { getForecastUseCase.execute(any(), any()) } returns flow {
+            coEvery { getForecastUseCase.execute(any(), any()) } returns flow {
                 delay(10)
                 emit(dummyForecast)
             }
@@ -78,7 +79,7 @@ class HomeViewModelTest {
                 )
             }
         }
-
+/*
     @Test
     fun `given no location permission when weather is fetched then weatherState should be stay Loading`() =
         runTest {

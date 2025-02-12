@@ -9,6 +9,7 @@ import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.testing.extension.MainCoroutineExtension
 import com.sevban.testing.testdata.dummyForecast
 import com.sevban.testing.testdata.serverError
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -39,7 +40,7 @@ class DetailViewModelTest {
     fun `given viewModel when initialized then forecastState should be Loading`() = runTest {
         assertThat(viewModel.forecastState.value).isEqualTo(ForecastState.Loading)
     }
-/*
+
     @Test
     fun `given latitude and longitude when forecast is fetched then forecastState should be Success`() =
         runTest {
@@ -51,7 +52,7 @@ class DetailViewModelTest {
             savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
 
             // When
-            every {
+            coEvery {
                 getForecastUseCase.execute(
                     latitude.toString(),
                     longitude.toString()
@@ -70,7 +71,7 @@ class DetailViewModelTest {
                 cancelAndConsumeRemainingEvents()
             }
         }
-
+/*
     @Test
     fun `given forecast fetching fails when executed then forecastState should be Error`() =
         runTest {
