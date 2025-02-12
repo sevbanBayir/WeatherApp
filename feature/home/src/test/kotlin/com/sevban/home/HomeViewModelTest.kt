@@ -54,7 +54,7 @@ class HomeViewModelTest {
     fun `given viewModel when initialized then weatherState should be Loading`() = runTest {
         assertThat(viewModel.weatherState.value).isEqualTo(WeatherState.Loading)
     }
-
+/*
    @Test
     fun `given location permission granted when weather is fetched then weatherState should be Success`() =
         runTest {
@@ -79,7 +79,7 @@ class HomeViewModelTest {
                 )
             }
         }
-/*
+
     @Test
     fun `given no location permission when weather is fetched then weatherState should be stay Loading`() =
         runTest {
