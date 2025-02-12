@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.sevban.home.mapper.ForecastUiModel
-import com.sevban.home.model.WeatherUiModel
 import com.sevban.ui.components.ForecastRow
+import com.sevban.ui.model.WeatherUiModel
 
 @Composable
 fun WeatherContent(

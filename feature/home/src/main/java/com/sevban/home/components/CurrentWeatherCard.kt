@@ -18,7 +18,7 @@ import com.sevban.home.components.videobg.VideoPlayer
 import com.sevban.home.components.videobg.getVideoName
 import com.sevban.home.components.videobg.toWeatherType
 import com.sevban.home.mapper.ForecastUiModel
-import com.sevban.home.model.WeatherUiModel
+import com.sevban.ui.model.WeatherUiModel
 
 @Composable
 fun CurrentWeatherCard(

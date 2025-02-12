@@ -19,6 +19,7 @@ junitJupiter = "5.11.1"
 assertk = "0.28.1"
 turbine = "1.2.0"
 mockk = "1.13.12"
+coroutinesTest = "1.8.1"
 kotlinSerialization = "1.7.3"
 googleMapsCompose = "6.1.2"
 googleMapsPlaces = "4.1.0"
@@ -81,12 +82,13 @@ google-maps-compose = { module = "com.google.maps.android:maps-compose", version
 google-maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", version.ref = "googleMapsCompose" }
 google-maps-places = { module = "com.google.android.libraries.places:places", version.ref = "googleMapsPlaces" }
 
-junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitJupiter" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 
@@ -102,7 +104,7 @@ compose = [
     "compose-ui-tooling-preview",
     "androidx-activity-compose",
     "androidx-lifecycle-runtime-compose",
-    "androidx-navigation-compose",
+    "androidx-navigation-compose"
 ]
 
 compose-testing = [
@@ -115,9 +117,10 @@ testing = [
     "turbine",
     "mockk",
     "assertk",
-    "junitJupiter",
+    "junit-jupiter",
     "junit-jupiter-api",
-    "junit-jupiter-engine"
+    "junit-jupiter-engine",
+    "kotlinx-coroutines-test"
 ]
 
 android-testing = [
