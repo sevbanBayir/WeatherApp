@@ -9,6 +9,8 @@ import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.testing.extension.MainCoroutineExtension
 import com.sevban.testing.testdata.dummyForecast
 import com.sevban.testing.testdata.serverError
+import io.mockk.MockKAnnotations
+import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -18,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -31,9 +34,16 @@ class DetailViewModelTest {
 
     @BeforeEach
     fun setUp() {
+        MockKAnnotations.init(this, relaxUnitFun = true)
+
         getForecastUseCase = mockk(relaxed = true)
         savedStateHandle = SavedStateHandle()
         viewModel = DetailViewModel(getForecastUseCase, savedStateHandle)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        clearAllMocks()
     }
 
     @Test
