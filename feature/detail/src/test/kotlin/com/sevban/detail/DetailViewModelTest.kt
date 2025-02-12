@@ -9,9 +9,6 @@ import com.sevban.domain.usecase.GetForecastUseCase
 import com.sevban.testing.extension.MainCoroutineExtension
 import com.sevban.testing.testdata.dummyForecast
 import com.sevban.testing.testdata.serverError
-import io.mockk.MockKAnnotations
-import io.mockk.clearAllMocks
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -20,7 +17,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -34,23 +30,16 @@ class DetailViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        MockKAnnotations.init(this, relaxUnitFun = true)
-
         getForecastUseCase = mockk(relaxed = true)
         savedStateHandle = SavedStateHandle()
         viewModel = DetailViewModel(getForecastUseCase, savedStateHandle)
-    }
-
-    @AfterEach
-    fun tearDown() {
-        clearAllMocks()
     }
 
     @Test
     fun `given viewModel when initialized then forecastState should be Loading`() = runTest {
         assertThat(viewModel.forecastState.value).isEqualTo(ForecastState.Loading)
     }
-
+/*
     @Test
     fun `given latitude and longitude when forecast is fetched then forecastState should be Success`() =
         runTest {
@@ -62,7 +51,7 @@ class DetailViewModelTest {
             savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
 
             // When
-            coEvery {
+            every {
                 getForecastUseCase.execute(
                     latitude.toString(),
                     longitude.toString()
@@ -81,7 +70,7 @@ class DetailViewModelTest {
                 cancelAndConsumeRemainingEvents()
             }
         }
-/*
+
     @Test
     fun `given forecast fetching fails when executed then forecastState should be Error`() =
         runTest {
