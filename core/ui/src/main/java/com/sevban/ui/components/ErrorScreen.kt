@@ -24,7 +24,8 @@ import com.sevban.ui.R
 fun ErrorScreen(
     whenErrorOccurred: suspend (Throwable, String?) -> Unit,
     failure: Failure,
-    onTryAgainClick: () -> Unit
+    onTryAgainClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
@@ -38,9 +39,7 @@ fun ErrorScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = failure.errorType.toLocalizedMessage(context),

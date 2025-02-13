@@ -16,7 +16,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.sevban.androidtest.di.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -69,5 +69,9 @@ dependencies {
     // Testing
     testImplementation(libs.bundles.testing)
     testImplementation(projects.core.testing)
+    androidTestImplementation(projects.core.androidtest)
+    androidTestImplementation(projects.core.testing)
+    androidTestImplementation("io.coil-kt:coil-test:2.4.0")
     androidTestImplementation(libs.bundles.android.testing)
+    androidTestImplementation(libs.bundles.compose.testing)
 }

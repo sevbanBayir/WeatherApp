@@ -1,7 +1,10 @@
 [versions]
 # SDK
+coreKtx = "1.6.1"
+hiltAndroidTesting = "2.54"
 minSdk = "26"
 compileSdk = "35"
+runner = "1.6.2"
 targetSdk = "35"
 
 # LIBRARY
@@ -10,7 +13,7 @@ espressoCore = "3.6.1"
 junitVersion = "1.2.1"
 ktx = "1.15.0"
 lifecycleRuntimeKtx = "2.8.7"
-composeBom = "2025.01.01"
+composeBom = "2025.02.00"
 okHttp = "4.12.0"
 retrofitGson = "2.11.0"
 gmsLocation = "21.3.0"
@@ -25,7 +28,7 @@ googleMapsCompose = "6.1.2"
 googleMapsPlaces = "4.1.0"
 kotlin = "2.1.0"
 daggerHilt = "2.54"
-navigation = "2.8.6"
+navigation = "2.8.7"
 activity = "1.10.0"
 appcompat = "1.7.0"
 hiltNavigation = "1.2.0"
@@ -38,11 +41,14 @@ org-jetbrains-kotlin-jvm = "2.1.0"
 mapsPlatformSecretsPlugin = "2.0.1"
 junitEnginePlugin = "1.11.2.0"
 ksp = "2.1.0-1.0.29"
+junit = "4.13.2"
 
 [libraries]
+androidx-core-ktx = { module = "androidx.test:core-ktx", version.ref = "coreKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "runner" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
@@ -54,6 +60,7 @@ compose-ui-testing-manifest = { module = "androidx.compose.ui:ui-test-manifest" 
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHilt" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltAndroidTesting" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigation" }
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -94,6 +101,7 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3Exoplayer" }
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Exoplayer" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 [bundles]
 compose = [
@@ -107,12 +115,6 @@ compose = [
     "androidx-navigation-compose"
 ]
 
-compose-testing = [
-    "compose-bom",
-    "compose-ui-testing-junit4",
-    "compose-ui-testing-manifest",
-]
-
 testing = [
     "turbine",
     "mockk",
@@ -123,9 +125,18 @@ testing = [
     "kotlinx-coroutines-test"
 ]
 
+compose-testing = [
+    "compose-bom",
+    "compose-ui-testing-junit4",
+    "compose-ui-testing-manifest"
+]
+
 android-testing = [
+    "junit",
     "androidx-junit",
     "androidx-espresso-core",
+    "androidx-test-runner",
+    "hilt-android-testing"
 ]
 
 [plugins]

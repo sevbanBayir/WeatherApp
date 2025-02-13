@@ -19,10 +19,11 @@ import com.sevban.ui.components.ForecastRow
 @Composable
 fun AllDaysForecastContent(
     forecast: ForecastUiModel,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
     ) {
