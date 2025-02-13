@@ -49,7 +49,7 @@ fun HomeScreen(
                     onTryAgainClick = { onEvent(HomeScreenEvent.OnTryAgainClick) }
                 )
 
-                is WeatherState.Loading -> LoadingScreen(1f)
+                is WeatherState.Loading -> LoadingScreen(Modifier.fillMaxSize(),1f)
                 is WeatherState.Success -> WeatherContent(
                     weather = it.weather,
                     forecast = it.forecast,

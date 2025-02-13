@@ -3,6 +3,7 @@ package com.sevban.location.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -50,6 +51,7 @@ fun GoogleMapWithLoading(
         exit = fadeOut(animationSpec = tween(durationMillis = 500))
     ) {
         LoadingScreen(
+            modifier = Modifier.fillMaxSize(),
             heightFraction = 1f,
             backgroundColor = MaterialTheme.colorScheme.background
         )

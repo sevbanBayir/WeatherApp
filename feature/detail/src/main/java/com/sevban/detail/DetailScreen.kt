@@ -23,7 +23,12 @@ fun DetailScreen(
             .padding(16.dp)
     ) {
         when (forecastState) {
-            is ForecastState.Loading -> LoadingScreen(Modifier.testTag("loading_screen"), 1f)
+            is ForecastState.Loading -> LoadingScreen(
+                Modifier
+                    .fillMaxSize()
+                    .testTag("loading_screen"), 1f
+            )
+
             is ForecastState.Success -> AllDaysForecastContent(
                 modifier = Modifier.testTag("success_screen"),
                 forecast = forecastState.forecast
