@@ -32,148 +32,101 @@ class DetailViewModelTest {
     fun setUp() {
         getForecastUseCase = mockk(relaxed = true)
         savedStateHandle = SavedStateHandle()
-//        viewModel = DetailViewModel(getForecastUseCase, savedStateHandle)
+        viewModel = DetailViewModel(getForecastUseCase, savedStateHandle)
     }
 
-/*    @Test
+    @Test
     fun `given viewModel when initialized then forecastState should be Loading`() = runTest {
         assertThat(viewModel.forecastState.value).isEqualTo(ForecastState.Loading)
-    }*/
+    }
+
+    @Test
+    fun `given latitude and longitude when forecast is fetched then forecastState should be Success`() =
+        runTest {
+            // Given
+            val latitude = 40.7128
+            val longitude = -74.0060
+
+            savedStateHandle[DetailViewModel.LATITUDE_ARG] = latitude
+            savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
+
+            // When
+            every {
+                getForecastUseCase.execute(
+                    latitude.toString(),
+                    longitude.toString()
+                )
+            } returns flow {
+                delay(10) // Ensure time for initial Loading emission
+                emit(dummyForecast)
+            }
+
+            // Then
+            viewModel.forecastState.test {
+                val firstItem = awaitItem()
+                assertThat(firstItem).isEqualTo(ForecastState.Loading)
+                val secondItem = awaitItem()
+                assertThat(secondItem).isEqualTo(ForecastState.Success(dummyForecast.toForecastUiModel()))
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `given forecast fetching fails when executed then forecastState should be Error`() =
+        runTest {
+            val latitude = 40.7128
+            val longitude = -74.0060
+
+            savedStateHandle[DetailViewModel.LATITUDE_ARG] = latitude
+            savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
+
+            every {
+                getForecastUseCase.execute(
+                    latitude.toString(),
+                    longitude.toString()
+                )
+            } throws serverError
+            viewModel.forecastState.test {
+                val firstItem = awaitItem()
+                assertThat(firstItem).isEqualTo(ForecastState.Error(serverError))
+            }
+        }
+
+    @Test
+    fun `given OnTryAgainClick event when triggered then retryTrigger should emit unit`() =
+        runTest {
+
+            viewModel.retryTrigger.test {
+                viewModel.onEvent(DetailScreenEvent.OnTryAgainClick)
+                assertThat(awaitItem()).isEqualTo(Unit)
+                expectNoEvents()
+            }
+        }
+
     @Test
     fun `given savedStateHandle with null values when fetching forecast then state should remain Loading`() =
         runTest {
-            val forecastUseCase2 = mockk<GetForecastUseCase> {
-                every { execute(any(), any()) } returns flowOf(dummyForecast)
-            }
             savedStateHandle[DetailViewModel.LATITUDE_ARG] = null
             savedStateHandle[DetailViewModel.LONGITUDE_ARG] = null
-            viewModel = DetailViewModel(forecastUseCase2, savedStateHandle)
 
-//            every { getForecastUseCase.execute(any(), any()) } returns flowOf(dummyForecast)
+            every { getForecastUseCase.execute(any(), any()) } returns flowOf(dummyForecast)
 
             viewModel.forecastState.test {
                 val firstItem = awaitItem()
                 assertThat(firstItem).isEqualTo(ForecastState.Loading)
                 expectNoEvents()
             }
-
-            verify { forecastUseCase2.execute(any(), any()) }
         }
 
-    /*
-        @Test
-        fun `given latitude and longitude when forecast is fetched then forecastState should be Success`() =
-            runTest {
-                // Given
-                val latitude = 40.7128
-                val longitude = -74.0060
-
-                savedStateHandle[DetailViewModel.LATITUDE_ARG] = latitude
-                savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
-
-                // When
-                every {
-                    getForecastUseCase.execute(
-                        latitude.toString(),
-                        longitude.toString()
-                    )
-                } returns flow {
-                    delay(10) // Ensure time for initial Loading emission
-                    emit(dummyForecast)
-                }
-
-                // Then
-                viewModel.forecastState.test {
-                    val firstItem = awaitItem()
-                    assertThat(firstItem).isEqualTo(ForecastState.Loading)
-                    val secondItem = awaitItem()
-                    assertThat(secondItem).isEqualTo(ForecastState.Success(dummyForecast.toForecastUiModel()))
-                    cancelAndConsumeRemainingEvents()
-                }
-            }
-
-        @Test
-        fun `given forecast fetching fails when executed then forecastState should be Error`() =
-            runTest {
-                val latitude = 40.7128
-                val longitude = -74.0060
-
-                savedStateHandle[DetailViewModel.LATITUDE_ARG] = latitude
-                savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
-
-                every {
-                    getForecastUseCase.execute(
-                        latitude.toString(),
-                        longitude.toString()
-                    )
-                } throws serverError
-                viewModel.forecastState.test {
-                    val firstItem = awaitItem()
-                    assertThat(firstItem).isEqualTo(ForecastState.Error(serverError))
-                }
-            }
-
-        @Test
-        fun `given OnTryAgainClick event when triggered then retryTrigger should emit unit`() =
-            runTest {
-
-                viewModel.retryTrigger.test {
-                    viewModel.onEvent(DetailScreenEvent.OnTryAgainClick)
-                    assertThat(awaitItem()).isEqualTo(Unit)
-                    expectNoEvents()
-                }
-            }
-
-        @Test
-        fun `given savedStateHandle with null values when fetching forecast then state should remain Loading`() =
-            runTest {
-                savedStateHandle[DetailViewModel.LATITUDE_ARG] = null
-                savedStateHandle[DetailViewModel.LONGITUDE_ARG] = null
-
-                every { getForecastUseCase.execute(any(), any()) } returns flowOf(dummyForecast)
-
-                viewModel.forecastState.test {
-                    val firstItem = awaitItem()
-                    assertThat(firstItem).isEqualTo(ForecastState.Loading)
-                    expectNoEvents()
-                }
-            }
-
-        @Test
-        fun `given valid lat long when getForecastUseCase is called then forecastState should be updated`() =
-            runTest {
-                val latitude = 40.7128
-                val longitude = -74.0060
-
-                savedStateHandle[DetailViewModel.LATITUDE_ARG] = latitude
-                savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
-
-                every {
-                    getForecastUseCase.execute(
-                        latitude.toString(),
-                        longitude.toString()
-                    )
-                } returns flow {
-                    delay(10)
-                    emit(dummyForecast)
-                }
-
-                viewModel.forecastState.test {
-                    val firstItem = awaitItem()
-                    assertThat(firstItem).isEqualTo(ForecastState.Loading)
-                    val secondItem = awaitItem()
-                    assertThat(secondItem).isEqualTo(ForecastState.Success(dummyForecast.toForecastUiModel()))
-                    verify { getForecastUseCase.execute(latitude.toString(), longitude.toString()) }
-                }
-            }
-
-
-        @Test
-        fun `given retryTrigger when triggered then forecastState should reload data`() = runTest {
+    @Test
+    fun `given valid lat long when getForecastUseCase is called then forecastState should be updated`() =
+        runTest {
             val latitude = 40.7128
             val longitude = -74.0060
+
             savedStateHandle[DetailViewModel.LATITUDE_ARG] = latitude
             savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
+
             every {
                 getForecastUseCase.execute(
                     latitude.toString(),
@@ -189,19 +142,45 @@ class DetailViewModelTest {
                 assertThat(firstItem).isEqualTo(ForecastState.Loading)
                 val secondItem = awaitItem()
                 assertThat(secondItem).isEqualTo(ForecastState.Success(dummyForecast.toForecastUiModel()))
-                viewModel.onEvent(DetailScreenEvent.OnTryAgainClick)
-                val thirdItem = awaitItem()
-                assertThat(thirdItem).isEqualTo(ForecastState.Loading)
-                val fourthItem = awaitItem()
-                assertThat(fourthItem).isEqualTo(ForecastState.Success(dummyForecast.toForecastUiModel()))
-                verify(exactly = 2) {
-                    getForecastUseCase.execute(
-                        latitude.toString(),
-                        longitude.toString()
-                    )
-                }
+                verify { getForecastUseCase.execute(latitude.toString(), longitude.toString()) }
             }
-        }*/
+        }
+
+
+    @Test
+    fun `given retryTrigger when triggered then forecastState should reload data`() = runTest {
+        val latitude = 40.7128
+        val longitude = -74.0060
+        savedStateHandle[DetailViewModel.LATITUDE_ARG] = latitude
+        savedStateHandle[DetailViewModel.LONGITUDE_ARG] = longitude
+        every {
+            getForecastUseCase.execute(
+                latitude.toString(),
+                longitude.toString()
+            )
+        } returns flow {
+            delay(10)
+            emit(dummyForecast)
+        }
+
+        viewModel.forecastState.test {
+            val firstItem = awaitItem()
+            assertThat(firstItem).isEqualTo(ForecastState.Loading)
+            val secondItem = awaitItem()
+            assertThat(secondItem).isEqualTo(ForecastState.Success(dummyForecast.toForecastUiModel()))
+            viewModel.onEvent(DetailScreenEvent.OnTryAgainClick)
+            val thirdItem = awaitItem()
+            assertThat(thirdItem).isEqualTo(ForecastState.Loading)
+            val fourthItem = awaitItem()
+            assertThat(fourthItem).isEqualTo(ForecastState.Success(dummyForecast.toForecastUiModel()))
+            verify(exactly = 2) {
+                getForecastUseCase.execute(
+                    latitude.toString(),
+                    longitude.toString()
+                )
+            }
+        }
+    }
 
 
 }
