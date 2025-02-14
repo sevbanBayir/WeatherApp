@@ -37,10 +37,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-        create("staging") {
-            isMinifyEnabled = false
-            matchingFallbacks += "debug"
-        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
