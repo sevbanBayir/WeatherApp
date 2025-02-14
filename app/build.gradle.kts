@@ -32,6 +32,11 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("staging") {
+            isMinifyEnabled = false
+            isDebuggable = true
+            matchingFallbacks += "release"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
