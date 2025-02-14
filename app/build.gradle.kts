@@ -35,7 +35,7 @@ android {
         create("staging") {
             isMinifyEnabled = false
             isDebuggable = true
-            matchingFallbacks += "release"
+            matchingFallbacks += "debug"
         }
     }
     compileOptions {
